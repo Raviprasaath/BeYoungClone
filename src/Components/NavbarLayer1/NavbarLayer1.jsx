@@ -1,30 +1,20 @@
-import { useEffect, useState } from "react";
+import { useScreenSize } from "../CommonFunctions/CommonFunctions"
 import { HiLocationMarker } from "react-icons/hi";
 
 const NavbarLayer1 = () => {
-  const [screenSize, setScreenSize] = useState(window.innerWidth > 680);
-
-  useEffect(() => {
-    const handlerScreenSize = () => {
-      setScreenSize(window.innerWidth > 680);
-    };
-    window.addEventListener("resize", handlerScreenSize);
-
-    return () => {
-      window.removeEventListener("resize", handlerScreenSize);
-    };
-  }, []);
+  const screenSize = useScreenSize();
+  const isMobile = screenSize < 960;
 
   return (
     <>
       <div className="w-full flex flex-col">
         <div className="flex justify-center bg-yellow-300 p-[5px]">
-          {!screenSize && (
-            <section className="text-sm text-center	font-extrabold">
+          {isMobile && (
+            <section className="text-[0.8rem] text-center	font-extrabold">
               Free Shopping on All Orders | Shop now
             </section>
           )}
-          {screenSize && (
+          {!isMobile && (
             <section className="text-sm text-center	font-extrabold">
               Free Shopping on All Orders | Get Extra ₹100 OFF on Spent of ₹999
               Use Code: BEYOUNG100

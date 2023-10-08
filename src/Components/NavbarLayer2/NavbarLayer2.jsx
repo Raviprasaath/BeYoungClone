@@ -1,20 +1,20 @@
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsFillCartFill } from "react-icons/bs";
 import { AiOutlineSearch, AiFillHeart } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useScreenSize } from "../CommonFunctions/CommonFunctions"
 import React from "react";
-import { useScreenSize } from "../CommonFunctions/CommonFunctions";
 
 import "./NavbarLayer2.css";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import navbarImage1 from "../../assets/navbar-1.jpg";
-const NavbarLayer2 = ( {handlerNavbarToggle} ) => {
-const screenSize = useScreenSize();
+const NavbarLayer2 = ({ handlerNavbarToggle }) => {
+  const screenSize = useScreenSize();
+  const isMobile = screenSize < 960;
 
   return (
     <>
-      {screenSize && (
+      {!isMobile && (
         <>
           <div className="flex justify-center bg-white">
             <div className=" relative flex justify-between w-[960px] xl:w-[1200px] ">
@@ -213,11 +213,14 @@ const screenSize = useScreenSize();
           </div>
         </>
       )}
-      {!screenSize && (
+      {isMobile && (
         <div className="flex bg-white items-center w-full ">
           <div className="flex justify-between items-center gap-2.5 w-full px-2.5 py-2">
             <div className="flex items-center gap-2.5">
-              <GiHamburgerMenu onClick={()=>handlerNavbarToggle(true)} className="hover:opacity-50" />
+              <GiHamburgerMenu
+                onClick={() => handlerNavbarToggle(true)}
+                className="hover:opacity-50"
+              />
               <div className="font-extrabold tracking-widest">BEYOUNG</div>
             </div>
 

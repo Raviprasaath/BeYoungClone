@@ -1,6 +1,6 @@
-import home1 from "../../assets/homepage-1.jpg";
-import home2 from "../../assets/homepage-2.jpg";
-import home3 from "../../assets/homepage-3.jpg";
+import home1 from "../../../assets/homepage-1.jpg";
+import home2 from "../../../assets/homepage-2.jpg";
+import home3 from "../../../assets/homepage-3.jpg";
 
 
 import { Swiper, SwiperSlide } from "swiper/react";

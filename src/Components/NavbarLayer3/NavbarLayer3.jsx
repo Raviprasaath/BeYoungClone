@@ -33,9 +33,7 @@ const NavbarLayer3 = (props) => {
   return (
     <>
       <div
-          className={`fixed flex top-0 w-full ${toggleState ? 'translate-x-0' : '-translate-x-full'} h-full`}
-          // className={` fixed flex top-0 w-full left-[${sideNavbarToggle}]  h-full`}
-      >
+          className={`fixed flex top-0 w-full ${toggleState ? 'translate-x-0' : '-translate-x-full'} h-full`} >
         <div className="bg-white w-[75vw] h-[100vh] duration-1000">
           <div className="w-full bg-yellow-300 p-2.5 font-black text-center text-3xl">
             BEYOUNG
