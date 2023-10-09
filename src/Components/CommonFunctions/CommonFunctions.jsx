@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 
 export const useScreenSize = () => {
-  const [screenSize, setScreenSize] = useState(window.innerWidth > 960);
+  const [screenSize, setScreenSize] = useState(window.innerWidth);
   
   useEffect(() => {
     const handleResize = () => {

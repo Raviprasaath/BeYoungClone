@@ -164,8 +164,8 @@ const NavbarLayer3 = (props) => {
                     DOWNLOAD THE APP
                   </div>
                   <div className="flex flex-row gap-2.5">
-                    <img className="w-[180px]" src={psImage1} alt="" />
-                    <img className="w-[180px]" src={psImage2} alt="" />
+                    <img className="max-w-[120px]" src={psImage1} alt="" />
+                    <img className="max-w-[120px]" src={psImage2} alt="" />
                   </div>
                 </div>
 
@@ -267,8 +267,8 @@ const NavbarLayer3 = (props) => {
                     DOWNLOAD THE APP
                   </div>
                   <div className="flex flex-row gap-2.5">
-                    <img className="w-[180px]" src={psImage1} alt="" />
-                    <img className="w-[180px]" src={psImage2} alt="" />
+                    <img className="max-w-[120px]" src={psImage1} alt="" />
+                    <img className="max-w-[120px]" src={psImage2} alt="" />
                   </div>
                 </div>
 

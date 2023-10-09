@@ -12,6 +12,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
 
+
   return (
     <>
       {!isMobile && (
