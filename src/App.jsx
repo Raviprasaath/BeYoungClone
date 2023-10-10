@@ -6,6 +6,7 @@ import NavbarLayer3 from "./Components/NavbarLayer3/NavbarLayer3";
 
 import Footer from "./Components/Footer/Footer";
 import Homepage from "./Components/HomePage/Homepage";
+import ClothingPage from "./Components/ClothingPage/ClothingPage";
 
 function App() {
   const [sideNavbar, setSideNavbar] = useState(false);
@@ -27,6 +28,7 @@ function App() {
           />
         </div>
         {/* <Homepage /> */}
+        <ClothingPage />
         <Footer />
       </div>
     </>

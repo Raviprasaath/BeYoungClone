@@ -222,7 +222,7 @@ const AccordionTrigger = React.forwardRef(
   ({ children, className, ...props }, forwardedRef) => (
     <Accordion.Header className={classNames("AccordionHeader", className)}>
       <Accordion.Trigger
-        className={classNames("AccordionTrigger", className)}
+        className={classNames("AccordionTrigger text-[1.2rem] font-[700] text-yellow-400", className)}
         {...props}
         ref={forwardedRef}
       >
@@ -240,7 +240,7 @@ const AccordionContent = React.forwardRef(
       {...props}
       ref={forwardedRef}
     >
-      <div className="AccordionContentText">{children}</div>
+      <div className="AccordionContentText bg-black">{children}</div>
     </Accordion.Content>
   )
 );

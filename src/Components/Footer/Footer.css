@@ -47,11 +47,10 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1.2rem;
   line-height: 1;
   box-shadow: 0 1px 0 var(--mauve-6);
-  color: yellow;
-  font-weight: 700;
+  font-size: 15px;  
+
 }
 
 
@@ -68,7 +67,6 @@ h3 {
 
 .AccordionContentText {
   padding: 15px 20px;
-  background-color: black;
 }
 
 .AccordionChevron {
