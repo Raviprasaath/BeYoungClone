@@ -8,6 +8,7 @@ import "./NavbarLayer2.css";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import navbarImage1 from "../../assets/navbar-1.jpg";
+import { Link } from "react-router-dom";
 const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
@@ -22,7 +23,9 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
               <div>
                 <NavigationMenu.Root className="relative flex z-1 py-2.5">
                   <div className="font-sans cursor-pointer font-black tracking-widest text-[1.5rem]">
-                    BEYOUNG
+                    <Link to="/">
+                      BEYOUNG
+                    </Link>
                   </div>
                   <NavigationMenu.List className="flex justify-center w-full bg-white p-[4px] m-0 ">
                     <NavigationMenu.Item className="hover:bg-yellow-300">
@@ -222,7 +225,11 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                 onClick={() => handlerNavbarToggle(true)}
                 className="hover:opacity-50"
               />
-              <div className="font-extrabold tracking-widest">BEYOUNG</div>
+              <div className="font-extrabold tracking-widest">
+                <Link to="/">
+                  BEYOUNG
+                </Link>
+              </div>
             </div>
 
             <div className="flex items-center gap-2.5 text-[1.2rem]">
