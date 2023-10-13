@@ -37,6 +37,7 @@ import image4f from "../../../assets/categories-for-men/4f.jpg";
 import image5f from "../../../assets/categories-for-men/5f.png";
 
 import { useScreenSize } from "../../CommonFunctions/CommonFunctions"
+import { Link } from "react-router-dom";
 
 
 
@@ -51,7 +52,9 @@ const HomeMenCategories = () => {
           <div className="w-[76.2%] flex flex-col justify-center">
             <h1 className="text-[20px] font-bold">CATEGORIES FOR MEN </h1>
             <section className="flex flex-wrap flex-row gap-4 ">
-              <img className="w-[180px]" src={image1} alt="img1" />
+                <Link to="/clothing/test">
+                    <img className="w-[180px]" src={image1} alt="img1" />
+                </Link>
               <img className="w-[180px]" src={image2} alt="img2" />
               <img className="w-[180px]" src={image3} alt="img3" />
               <img className="w-[180px]" src={image4} alt="img4" />
@@ -75,10 +78,13 @@ const HomeMenCategories = () => {
                 <div className="flex flex-col">
                     <h2 className="font-bold py-3.5">T-SHIRTS-HIGH DEMAND</h2>
                     <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image1a} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">OVERSIZED T-SHIRT</h2>
-                        </div>
+                            <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                        <Link to="/clothing/text2">
+                                <img className=" w-[200px]" src={image1a} alt="" />
+                                <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">OVERSIZED T-SHIRT</h2>
+                        </Link>
+                            </div>
+                        
                         <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
                             <img className=" w-[200px]" src={image2a} alt="" />
                             <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">PRINTED T-SHIRTS</h2>

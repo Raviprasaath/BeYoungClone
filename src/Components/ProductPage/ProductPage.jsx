@@ -78,7 +78,7 @@ const ProductPage = () => {
                 </span>
             </p>
             <p>Inclusive of Taxes + Free Shipping</p>
-            <div className="flex">                
+            <div className="flex ">                
                 <AiFillStar />
                 <AiFillStar />
                 <AiFillStar />

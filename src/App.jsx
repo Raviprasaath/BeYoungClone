@@ -12,19 +12,7 @@ import ClothingFilter from "./Components/ClothingPage/ClothingFilter";
 import { useScreenSize } from "./Components/CommonFunctions/CommonFunctions";
 import ProductPage from "./Components/ProductPage/ProductPage";
 
-import { getProductList } from "./Components/Fetching/Service";
-
-
-function App() {
-
-
-   useEffect( async ()=> {
-    const data = await getProductList();
-    const result = await data.json();
-    console.log("data", result);
-  }, [])
-
-  
+function App() { 
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
   
@@ -71,7 +59,7 @@ function App() {
         
         <Routes>
           <Route path="/" element={ <Homepage /> } />
-          <Route path="/clothingpage" element={ <ClothingPage handlerOpenFilter={handlerOpenFilter} /> } />
+          <Route path="/clothing/:name" element={ <ClothingPage handlerOpenFilter={handlerOpenFilter} /> } />
         </Routes>
         {/* <ProductPage />         */}
         

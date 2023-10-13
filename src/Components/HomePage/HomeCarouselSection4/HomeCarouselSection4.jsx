@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Pagination, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/pagination";
@@ -16,9 +16,40 @@ import img5 from "../../../assets/home-carousel-1/image-5.jpg";
 import img6 from "../../../assets/home-carousel-1/image-6.jpg";
 import img7 from "../../../assets/home-carousel-1/image-7.jpg";
 
+import { Link } from "react-router-dom";
+import { getTypesOfClothsList } from "../../Fetching/Service";
+
+
 const HomeCarouselSection4 = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+  const [travelData, setTravelData] = useState([]);
+  const [plainTShirt, setPlainTShirt] = useState([]);
+  const [poloTShirt, setPoloTShirt] = useState([]);
+  const [printedTShirt, setPrintedTShirt] = useState([]);
+  const [shirts, setShirts] = useState([]);
+  const [pyjamas, setPyjamas] = useState([]);
+  const [overSizedTShirt, setOverSizedTShirt] = useState([]);
+    
+  useEffect(() => {
+    async function fetchDataAndFilter(title, searchTerm, filterFunction, setDataFunction) {
+      const data = await getTypesOfClothsList(title, searchTerm);
+      const result = data.data;
+      const result2 = result.filter(filterFunction);
+      setDataFunction(result2);
+    }
+
+    fetchDataAndFilter("description", "travel", (item) => item.gender === "Men", setTravelData);
+    fetchDataAndFilter("description", "plain", (item) => item.subCategory === "tshirt", setPlainTShirt);
+    fetchDataAndFilter("description", "polo", (item) => item.subCategory === "tshirt", setPoloTShirt);
+    fetchDataAndFilter("description", "printed", (item) => item.gender === "Men" && item.subCategory === "tshirt", setPrintedTShirt);
+    fetchDataAndFilter("description", "shirts", (item) => item.gender === "Men" && item.subCategory === "shirt", setShirts);
+    fetchDataAndFilter("subCategory", "pyjamas", (item) => item.gender === "Men", setPyjamas);
+    fetchDataAndFilter("description", "oversized", (item) => item.gender === "Men" && item.subCategory=== "tshirt", setOverSizedTShirt);
+  }, []);
+
+
+
 
   return (
     <>
@@ -49,67 +80,103 @@ const HomeCarouselSection4 = () => {
               className="w-full h-full"
             >
               <SwiperSlide className="flex justify-center align-center">
-                <div>
-                  <img
-                    className="block w-full h-full object-cover"
-                    src={img1}
-                    alt=""
-                  />
-                </div>
+                <Link 
+                  to="clothing/travel"
+                  state={{data: travelData}}
+                >
+                  <div>
+                    <img
+                      className="block w-full h-full object-cover"
+                      src={img1}
+                      alt=""
+                    />
+                  </div>
+                </Link>
               </SwiperSlide>
               <SwiperSlide className="flex justify-center align-center">
-                <div>
-                  <img
-                    className="block w-full h-full object-cover"
-                    src={img2}
-                    alt=""
-                  />
+                <Link 
+                  to="clothing/printed-t-shirt"
+                  state={{data: printedTShirt}}
+                >
+                  <div>
+                    <img
+                      className="block w-full h-full object-cover"
+                      src={img4}
+                      alt=""
+                    />
+                  </div>
+                </Link>
+              </SwiperSlide>
+              {/* <SwiperSlide className="flex justify-center align-center">
+              <Link 
+                  to="clothing/plain-t-shirt"
+                  state={{data: plainTShirt}}
+                >
+                  <div>
+                    <img
+                      className="block w-full h-full object-cover"
+                      src={img2}
+                      alt=""
+                      />
+                  </div>
+                </Link>
+              </SwiperSlide> */}
+              <SwiperSlide className="flex justify-center align-center">
+                <Link 
+                  to="clothing/polo-t-shirt"
+                  state={{data: poloTShirt}}
+                >
+                  <div>
+                    <img
+                      className="block w-full h-full object-cover"
+                      src={img3}
+                      alt=""
+                    />
                 </div>
+                </Link>
+              </SwiperSlide>
+              
+              <SwiperSlide className="flex justify-center align-center">
+                <Link
+                  to="clothing/plain-t-shirt"
+                  state={{data: shirts}}
+                >
+                  <div>
+                    <img
+                      className="block w-full h-full object-cover"
+                      src={img5}
+                      alt=""
+                    />
+                  </div>
+                </Link>
               </SwiperSlide>
               <SwiperSlide className="flex justify-center align-center">
-                <div>
-                  <img
-                    className="block w-full h-full object-cover"
-                    src={img3}
-                    alt=""
-                  />
-                </div>
+                <Link
+                  to="clothing/plain-t-shirt"
+                  state={{data: pyjamas}}
+                >
+                  <div>
+                    <img
+                      className="block w-full h-full object-cover"
+                      src={img6}
+                      alt=""
+                      />
+                  </div>
+                </Link>
               </SwiperSlide>
               <SwiperSlide className="flex justify-center align-center">
-                <div>
-                  <img
-                    className="block w-full h-full object-cover"
-                    src={img4}
-                    alt=""
-                  />
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className="flex justify-center align-center">
-                <div>
-                  <img
-                    className="block w-full h-full object-cover"
-                    src={img5}
-                    alt=""
-                  />
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className="flex justify-center align-center">
-                <div>
-                  <img
-                    className="block w-full h-full object-cover"
-                    src={img6}
-                    alt=""
-                  />
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className="flex justify-center align-center">
-                <div>
-                  <img
-                    className="block w-full h-full object-cover"
-                    src={img7}
-                    alt=""
-                  />
-                </div>
+                <Link
+                  to="clothing/plain-t-shirt"
+                  state={{data: overSizedTShirt}}
+                >
+                  <div>
+                    <img
+                      className="block w-full h-full object-cover"
+                      src={img7}
+                      alt=""
+                      />
+                  </div>
+                </Link>
               </SwiperSlide>
             </Swiper>
           </div>
@@ -121,25 +188,57 @@ const HomeCarouselSection4 = () => {
             <h2 className="font-bold py-3.5">BIG SAVING ZONE</h2>
             <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
               <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                <img className=" w-[200px]" src={img1} alt="" />
+                <Link 
+                  to="clothing/travel"
+                  state={{data: travelData}}
+                >
+                    <img className=" w-[200px]" src={img1} alt="" />
+                </Link>
               </div>
-              <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+              {/* <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
                 <img className=" w-[200px]" src={img2} alt="" />
+              </div> */}
+              <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                <Link 
+                  to="clothing/printed-t-shirt"
+                  state={{data: printedTShirt}}
+                >
+                  <img className=" w-[200px]" src={img4} alt="" />
+                </Link>
               </div>
               <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                <img className=" w-[200px]" src={img3} alt="" />
+                <Link 
+                  to="clothing/polo-t-shirt"
+                  state={{data: poloTShirt}}
+                >
+                  <img className=" w-[200px]" src={img3} alt="" />
+                </Link>
+              </div>
+              
+              <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                <Link
+                  to="clothing/plain-t-shirt"
+                  state={{data: shirts}}
+                >
+                  <img className=" w-[200px]" src={img5} alt="" />
+                </Link>
               </div>
               <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                <img className=" w-[200px]" src={img4} alt="" />
+                <Link
+                  to="clothing/plain-t-shirt"
+                  state={{data: pyjamas}}
+                >
+                  <img className=" w-[200px]" src={img6} alt="" />
+                </Link>
+              
               </div>
               <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                <img className=" w-[200px]" src={img5} alt="" />
-              </div>
-              <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                <img className=" w-[200px]" src={img6} alt="" />
-              </div>
-              <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                <img className=" w-[200px]" src={img7} alt="" />
+                <Link
+                  to="clothing/plain-t-shirt"
+                  state={{data: overSizedTShirt}}
+                >
+                  <img className=" w-[200px]" src={img7} alt="" />
+                </Link>
               </div>
             </div>
           </div>

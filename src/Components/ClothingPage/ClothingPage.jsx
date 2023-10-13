@@ -15,771 +15,84 @@ import sample1 from "../../assets/Clothing/sample-image.jpg";
 import sample2 from "../../assets/Clothing/sample-image2.jpg";
 
 import "./ClothingPage.css";
+import { useLocation } from "react-router-dom";
 
 const ClothingPage = ({ handlerOpenFilter }) => {
+  const location = useLocation();
+  const [addingFavProduct, setAddingFavProduct] = useState(false);
+  const [dataRender, setDataRender] = useState();
+
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
 
-  const [addingFavProduct, setAddingFavProduct] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  useEffect(() => {
+    const dataFromHP3 = location.state?.data;
+    setDataRender(dataFromHP3);
+  }, []);
+
 
   const handlerFavAdding = () => {
     setAddingFavProduct(!addingFavProduct);
   };
-  const handleHoverIn = () => {
-    setIsHovered(true);
-  };
-  const handleHoverOut = () => {
-    setIsHovered(false);
-  };
 
-  const defaultImage = sample1;
-  const hoverImage = sample2;
 
-  const imageToShow = isHovered ? hoverImage : defaultImage;
 
   const contentBody = (
     <>
       <div className="flex flex-row justify-center flex-wrap gap-4 p-4">
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
-        <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-          <div onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
-            <img
-              className="max-w-[200px] rounded-md"
-              src={imageToShow}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Descriptionadasdasdasdasdassdsda
-            </p>
-            <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-              Titleasdasdasdsadsdasdsdasdasdasdasdasdasdasdsadasdasa
-            </p>
-            <p className="flex flex-row justify-center items-center">
-              <span className="px-1.5 font-bold text-[0.9rem]">₹1099</span>
-              <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                ₹2198
-              </span>
-              <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                (50% Off)
-              </span>
-            </p>
-          </div>
-          <div
-            className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-            onClick={() => handlerFavAdding()}
-          >
-            {addingFavProduct ? (
-              <AiOutlineHeart />
-            ) : (
-              <AiFillHeart className="text-red-500" />
-            )}
-          </div>
-        </div>
+        {dataRender
+          ? dataRender.map((item) => (
+            <div
+            key={item._id}
+            className="relative max-w-[200px] flex flex-col justify-center items-center"
+            >            
+                <div className="relative max-w-[200px] flex flex-col justify-center items-center">
+                  <div>
+                    <img className="max-w-[200px] rounded-md" src={item.displayImage} alt="" />
+                  </div>
+                  <div>
+                    <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                      {item.name}
+                    </p>
+                    <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                      {item.subCategory}
+                    </p>
+                    <p className="flex flex-row justify-center items-center">
+                      <span className="px-1.5 font-bold text-[0.9rem]">
+                        ₹{item.price}
+                      </span>
+                      <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
+                        ₹{item.price + (item.price * ( 50 / 100 ) )}
+                      </span>
+                      <span className="px-1 font-bold text-[0.8rem] text-green-500">
+                        (50% Off)
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
+                    onClick={() => handlerFavAdding()}
+                  >
+                    {addingFavProduct ? (
+                      <AiOutlineHeart />
+                    ) : (
+                      <AiFillHeart className="text-red-500" />
+                    )}
+                  </div>
+                </div>
+                <div
+                  className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
+                  onClick={() => handlerFavAdding()}
+                >
+                  {addingFavProduct ? (
+                    <AiOutlineHeart />
+                  ) : (
+                    <AiFillHeart className="text-red-500" />
+                  )}
+                </div>
+              </div>
+            ))
+          : "Loading"}
       </div>
     </>
   );
@@ -817,7 +130,7 @@ const ClothingPage = ({ handlerOpenFilter }) => {
 
                 <Dialog.Root>
                   <Dialog.Trigger asChild>
-                  <p>SORT BY</p>
+                    <p>SORT BY</p>
                   </Dialog.Trigger>
                   <Dialog.Portal>
                     <Dialog.Overlay className="DialogOverlay" />
