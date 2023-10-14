@@ -5,8 +5,45 @@ import classNames from "classnames";
 import React, { useState } from "react";
 
 
-const ClothingFilter = () => {
+const ClothingFilter = (clothingData) => {
     const [price, setPrice] = useState("low");
+    
+    const colors = [
+      {title:"BLACK" , className:"bg-black rounded-full w-[25px] h-[25px] m-1"},
+      {title:"BROWN" , className:"bg-amber-700 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"WHITE" , className:"bg-white border-2 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"GREY" , className:"bg-gray-500	rounded-full w-[25px] h-[25px] m-1" },
+      {title:"CREAM" , className:"bg-amber-100 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"ORANGE" , className:"bg-orange-500 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"BLUE" , className:"bg-blue-500 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"GREEN" , className:"bg-green-500 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"RED" , className:"bg-red-500 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"LAVENDER" , className:"bg-indigo-200 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"PINK" , className:"bg-pink-600 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"KHAKI" , className:"bg-yellow-700 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"PURPLE" , className:"bg-purple-600 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"YELLOW " , className:"bg-yellow-500 rounded-full w-[25px] h-[25px] m-1"},
+      {title:"MAROON " , className:"bg-amber-900 rounded-full w-[25px] h-[25px] m-1"},
+      {title:"BEIGE" , className:"bg-rose-100 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"OLIVE" , className:"bg-lime-600 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"CHARCOAL" , className:"bg-zinc-500 rounded-full w-[25px] h-[25px] m-1" },
+      {title:"SILVER" , className:"bg-zinc-300 rounded-full w-[25px] h-[25px] m-1" },
+    ]
+    
+    const receivedColors = clothingData.clothingData;
+    
+    const colorElements = [];
+    const addedColors = new Set();
+    
+    receivedColors?.forEach((data, index) => {
+      const matchingColor = colors.find((color) => color.title === data.color);
+      if (matchingColor && !addedColors.has(matchingColor.title)) {
+        colorElements.push(
+          <div key={index} title={matchingColor.title} className={matchingColor.className}></div>
+        );
+        addedColors.add(matchingColor.title);
+      }
+    });
 
     return (
         <>
@@ -22,25 +59,9 @@ const ClothingFilter = () => {
                     <AccordionTrigger>COLOR</AccordionTrigger>
                     <AccordionContent>
                     <div className="flex flex-wrap">
-                        <div title="BLACK" className="bg-black rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="BROWN" className="bg-amber-700 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="WHITE" className="bg-white border-2 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="GREY" className="bg-gray-500	rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="CREAM" className="bg-amber-100 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="ORANGE" className="bg-orange-500 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="BLUE" className="bg-blue-500 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="GREEN" className="bg-green-500 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="RED" className="bg-red-500 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="LAVENDER" className="bg-indigo-200 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="PINK" className="bg-pink-600 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="KHAKI" className="bg-yellow-700 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="PURPLE" className="bg-purple-600 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="YELLOW " className="bg-yellow-500 rounded-full w-[25px] h-[25px] m-1"></div>
-                        <div title="MAROON " className="bg-amber-900 rounded-full w-[25px] h-[25px] m-1"></div>
-                        <div title="BEIGE" className="bg-rose-100 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="OLIVE" className="bg-lime-600 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="CHARCOAL" className="bg-zinc-500 rounded-full w-[25px] h-[25px] m-1"></div> 
-                        <div title="SILVER" className="bg-zinc-300 rounded-full w-[25px] h-[25px] m-1"></div> 
+                        
+                        {colorElements}
+                        
                     </div>
                     </AccordionContent>
                 </Accordion.Item>
@@ -58,14 +79,6 @@ const ClothingFilter = () => {
                     <AccordionTrigger>DESIGN</AccordionTrigger>
                     <AccordionContent>
                     <div>Checks Shirts</div>
-                    <div>Plain Shirts</div>
-                    <div>Printed Shirts</div>
-                    <div>Corduroy Shirts</div>
-                    <div>Sulphur Twill Shirts</div>
-                    <div>Dark Blue</div>
-                    <div>Black</div>
-                    <div>Grey</div>
-                    <div>Light Blue</div>
                     </AccordionContent>
                 </Accordion.Item>
                 <Accordion.Item className="AccordionItem" value="item-4">

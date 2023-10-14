@@ -7,6 +7,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import psImage1 from "../../assets/play-store-1.png"
 import psImage2 from "../../assets/play-store-2.png"
+import { Link } from "react-router-dom";
 
 const NavbarLayer3 = (props) => {
   const { toggleState, handlerNavbarToggle } = props;
@@ -61,7 +62,11 @@ const NavbarLayer3 = (props) => {
                   
                   <Accordion.Item className="AccordionItem" value="item-1">
                     <AccordionTrigger>NEW ARRIVALS</AccordionTrigger>
-                    <AccordionContent>Urban Shirts</AccordionContent>
+                    <AccordionContent onClick={() => handlerNavbarToggle(false)}>
+                      <Link to="/clothing/urban">
+                        Urban Shirts
+                      </Link>
+                    </AccordionContent>
                     <AccordionContent>Oversize T-Shirts</AccordionContent>
                     <AccordionContent>Beyoung Originals</AccordionContent>
                     <AccordionContent>Knitted Joggers</AccordionContent>

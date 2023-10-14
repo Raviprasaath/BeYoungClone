@@ -17,82 +17,111 @@ import sample2 from "../../assets/Clothing/sample-image2.jpg";
 import "./ClothingPage.css";
 import { useLocation } from "react-router-dom";
 
+
+let mySet1 = new Set();
+let arr = [];
+
+
+
 const ClothingPage = ({ handlerOpenFilter }) => {
   const location = useLocation();
-  const [addingFavProduct, setAddingFavProduct] = useState(false);
   const [dataRender, setDataRender] = useState();
+
+
+  const [activateHeartId, setActivateHeartId] = useState([]);
 
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
 
   useEffect(() => {
-    const dataFromHP3 = location.state?.data;
+    const dataFromHP3 = location?.state?.data;
     setDataRender(dataFromHP3);
   }, []);
 
 
-  const handlerFavAdding = () => {
-    setAddingFavProduct(!addingFavProduct);
+
+  useEffect(()=> {
+    const localStore = JSON.parse(localStorage.getItem("favDress")) || [];
+    if (localStore.length !== 0) {
+      arr.push(localStore);
+      console.log("array ",arr)
+    }
+    setActivateHeartId( ()=>arr[0] );
+  }, [])
+
+  const handlerFavAdding = (idVal) => {
+    const idCheck = mySet1.has(idVal);
+    console.log("idCheck", idCheck);
+    if (idCheck) {
+      mySet1.delete(idVal);
+    } else {
+      mySet1.add(idVal);     
+    }
+    arr = Array.from(mySet1);
+    localStorage.setItem("favDress", JSON.stringify(arr));
+    setActivateHeartId( ()=>arr )
   };
 
 
 
+  
+
+
+  
+
   const contentBody = (
     <>
       <div className="flex flex-row justify-center flex-wrap gap-4 p-4">
-        {dataRender
-          ? dataRender.map((item) => (
-            <div
-            key={item._id}
-            className="relative max-w-[200px] flex flex-col justify-center items-center"
-            >            
-                <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-                  <div>
-                    <img className="max-w-[200px] rounded-md" src={item.displayImage} alt="" />
+        {!dataRender ? (
+          "Loading"
+        ) : dataRender.length === 0 ? (
+          <p>No Data Found</p>
+        ) : (
+          dataRender.map((item) => (
+              <div
+              key={item._id}
+              className="relative max-w-[200px] flex flex-col justify-center items-center"
+              >            
+                  <div className="relative max-w-[200px] flex flex-col justify-center items-center">
+                    <div>
+                      <img className="max-w-[200px] rounded-md" src={item.displayImage} alt="" />
+                    </div>
+                    <div>
+                      <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                        {item.name}
+                      </p>
+                      <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                        {item.subCategory}
+                      </p>
+                      <p className="flex flex-row justify-center items-center">
+                        <span className="px-1.5 font-bold text-[0.9rem]">
+                          ₹{item.price}
+                        </span>
+                        <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
+                          ₹{item.price + (item.price * ( 50 / 100 ) )}
+                        </span>
+                        <span className="px-1 font-bold text-[0.8rem] text-green-500">
+                          (50% Off)
+                        </span>
+                      </p>
+                    </div>
+                    <div
+                      className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
+                      onClick={() => handlerFavAdding(item._id)}
+                    >
+                      {
+                      activateHeartId?.includes(item._id)  ? (
+                        <AiFillHeart className="text-red-500" />
+                        ) : (
+                        <AiOutlineHeart />
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-                      {item.name}
-                    </p>
-                    <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-                      {item.subCategory}
-                    </p>
-                    <p className="flex flex-row justify-center items-center">
-                      <span className="px-1.5 font-bold text-[0.9rem]">
-                        ₹{item.price}
-                      </span>
-                      <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                        ₹{item.price + (item.price * ( 50 / 100 ) )}
-                      </span>
-                      <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                        (50% Off)
-                      </span>
-                    </p>
-                  </div>
-                  <div
-                    className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-                    onClick={() => handlerFavAdding()}
-                  >
-                    {addingFavProduct ? (
-                      <AiOutlineHeart />
-                    ) : (
-                      <AiFillHeart className="text-red-500" />
-                    )}
-                  </div>
+                  
                 </div>
-                <div
-                  className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-                  onClick={() => handlerFavAdding()}
-                >
-                  {addingFavProduct ? (
-                    <AiOutlineHeart />
-                  ) : (
-                    <AiFillHeart className="text-red-500" />
-                  )}
-                </div>
-              </div>
-            ))
-          : "Loading"}
+          ))
+        )
+        }
       </div>
     </>
   );
@@ -104,7 +133,7 @@ const ClothingPage = ({ handlerOpenFilter }) => {
           <div className="sticky">
             <>
               <div className="flex">
-                <div>{<ClothingFilter />}</div>
+                <div>{<ClothingFilter clothingData={dataRender} />}</div>
                 <div className="z-1">{contentBody}</div>
               </div>
             </>

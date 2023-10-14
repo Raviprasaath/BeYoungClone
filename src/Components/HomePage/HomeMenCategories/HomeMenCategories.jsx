@@ -36,14 +36,165 @@ import image3f from "../../../assets/categories-for-men/3f.jpg";
 import image4f from "../../../assets/categories-for-men/4f.jpg";
 import image5f from "../../../assets/categories-for-men/5f.png";
 
-import { useScreenSize } from "../../CommonFunctions/CommonFunctions"
+import { useScreenSize } from "../../CommonFunctions/CommonFunctions";
 import { Link } from "react-router-dom";
-
-
+import { useEffect, useState } from "react";
+import { getTypesOfClothsList } from "../../Fetching/Service";
 
 const HomeMenCategories = () => {
-    const screenSize = useScreenSize();
-    const isMobile = screenSize < 960;
+  const screenSize = useScreenSize();
+  const isMobile = screenSize < 960;
+
+  const [travelData, setTravelData] = useState([]);
+  const [plainTShirt, setPlainTShirt] = useState([]);
+  const [poloTShirt, setPoloTShirt] = useState([]);
+  const [printedTShirt, setPrintedTShirt] = useState([]);
+  const [shirts, setShirts] = useState([]);
+  const [pyjamas, setPyjamas] = useState([]);
+  const [overSizedTShirt, setOverSizedTShirt] = useState([]);
+  const [fullSleeveTShirt, setFullSleeveTShirt] = useState([]);
+  const [activeWear, setActiveWear] = useState([]);
+  const [plusSizeTShirt, setPlusSizeTShirt] = useState([]);
+  const [joggers, setJoggers] = useState([]);
+  const [jeans, setJeans] = useState([]);
+  const [chinos, setChinos] = useState([]);
+  const [boxer, setBoxer] = useState([]);
+  const [urban, setUrban] = useState([]);
+  const [casual, setCasual] = useState([]);
+  const [cargoJogger, setCargoJogger] = useState([]);
+  const [knitted, setKnitted] = useState([]);
+  const [shorts, setShorts] = useState([]);
+
+  useEffect(() => {
+    async function fetchDataAndFilter(
+      title,
+      searchTerm,
+      filterFunction,
+      setDataFunction
+    ) {
+      const data = await getTypesOfClothsList(title, searchTerm);
+      const result = data.data;
+      const result2 = result.filter(filterFunction);
+      setDataFunction(result2);
+    }
+
+    fetchDataAndFilter(
+      "description",
+      "shirts",
+      (item) => item.gender === "Men" && item.subCategory === "shirt",
+      setShirts
+    );
+    fetchDataAndFilter(
+      "description",
+      "printed",
+      (item) => item.gender === "Men" && item.subCategory === "tshirt",
+      setPrintedTShirt
+    );
+    fetchDataAndFilter(
+      "description",
+      "plain",
+      (item) => item.gender === "Men" && item.subCategory === "tshirt",
+      setPlainTShirt
+    );
+    fetchDataAndFilter(
+      "description",
+      "polo",
+      (item) => item.subCategory === "tshirt",
+      setPoloTShirt
+    );
+    fetchDataAndFilter(
+      "name",
+      "full",
+      (item) => item.gender === "Men",
+      setFullSleeveTShirt
+    );
+    fetchDataAndFilter(
+      "description",
+      "active%20wear",
+      (item) => item.gender === "Men",
+      setActiveWear
+    );
+    fetchDataAndFilter(
+      "name",
+      "plus%20size%20t-shirt",
+      (item) => item.gender === "Men",
+      setPlusSizeTShirt
+    );
+    fetchDataAndFilter(
+      "subCategory",
+      "jogger",
+      (item) => item.gender === "Men",
+      setJoggers
+    );
+    fetchDataAndFilter(
+      "subCategory",
+      "pyjamas",
+      (item) => item.gender === "Men",
+      setPyjamas
+    );
+    fetchDataAndFilter(
+      "description",
+      "jeans",
+      (item) => item.gender === "Men",
+      setJeans
+    );
+    fetchDataAndFilter(
+      "description",
+      "chinos",
+      (item) => item.gender === "Men",
+      setChinos
+    );
+    fetchDataAndFilter(
+      "description",
+      "boxer",
+      (item) => item.gender === "Men",
+      setBoxer
+    );
+    fetchDataAndFilter(
+      "description",
+      "oversized",
+      (item) => item.gender === "Men",
+      setOverSizedTShirt
+    );
+
+    fetchDataAndFilter(
+      "description",
+      "travel",
+      (item) => item.gender === "Men",
+      setTravelData
+    );
+
+    fetchDataAndFilter(
+      "description",
+      "urban",
+      (item) => item.gender === "Men" && item.subCategory === "shirt",
+      setUrban
+    );
+    fetchDataAndFilter(
+      "description",
+      "casual",
+      (item) => item.gender === "Men" && item.subCategory === "shirt",
+      setCasual
+    );
+    fetchDataAndFilter(
+      "description",
+      "cargo%20jogger",
+      (item) => item.gender === "Men",
+      setCargoJogger
+    );
+    fetchDataAndFilter(
+      "description",
+      "knitted",
+      (item) => item.gender === "Men",
+      setKnitted
+    );
+    fetchDataAndFilter(
+      "name",
+      "shorts",
+      (item) => item.gender === "Men",
+      setShorts
+    );
+  }, []);
 
   return (
     <>
@@ -52,139 +203,268 @@ const HomeMenCategories = () => {
           <div className="w-[76.2%] flex flex-col justify-center">
             <h1 className="text-[20px] font-bold">CATEGORIES FOR MEN </h1>
             <section className="flex flex-wrap flex-row gap-4 ">
-                <Link to="/clothing/test">
-                    <img className="w-[180px]" src={image1} alt="img1" />
-                </Link>
-              <img className="w-[180px]" src={image2} alt="img2" />
-              <img className="w-[180px]" src={image3} alt="img3" />
-              <img className="w-[180px]" src={image4} alt="img4" />
-              <img className="w-[180px]" src={image5} alt="img5" />
-              <img className="w-[180px]" src={image6} alt="img6" />
-              <img className="w-[180px]" src={image7} alt="img7" />
-              <img className="w-[180px]" src={image8} alt="img8" />
-              <img className="w-[180px]" src={image9} alt="img9" />
-              <img className="w-[180px]" src={image10} alt="img10" />
-              <img className="w-[180px]" src={image11} alt="img11" />
-              <img className="w-[180px]" src={image12} alt="img12" />
+              <Link to="/clothing/shirts" state={{ data: shirts }}>
+                <img className="w-[180px]" src={image1} alt="img1" />
+              </Link>
+              <Link
+                to="/clothing/printed-t-shirt"
+                state={{ data: printedTShirt }}
+              >
+                <img className="w-[180px]" src={image2} alt="img2" />
+              </Link>
+              <Link to="/clothing/plain-t-shirt" state={{ data: plainTShirt }}>
+                <img className="w-[180px]" src={image3} alt="img3" />
+              </Link>
+              <Link to="clothing/polo-t-shirt" state={{ data: poloTShirt }}>
+                <img className="w-[180px]" src={image4} alt="img4" />
+              </Link>
+              <Link
+                to="clothing/full-sleeve-t-shirt"
+                state={{ data: fullSleeveTShirt }}
+              >
+                <img className="w-[180px]" src={image5} alt="img5" />
+              </Link>
+              <Link to="clothing/active-wear" state={{ data: activeWear }}>
+                <img className="w-[180px]" src={image6} alt="img6" />
+              </Link>
+              <Link
+                to="clothing/plus-size-t-shirt"
+                state={{ data: plusSizeTShirt }}
+              >
+                <img className="w-[180px]" src={image7} alt="img7" />
+              </Link>
+              <Link to="clothing/joggers" state={{ data: joggers }}>
+                <img className="w-[180px]" src={image8} alt="img8" />
+              </Link>
+              <Link to="clothing/pyjamas" state={{ data: pyjamas }}>
+                <img className="w-[180px]" src={image9} alt="img9" />
+              </Link>
+              <Link to="clothing/jeans" state={{ data: jeans }}>
+                <img className="w-[180px]" src={image10} alt="img10" />
+              </Link>
+              <Link to="clothing/chinos" state={{ data: chinos }}>
+                <img className="w-[180px]" src={image11} alt="img11" />
+              </Link>
+              <Link to="clothing/boxer" state={{ data: boxer }}>
+                <img className="w-[180px]" src={image12} alt="img12" />
+              </Link>
             </section>
           </div>
         </div>
       )}
       {isMobile && (
-        <div className="flex justify-center"> 
-
-            <div className="flex flex-col w-[77%]">
-
-                <div className="flex flex-col">
-                    <h2 className="font-bold py-3.5">T-SHIRTS-HIGH DEMAND</h2>
-                    <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
-                            <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                        <Link to="/clothing/text2">
-                                <img className=" w-[200px]" src={image1a} alt="" />
-                                <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">OVERSIZED T-SHIRT</h2>
-                        </Link>
-                            </div>
-                        
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image2a} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">PRINTED T-SHIRTS</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image3a} alt="" />    
-                            <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">PLAIN T-SHIRTS</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image4a} alt="" />    
-                            <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">ACTIVEWEAR</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image5a} alt="" />    
-                            <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">FULL SLEEVE T-SHIRTS</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image6a} alt="" />    
-                            <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">PLUS SIZE T-SHIRTS</h2>
-                        </div>
-                    </div>
-                    
-                    <h2 className="font-bold py-3.5">SHIRTS-FORMAL TO CASUAL STYLES</h2>
-                    <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image1b} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">PLAIN SHIRT</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image2b} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">URBAN SHIRTS</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image3b} alt="" />    
-                            <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">CASUAL SHIRTS</h2>
-                        </div>                        
-                    </div>
-                    <h2 className="font-bold py-3.5">POLO-CLASSIC TO PLAYFUL</h2>
-                    <div>
-                        <img src={image1c} alt="" />
-                    </div>
-                    
-                    <h2 className="font-bold py-3.5">JOGGERS - STEP INTO EVERYDAY COMFORT </h2>
-                    <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image1d} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">CARGO JOGGERS</h2>
-                        </div>                                          
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image2d} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">KNITTED JOGGERS</h2>
-                        </div>                                          
-                    </div>
-
-                    <h2 className="font-bold py-3.5">BOXERS - BREEZY SUMMER STYLES</h2>
-                    <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image1e} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">PLAIN BOXERS</h2>
-                        </div>                                          
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image2e} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">PRINTED BOXERS</h2>
-                        </div>                                          
-                    </div>
-
-                    <h2 className="font-bold py-3.5">EXPLORE MORE BOTTOMWEAR</h2>
-                    <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image1f} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">PYJAMA</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image2f} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">CHINOS</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image3f} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">CARGO PANTS</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image4f} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">SHORTS</h2>
-                        </div>
-                        <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                            <img className=" w-[200px]" src={image5f} alt="" />
-                            <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">JEANS</h2>
-                        </div>
-                    </div>
-
+        <div className="flex justify-center">
+          <div className="flex flex-col w-[77%]">
+            <div className="flex flex-col">
+              <h2 className="font-bold py-3.5">T-SHIRTS-HIGH DEMAND</h2>
+              <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link
+                    to="clothing/oversized-t-shirt"
+                    state={{ data: overSizedTShirt }}
+                  >
+                    <img className=" w-[200px]" src={image1a} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      OVERSIZED T-SHIRT
+                    </h2>
+                  </Link>
                 </div>
+
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link
+                    to="/clothing/printed-t-shirt"
+                    state={{ data: printedTShirt }}
+                  >
+                    <img className=" w-[200px]" src={image2a} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      PRINTED T-SHIRTS
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link
+                    to="/clothing/plain-t-shirt"
+                    state={{ data: plainTShirt }}
+                  >
+                    <img className=" w-[200px]" src={image3a} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      PLAIN T-SHIRTS
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link to="clothing/active-wear" state={{ data: activeWear }}>
+                    <img className=" w-[200px]" src={image4a} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      ACTIVEWEAR
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link
+                    to="clothing/full-sleeve-t-shirt"
+                    state={{ data: fullSleeveTShirt }}
+                  >
+                    <img className=" w-[200px]" src={image5a} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      FULL SLEEVE T-SHIRTS
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link
+                    to="clothing/plus-size-t-shirt"
+                    state={{ data: plusSizeTShirt }}
+                  >
+                    <img className=" w-[200px]" src={image6a} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      PLUS SIZE T-SHIRTS
+                    </h2>
+                  </Link>
+                </div>
+              </div>
+
+              <h2 className="font-bold py-3.5">
+                SHIRTS-FORMAL TO CASUAL STYLES
+              </h2>
+              <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link
+                    to="/clothing/plain-t-shirt"
+                    state={{ data: plainTShirt }}
+                  >
+                    <img className=" w-[200px]" src={image1b} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      PLAIN SHIRT
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link to="/clothing/urban-shirt" state={{ data: urban }}>
+                    <img className=" w-[200px]" src={image2b} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      URBAN SHIRTS
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link to="/clothing/casual" state={{ data: casual }}>
+                    <img className=" w-[200px]" src={image3b} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1  bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      CASUAL SHIRTS
+                    </h2>
+                  </Link>
+                </div>
+              </div>
+              <h2 className="font-bold py-3.5">POLO-CLASSIC TO PLAYFUL</h2>
+              <div>
+                <Link to="clothing/polo-t-shirt" state={{ data: poloTShirt }}>
+                  <img src={image1c} alt="" />
+                </Link>
+              </div>
+
+              <h2 className="font-bold py-3.5">
+                JOGGERS - STEP INTO EVERYDAY COMFORT{" "}
+              </h2>
+              <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link
+                    to="clothing/cargo-jogger"
+                    state={{ data: cargoJogger }}
+                  >
+                    <img className=" w-[200px]" src={image1d} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      CARGO JOGGERS
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link to="clothing/knitted" state={{ data: knitted }}>
+                    <img className=" w-[200px]" src={image2d} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      KNITTED JOGGERS
+                    </h2>
+                  </Link>
+                </div>
+              </div>
+
+              <h2 className="font-bold py-3.5">
+                BOXERS - BREEZY SUMMER STYLES
+              </h2>
+              <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link to="clothing/boxer" state={{ data: boxer }}>
+                    <img className=" w-[200px]" src={image1e} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      PLAIN BOXERS
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link to="clothing/boxer" state={{ data: boxer }}>
+                    <img className=" w-[200px]" src={image2e} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      PRINTED BOXERS
+                    </h2>
+                  </Link>
+                </div>
+              </div>
+
+              <h2 className="font-bold py-3.5">EXPLORE MORE BOTTOMWEAR</h2>
+              <div className="flex flex-nowrap gap-3 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link to="clothing/pyjamas" state={{ data: pyjamas }}>
+                    <img className=" w-[200px]" src={image1f} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      PYJAMA
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link to="clothing/chinos" state={{ data: chinos }}>
+                    <img className=" w-[200px]" src={image2f} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      CHINOS
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link
+                    to="clothing/cargo-jogger"
+                    state={{ data: cargoJogger }}
+                  >
+                    <img className=" w-[200px]" src={image3f} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      CARGO PANTS
+                    </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                <Link
+                    to="clothing/shorts"
+                    state={{ data: shorts }}
+                  >
+                  <img className=" w-[200px]" src={image4f} alt="" />
+                  <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                    SHORTS
+                  </h2>
+                  </Link>
+                </div>
+                <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
+                  <Link to="clothing/jeans" state={{ data: jeans }}>
+                    <img className=" w-[200px]" src={image5f} alt="" />
+                    <h2 className="absolute left-0 bottom-0 z-1 bg-gray-400 w-full text-center text-white font-bold text-[18px]">
+                      JEANS
+                    </h2>
+                  </Link>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-
-
-      
       )}
     </>
   );
 };
-
 
 export default HomeMenCategories;

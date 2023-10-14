@@ -23,6 +23,7 @@ import { getTypesOfClothsList } from "../../Fetching/Service";
 const HomeCarouselSection4 = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+
   const [travelData, setTravelData] = useState([]);
   const [plainTShirt, setPlainTShirt] = useState([]);
   const [poloTShirt, setPoloTShirt] = useState([]);
@@ -96,7 +97,7 @@ const HomeCarouselSection4 = () => {
               <SwiperSlide className="flex justify-center align-center">
                 <Link 
                   to="clothing/printed-t-shirt"
-                  state={{data: printedTShirt}}
+                  state={{data: printedTShirt}}                  
                 >
                   <div>
                     <img
@@ -138,7 +139,7 @@ const HomeCarouselSection4 = () => {
               
               <SwiperSlide className="flex justify-center align-center">
                 <Link
-                  to="clothing/plain-t-shirt"
+                  to="clothing/shirts"
                   state={{data: shirts}}
                 >
                   <div>
@@ -152,7 +153,7 @@ const HomeCarouselSection4 = () => {
               </SwiperSlide>
               <SwiperSlide className="flex justify-center align-center">
                 <Link
-                  to="clothing/plain-t-shirt"
+                  to="clothing/pyjamas"
                   state={{data: pyjamas}}
                 >
                   <div>
@@ -166,7 +167,7 @@ const HomeCarouselSection4 = () => {
               </SwiperSlide>
               <SwiperSlide className="flex justify-center align-center">
                 <Link
-                  to="clothing/plain-t-shirt"
+                  to="clothing/oversized-t-shirt"
                   state={{data: overSizedTShirt}}
                 >
                   <div>
@@ -217,7 +218,7 @@ const HomeCarouselSection4 = () => {
               
               <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
                 <Link
-                  to="clothing/plain-t-shirt"
+                  to="clothing/shirts"
                   state={{data: shirts}}
                 >
                   <img className=" w-[200px]" src={img5} alt="" />
@@ -225,7 +226,7 @@ const HomeCarouselSection4 = () => {
               </div>
               <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
                 <Link
-                  to="clothing/plain-t-shirt"
+                  to="clothing/pyjamas"
                   state={{data: pyjamas}}
                 >
                   <img className=" w-[200px]" src={img6} alt="" />
@@ -234,7 +235,7 @@ const HomeCarouselSection4 = () => {
               </div>
               <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
                 <Link
-                  to="clothing/plain-t-shirt"
+                  to="clothing/oversized-t-shirt"
                   state={{data: overSizedTShirt}}
                 >
                   <img className=" w-[200px]" src={img7} alt="" />
