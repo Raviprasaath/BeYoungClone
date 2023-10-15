@@ -19,7 +19,6 @@ function App() {
   const [sideNavbar, setSideNavbar] = useState(false);
   const [filterScreenOpen, setFilterScreenOpen] = useState(false);
 
-
   const handlerNavbarToggle = (value) => {
     setSideNavbar(value);
   };
@@ -63,7 +62,7 @@ function App() {
         </Routes>
         {/* <ProductPage />         */}
         
-        <Footer />
+        {/* <Footer /> */}
         
       </div>
     </>

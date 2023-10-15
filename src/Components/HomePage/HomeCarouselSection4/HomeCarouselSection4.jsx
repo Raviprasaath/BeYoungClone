@@ -17,12 +17,15 @@ import img6 from "../../../assets/home-carousel-1/image-6.jpg";
 import img7 from "../../../assets/home-carousel-1/image-7.jpg";
 
 import { Link } from "react-router-dom";
-import { getTypesOfClothsList } from "../../Fetching/Service";
+import { useDataContext } from "../../Fetching/DataContext";
+
 
 
 const HomeCarouselSection4 = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+  const { data, loading } = useDataContext();
+
 
   const [travelData, setTravelData] = useState([]);
   const [plainTShirt, setPlainTShirt] = useState([]);
@@ -31,26 +34,29 @@ const HomeCarouselSection4 = () => {
   const [shirts, setShirts] = useState([]);
   const [pyjamas, setPyjamas] = useState([]);
   const [overSizedTShirt, setOverSizedTShirt] = useState([]);
-    
+
+
+  function fetchDataAndFilter(
+    title, searchTerm, filterFunction, setDataFunction) {
+    const filteredData = data.data.filter((item) => {
+      return item[title].includes(searchTerm) && filterFunction(item);
+    });
+    setDataFunction(filteredData);
+  }
+  
   useEffect(() => {
-    async function fetchDataAndFilter(title, searchTerm, filterFunction, setDataFunction) {
-      const data = await getTypesOfClothsList(title, searchTerm);
-      const result = data.data;
-      const result2 = result.filter(filterFunction);
-      setDataFunction(result2);
+    if (data) {
+      setTimeout(() => {
+        fetchDataAndFilter("description", "travel", (item) => item.gender === "Men", setTravelData);
+        fetchDataAndFilter("description", "plain", (item) => item.subCategory === "tshirt", setPlainTShirt);
+        fetchDataAndFilter("description", "polo", (item) => item.subCategory === "tshirt", setPoloTShirt);
+        fetchDataAndFilter("description", "printed", (item) => item.gender === "Men" && item.subCategory === "tshirt", setPrintedTShirt);
+        fetchDataAndFilter("description", "shirts", (item) => item.gender === "Men" && item.subCategory === "shirt", setShirts);
+        fetchDataAndFilter("subCategory", "pyjamas", (item) => item.gender === "Men", setPyjamas);
+        fetchDataAndFilter("description", "oversized", (item) => item.gender === "Men" && item.subCategory=== "tshirt", setOverSizedTShirt);      
+      }, 0);
     }
-
-    fetchDataAndFilter("description", "travel", (item) => item.gender === "Men", setTravelData);
-    fetchDataAndFilter("description", "plain", (item) => item.subCategory === "tshirt", setPlainTShirt);
-    fetchDataAndFilter("description", "polo", (item) => item.subCategory === "tshirt", setPoloTShirt);
-    fetchDataAndFilter("description", "printed", (item) => item.gender === "Men" && item.subCategory === "tshirt", setPrintedTShirt);
-    fetchDataAndFilter("description", "shirts", (item) => item.gender === "Men" && item.subCategory === "shirt", setShirts);
-    fetchDataAndFilter("subCategory", "pyjamas", (item) => item.gender === "Men", setPyjamas);
-    fetchDataAndFilter("description", "oversized", (item) => item.gender === "Men" && item.subCategory=== "tshirt", setOverSizedTShirt);
-  }, []);
-
-
-
+  }, [data]);
 
   return (
     <>

@@ -9,14 +9,14 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import navbarImage1 from "../../assets/navbar-1.jpg";
 import { Link, useLocation } from "react-router-dom";
-import { getTypesOfClothsList } from "../Fetching/Service";
+import { useDataContext } from "../Fetching/DataContext";
 
 const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
 
-  const location = useLocation();
-  const [data, setData] = useState([]);
+  const { data, loading } = useDataContext();
+
 
   //#region ------------------------Men-----------------
 
@@ -53,218 +53,57 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const [men, setMen] = useState([]);
   const [women, setWomen] = useState([]);
 
+  function fetchDataAndFilter(
+    title, searchTerm, filterFunction, setDataFunction) {
+    const filteredData = data.data.filter((item) => {
+      return item[title].includes(searchTerm) && filterFunction(item);
+    });
+    setDataFunction(filteredData);
+  }
+
   useEffect(() => {
-    async function fetchDataAndFilter(
-      title,
-      searchTerm,
-      filterFunction,
-      setDataFunction
-    ) {
-      const data = await getTypesOfClothsList(title, searchTerm);
-      const result = data.data;
-      const result2 = result.filter(filterFunction);
-      setDataFunction(result2);
+    if (data) {
+      setTimeout(() => {
+        const filters = [
+          ["description", "shirts", (item) => item.gender === "Men" && item.subCategory === "shirt", setShirts],
+          ["description", "printed", (item) => item.gender === "Men" && item.subCategory === "tshirt", setPrintedTShirt],
+          ["description", "plain", (item) => item.gender === "Men" && item.subCategory === "tshirt", setPlainTShirt],
+          ["description", "polo", (item) => item.subCategory === "tshirt", setPoloTShirt],
+          ["name", "full", (item) => item.gender === "Men", setFullSleeveTShirt],
+          ["description", "active%20wear", (item) => item.gender === "Men", setActiveWear],
+          ["name", "plus%20size%20t-shirt", (item) => item.gender === "Men", setPlusSizeTShirt],
+          ["subCategory", "jogger", (item) => item.gender === "Men", setJoggers],
+          ["subCategory", "pyjamas", (item) => item.gender === "Men", setPyjamas],
+          ["description", "jeans", (item) => item.gender === "Men", setJeans],
+          ["description", "chinos", (item) => item.gender === "Men", setChinos],
+          ["description", "boxer", (item) => item.gender === "Men", setBoxer],
+          ["description", "oversized", (item) => item.gender === "Men" && item.subCategory === "tshirt", setOverSizedTShirt],
+          ["description", "travel", (item) => item.gender === "Men", setTravelData],
+          ["description", "urban", (item) => item.gender === "Men" && item.subCategory === "shirt", setUrban],
+          ["description", "casual", (item) => item.gender === "Men" && item.subCategory === "shirt", setCasual],
+          ["description", "cargo%20jogger", (item) => item.gender === "Men", setCargoJogger],
+          ["description", "knitted", (item) => item.gender === "Men", setKnitted],
+          ["name", "shorts", (item) => item.gender === "Men", setShorts],
+          ["description", "Athleisure", (item) => item.gender === "Men", setAthleisure],
+          ["description", "half%20sleeve", (item) => item.gender === "Men", setHalfSleeve],
+          ["description", "combo", (item) => item.gender === "Men", setCombo],
+          ["description", "chino", (item) => item.gender === "Men", setChino],
+          ["description", "gym", (item) => item.gender === "Men", setGym],
+          ["description", "cartoon", (item) => item.gender === "Men", setCartoon],
+          ["description", "sports", (item) => item.gender === "Men", setSports],
+          ["description", "music", (item) => item.gender === "Men", setMusic],
+          ["description", "Jackets", (item) => item.gender === "Men", setJackets],
+          ["description", "sweat", (item) => item.gender === "Men", setSweatShirts],
+          ["description", "hoodies", (item) => item.gender === "Men", setHoodies],
+          ["gender", "Men", (item) => item.gender === "Men", setMen],
+          ["gender", "Women", (item) => item.gender === "Women", setWomen],
+        ];
+  
+        filters.forEach(([title, searchTerm, filterFunction, setDataFunction]) => fetchDataAndFilter(title, searchTerm, filterFunction, setDataFunction));
+      }, 0);
     }
-
-    fetchDataAndFilter(
-      "description",
-      "shirts",
-      (item) => item.gender === "Men" && item.subCategory === "shirt",
-      setShirts
-    );
-    fetchDataAndFilter(
-      "description",
-      "printed",
-      (item) => item.gender === "Men" && item.subCategory === "tshirt",
-      setPrintedTShirt
-    );
-    fetchDataAndFilter(
-      "description",
-      "plain",
-      (item) => item.gender === "Men" && item.subCategory === "tshirt",
-      setPlainTShirt
-    );
-    fetchDataAndFilter(
-      "description",
-      "polo",
-      (item) => item.subCategory === "tshirt",
-      setPoloTShirt
-    );
-    fetchDataAndFilter(
-      "name",
-      "full",
-      (item) => item.gender === "Men",
-      setFullSleeveTShirt
-    );
-    fetchDataAndFilter(
-      "description",
-      "active%20wear",
-      (item) => item.gender === "Men",
-      setActiveWear
-    );
-    fetchDataAndFilter(
-      "name",
-      "plus%20size%20t-shirt",
-      (item) => item.gender === "Men",
-      setPlusSizeTShirt
-    );
-    fetchDataAndFilter(
-      "subCategory",
-      "jogger",
-      (item) => item.gender === "Men",
-      setJoggers
-    );
-    fetchDataAndFilter(
-      "subCategory",
-      "pyjamas",
-      (item) => item.gender === "Men",
-      setPyjamas
-    );
-    fetchDataAndFilter(
-      "description",
-      "jeans",
-      (item) => item.gender === "Men",
-      setJeans
-    );
-    fetchDataAndFilter(
-      "description",
-      "chinos",
-      (item) => item.gender === "Men",
-      setChinos
-    );
-    fetchDataAndFilter(
-      "description",
-      "boxer",
-      (item) => item.gender === "Men",
-      setBoxer
-    );
-    fetchDataAndFilter(
-      "description",
-      "oversized",
-      (item) => item.gender === "Men" && item.subCategory === "tshirt",
-      setOverSizedTShirt
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "travel",
-      (item) => item.gender === "Men",
-      setTravelData
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "urban",
-      (item) => item.gender === "Men" && item.subCategory === "shirt",
-      setUrban
-    );
-    fetchDataAndFilter(
-      "description",
-      "casual",
-      (item) => item.gender === "Men" && item.subCategory === "shirt",
-      setCasual
-    );
-    fetchDataAndFilter(
-      "description",
-      "cargo%20jogger",
-      (item) => item.gender === "Men",
-      setCargoJogger
-    );
-    fetchDataAndFilter(
-      "description",
-      "knitted",
-      (item) => item.gender === "Men",
-      setKnitted
-    );
-    fetchDataAndFilter(
-      "name",
-      "shorts",
-      (item) => item.gender === "Men",
-      setShorts
-    );
-    fetchDataAndFilter(
-      "description",
-      "Athleisure",
-      (item) => item.gender === "Men",
-      setAthleisure
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "half%20sleeve",
-      (item) => item.gender === "Men",
-      setHalfSleeve
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "combo",
-      (item) => item.gender === "Men",
-      setCombo
-    );
-    fetchDataAndFilter(
-      "description",
-      "chino",
-      (item) => item.gender === "Men",
-      setChino
-    );
-    fetchDataAndFilter(
-      "description",
-      "gym",
-      (item) => item.gender === "Men",
-      setGym
-    );
-    fetchDataAndFilter(
-      "description",
-      "cartoon",
-      (item) => item.gender === "Men",
-      setCartoon
-    );
-    fetchDataAndFilter(
-      "description",
-      "sports",
-      (item) => item.gender === "Men",
-      setSports
-    );
-    fetchDataAndFilter(
-      "description",
-      "music",
-      (item) => item.gender === "Men",
-      setMusic
-    );
-    fetchDataAndFilter(
-      "description",
-      "Jackets",
-      (item) => item.gender === "Men",
-      setJackets
-    );
-    fetchDataAndFilter(
-      "description",
-      "sweat",
-      (item) => item.gender === "Men",
-      setSweatShirts
-    );
-    fetchDataAndFilter(
-      "description",
-      "hoodies",
-      (item) => item.gender === "Men",
-      setHoodies
-    );
-    fetchDataAndFilter(
-      "gender",
-      "Men",
-      (item) => item.gender === "Men",
-      setMen
-    );
-    fetchDataAndFilter(
-      "gender",
-      "Women",
-      (item) => item.gender === "Women",
-      setWomen
-    );
-  }, []);
-
-  //#endregion -------------------------------------------------
+  }, [data]);
+  
 
   //#region ---------------------------------
   const [printedTShirtWomen, setPrintedTShirtWomen] = useState([]);
@@ -302,167 +141,39 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const [topsWomen, setTopsWomen] = useState([]);
 
   useEffect(() => {
-    async function fetchDataAndFilter(
-      title,
-      searchTerm,
-      filterFunction,
-      setDataFunction
-    ) {
-      const data = await getTypesOfClothsList(title, searchTerm);
-      const result = data.data;
-      const result2 = result.filter(filterFunction);
-      setDataFunction(result2);
+    if (data) {
+      setTimeout(() => {
+        const filters = [
+          ["description", "oversized", (item) => item.gender === "Women" && item.subCategory === "tshirt", setOverSizedTShirtWomen],
+          ["subCategory", "kurti", (item) => item.gender === "Women", setKurtiWomen],
+          ["subCategory", "kurta", (item) => item.gender === "Women", setKurtaWomen],
+          ["subCategory", "crop%20top", (item) => item.gender === "Women", setCropTopsWomen],
+          ["name", "printed", (item) => item.gender === "Women" && item.subCategory === "tshirt", setPrintedTShirtWomen],
+          ["description", "plain", (item) => item.gender === "Women" && item.subCategory === "tshirt", setPlainTShirtWomen],
+          ["name", "full", (item) => item.gender === "Women", setFullSleeveTShirtWomen],
+          ["description", "boxer", (item) => item.gender === "Women", setBoxerWomen],
+          ["description", "shirts", (item) => item.gender === "Women" && item.subCategory === "shirt", setShirtsWomen],
+          ["description", "tops", (item) => item.gender === "Women" && item.subCategory === "shirt", setTopsWomen],
+          ["name", "plus%20size%20t-shirt", (item) => item.gender === "Men", setPlusSizeTShirtWomen],
+          ["description", "half%20sleeve", (item) => item.gender === "Women", setHalfSleeveWomen],
+          ["description", "combo", (item) => item.gender === "Women", setComboWomen],
+          ["description", "gym", (item) => item.gender === "Women", setGymWomen],
+          ["description", "cartoon", (item) => item.gender === "Women", setCartoonWomen],
+          ["description", "sports", (item) => item.gender === "Women", setSportsWomen],
+          ["description", "music", (item) => item.gender === "Women", setMusicWomen],
+          ["description", "Jackets", (item) => item.gender === "Women", setJacketsWomen],
+          ["description", "sweat", (item) => item.gender === "Women", setSweatShirtsWomen],
+          ["description", "hoodies", (item) => item.gender === "Women", setHoodiesWomen],
+          ["description", "travel", (item) => item.gender === "Women", setTravelWomen],
+        ];
+  
+        filters.forEach(([title, searchTerm, filterFunction, setDataFunction]) => fetchDataAndFilter(title, searchTerm, filterFunction, setDataFunction));
+      }, 0);
     }
-    fetchDataAndFilter(
-      "description",
-      "oversized",
-      (item) => item.gender === "Women" && item.subCategory === "tshirt",
-      setOverSizedTShirtWomen
-    );
-    fetchDataAndFilter(
-      "subCategory",
-      "kurti",
-      (item) => item.gender === "Women",
-      setKurtiWomen
-    );
-    
-    fetchDataAndFilter(
-      "subCategory",
-      "kurta",
-      (item) => item.gender === "Women",
-      setKurtaWomen
-    );
-    fetchDataAndFilter(
-      "subCategory",
-      "crop%20top",
-      (item) => item.gender === "Women",
-      setCropTopsWomen
-    );
-
-    fetchDataAndFilter(
-      "name",
-      "printed",
-      (item) => item.gender === "Women" && item.subCategory === "tshirt",
-      setPrintedTShirtWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "plain",
-      (item) => item.gender === "Women" && item.subCategory === "tshirt",
-      setPlainTShirtWomen
-    );
-    fetchDataAndFilter(
-      "name",
-      "full",
-      (item) => item.gender === "Women",
-      setFullSleeveTShirtWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "boxer",
-      (item) => item.gender === "Women",
-      setBoxerWomen
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "shirts",
-      (item) => item.gender === "Women" && item.subCategory === "shirt",
-      setShirtsWomen
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "tops",
-      (item) => item.gender === "Women" && item.subCategory === "shirt",
-      setTopsWomen
-    );
-    fetchDataAndFilter(
-      "name",
-      "plus%20size%20t-shirt",
-      (item) => item.gender === "Men",
-      setPlusSizeTShirtWomen
-    );
+  }, [data]);
+  
 
 
-
-
-
-
-
-
-    fetchDataAndFilter(
-      "description",
-      "half%20sleeve",
-      (item) => item.gender === "Women",
-      setHalfSleeveWomen
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "combo",
-      (item) => item.gender === "Women",
-      setComboWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "gym",
-      (item) => item.gender === "Women",
-      setGymWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "cartoon",
-      (item) => item.gender === "Women",
-      setCartoonWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "sports",
-      (item) => item.gender === "Women",
-      setSportsWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "music",
-      (item) => item.gender === "Women",
-      setMusicWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "Jackets",
-      (item) => item.gender === "Women",
-      setJacketsWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "sweat",
-      (item) => item.gender === "Women",
-      setSweatShirtsWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "hoodies",
-      (item) => item.gender === "Women",
-      setHoodiesWomen
-    );
-    fetchDataAndFilter(
-      "description",
-      "travel",
-      (item) => item.gender === "Women",
-      setTravelWomen
-    );
-
-
-
-
-
-
-
-
-
-
-  }, []);
   //#endregion ------------------------------------
 
   return (

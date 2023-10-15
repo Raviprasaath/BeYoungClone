@@ -15,15 +15,15 @@ import image5b from "../../../assets/categories-for-women/5b.jpg";
 import image6b from "../../../assets/categories-for-women/6b.jpg";
 import image7b from "../../../assets/categories-for-women/7b.jpg";
 import image8b from "../../../assets/categories-for-women/8b.jpg";
-import image9b from "../../../assets/categories-for-women/9b.jpg";
 
-import { getTypesOfClothsList } from "../../Fetching/Service";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useDataContext } from "../../Fetching/DataContext";
 
 const HomeWomenCategories = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+  const { data, loading } = useDataContext();
 
   const [overSizedTShirt, setOverSizedTShirt] = useState([]);
   const [kurti, setKurti] = useState([]);
@@ -33,71 +33,31 @@ const HomeWomenCategories = () => {
   const [boxer, setBoxer] = useState([]);
   const [shirts, setShirts] = useState([]);
   const [tops, setTops] = useState([]);
-  const [jeggings, setJeggings] = useState([]);
+
+  function fetchDataAndFilter(
+    title, searchTerm, filterFunction, setDataFunction) {
+    const filteredData = data.data.filter((item) => {
+      return item[title].includes(searchTerm) && filterFunction(item);
+    });
+    setDataFunction(filteredData);
+  }
 
   useEffect(() => {
-    async function fetchDataAndFilter(
-      title,
-      searchTerm,
-      filterFunction,
-      setDataFunction
-    ) {
-      const data = await getTypesOfClothsList(title, searchTerm);
-      const result = data.data;
-      const result2 = result.filter(filterFunction);
-      setDataFunction(result2);
+    if (data) {
+      setTimeout(() => {
+        fetchDataAndFilter("description", "oversized", (item) => item.gender === "Women" && item.subCategory === "tshirt", setOverSizedTShirt);
+        fetchDataAndFilter("subCategory", "kurti", (item) => item.gender === "Women", setKurti);
+        fetchDataAndFilter("description", "printed", (item) => item.gender === "Women" && item.subCategory === "tshirt", setPrintedTShirt);
+        fetchDataAndFilter("description", "plain", (item) => item.gender === "Women" && item.subCategory === "tshirt", setPlainTShirt);
+        fetchDataAndFilter("name", "full", (item) => item.gender === "Women", setFullSleeveTShirt);
+        fetchDataAndFilter("description", "boxer", (item) => item.gender === "Women", setBoxer);
+        fetchDataAndFilter("description", "shirts", (item) => item.gender === "Women" && item.subCategory === "shirt", setShirts);
+        fetchDataAndFilter("description", "tops", (item) => item.gender === "Women" && item.subCategory === "shirt", setTops);
+      }, 0);
     }
-    fetchDataAndFilter(
-      "description",
-      "oversized",
-      (item) => item.gender === "Women" && item.subCategory === "tshirt",
-      setOverSizedTShirt
-    );
-    fetchDataAndFilter(
-      "subCategory",
-      "kurti",
-      (item) => item.gender === "Women",
-      setKurti
-    );
-    fetchDataAndFilter(
-      "description",
-      "printed",
-      (item) => item.gender === "Women" && item.subCategory === "tshirt",
-      setPrintedTShirt
-    );
-    fetchDataAndFilter(
-      "description",
-      "plain",
-      (item) => item.gender === "Women" && item.subCategory === "tshirt",
-      setPlainTShirt
-    );
-    fetchDataAndFilter(
-      "name",
-      "full",
-      (item) => item.gender === "Women",
-      setFullSleeveTShirt
-    );
-    fetchDataAndFilter(
-      "description",
-      "boxer",
-      (item) => item.gender === "Women",
-      setBoxer
-    );
+  }, [data]);
+  
 
-    fetchDataAndFilter(
-      "description",
-      "shirts",
-      (item) => item.gender === "Women" && item.subCategory === "shirt",
-      setShirts
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "tops",
-      (item) => item.gender === "Women" && item.subCategory === "shirt",
-      setTops
-    );
-  }, []);
 
   return (
     <>
@@ -198,9 +158,6 @@ const HomeWomenCategories = () => {
                     <img className=" w-[200px]" src={image8b} alt="" />
                   </Link>
                 </div>
-                {/* <div className="relative inline-block flex-grow-0 flex-shrink-0 flex-auto">
-                  <img className=" w-[200px]" src={image9b} alt="" />
-                </div> */}
               </div>
             </div>
           </div>

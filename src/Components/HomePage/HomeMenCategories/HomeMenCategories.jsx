@@ -39,11 +39,12 @@ import image5f from "../../../assets/categories-for-men/5f.png";
 import { useScreenSize } from "../../CommonFunctions/CommonFunctions";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getTypesOfClothsList } from "../../Fetching/Service";
+import { useDataContext } from "../../Fetching/DataContext";
 
 const HomeMenCategories = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+  const { data, loading } = useDataContext();
 
   const [travelData, setTravelData] = useState([]);
   const [plainTShirt, setPlainTShirt] = useState([]);
@@ -65,136 +66,40 @@ const HomeMenCategories = () => {
   const [knitted, setKnitted] = useState([]);
   const [shorts, setShorts] = useState([]);
 
+  function fetchDataAndFilter(
+    title, searchTerm, filterFunction, setDataFunction) {
+    const filteredData = data.data.filter((item) => {
+      return item[title].includes(searchTerm) && filterFunction(item);
+    });
+    setDataFunction(filteredData);
+  }
+
   useEffect(() => {
-    async function fetchDataAndFilter(
-      title,
-      searchTerm,
-      filterFunction,
-      setDataFunction
-    ) {
-      const data = await getTypesOfClothsList(title, searchTerm);
-      const result = data.data;
-      const result2 = result.filter(filterFunction);
-      setDataFunction(result2);
+    if (data) {
+      setTimeout(() => {
+        fetchDataAndFilter("description", "shirts", (item) => item.gender === "Men" && item.subCategory === "shirt", setShirts);
+        fetchDataAndFilter("description", "printed", (item) => item.gender === "Men" && item.subCategory === "tshirt", setPrintedTShirt);
+        fetchDataAndFilter("description", "plain", (item) => item.gender === "Men" && item.subCategory === "tshirt", setPlainTShirt);
+        fetchDataAndFilter("description", "polo", (item) => item.subCategory === "tshirt", setPoloTShirt);
+        fetchDataAndFilter("description", "full sleeve", (item) => item.gender === "Men", setFullSleeveTShirt);
+        fetchDataAndFilter("description", "active wear", (item) => item.gender === "Men", setActiveWear);
+        fetchDataAndFilter("name", "plus size", (item) => item.gender === "Men", setPlusSizeTShirt);
+        fetchDataAndFilter("subCategory", "jogger", (item) => item.gender === "Men", setJoggers);
+        fetchDataAndFilter("subCategory", "pyjamas", (item) => item.gender === "Men", setPyjamas);
+        fetchDataAndFilter("description", "jeans", (item) => item.gender === "Men", setJeans);
+        fetchDataAndFilter("description", "chinos", (item) => item.gender === "Men", setChinos);
+        fetchDataAndFilter("description", "boxer", (item) => item.gender === "Men", setBoxer);
+        fetchDataAndFilter("description", "oversized", (item) => item.gender === "Men", setOverSizedTShirt);
+        fetchDataAndFilter("description", "travel", (item) => item.gender === "Men", setTravelData);
+        fetchDataAndFilter("description", "urban", (item) => item.gender === "Men" && item.subCategory === "shirt", setUrban);
+        fetchDataAndFilter("description", "casual", (item) => item.gender === "Men" && item.subCategory === "shirt", setCasual);
+        fetchDataAndFilter("description", "cargo jogger", (item) => item.gender === "Men", setCargoJogger);
+        fetchDataAndFilter("description", "knitted", (item) => item.gender === "Men", setKnitted);
+        fetchDataAndFilter("name", "shorts", (item) => item.gender === "Men", setShorts);
+      }, 0);
     }
-
-    fetchDataAndFilter(
-      "description",
-      "shirts",
-      (item) => item.gender === "Men" && item.subCategory === "shirt",
-      setShirts
-    );
-    fetchDataAndFilter(
-      "description",
-      "printed",
-      (item) => item.gender === "Men" && item.subCategory === "tshirt",
-      setPrintedTShirt
-    );
-    fetchDataAndFilter(
-      "description",
-      "plain",
-      (item) => item.gender === "Men" && item.subCategory === "tshirt",
-      setPlainTShirt
-    );
-    fetchDataAndFilter(
-      "description",
-      "polo",
-      (item) => item.subCategory === "tshirt",
-      setPoloTShirt
-    );
-    fetchDataAndFilter(
-      "name",
-      "full",
-      (item) => item.gender === "Men",
-      setFullSleeveTShirt
-    );
-    fetchDataAndFilter(
-      "description",
-      "active%20wear",
-      (item) => item.gender === "Men",
-      setActiveWear
-    );
-    fetchDataAndFilter(
-      "name",
-      "plus%20size%20t-shirt",
-      (item) => item.gender === "Men",
-      setPlusSizeTShirt
-    );
-    fetchDataAndFilter(
-      "subCategory",
-      "jogger",
-      (item) => item.gender === "Men",
-      setJoggers
-    );
-    fetchDataAndFilter(
-      "subCategory",
-      "pyjamas",
-      (item) => item.gender === "Men",
-      setPyjamas
-    );
-    fetchDataAndFilter(
-      "description",
-      "jeans",
-      (item) => item.gender === "Men",
-      setJeans
-    );
-    fetchDataAndFilter(
-      "description",
-      "chinos",
-      (item) => item.gender === "Men",
-      setChinos
-    );
-    fetchDataAndFilter(
-      "description",
-      "boxer",
-      (item) => item.gender === "Men",
-      setBoxer
-    );
-    fetchDataAndFilter(
-      "description",
-      "oversized",
-      (item) => item.gender === "Men",
-      setOverSizedTShirt
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "travel",
-      (item) => item.gender === "Men",
-      setTravelData
-    );
-
-    fetchDataAndFilter(
-      "description",
-      "urban",
-      (item) => item.gender === "Men" && item.subCategory === "shirt",
-      setUrban
-    );
-    fetchDataAndFilter(
-      "description",
-      "casual",
-      (item) => item.gender === "Men" && item.subCategory === "shirt",
-      setCasual
-    );
-    fetchDataAndFilter(
-      "description",
-      "cargo%20jogger",
-      (item) => item.gender === "Men",
-      setCargoJogger
-    );
-    fetchDataAndFilter(
-      "description",
-      "knitted",
-      (item) => item.gender === "Men",
-      setKnitted
-    );
-    fetchDataAndFilter(
-      "name",
-      "shorts",
-      (item) => item.gender === "Men",
-      setShorts
-    );
-  }, []);
+  }, [data]);
+  
 
   return (
     <>

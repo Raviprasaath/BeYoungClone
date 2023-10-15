@@ -1,85 +1,42 @@
 import { useEffect, useState } from "react";
 import image1 from "../../../assets/homepage-section3/image1.jpg";
 import image2 from "../../../assets/homepage-section3/image2.jpg";
-import { GET_VARIETY_LIST } from "../../Fetching/Constant";
-import { getTypesOfClothsList, getProductList } from "../../Fetching/Service";
 import "./HomeCarouselSection3.css";
 import { Link } from "react-router-dom";
 import { useDataContext } from "../../Fetching/DataContext";
-import { data } from "autoprefixer";
 
 const HomeCarouselSection3 = () => {
   const [cargoData, setCargoData] = useState([]);
-  const [allSong, setAllSong] = useState([]);
+  const [allData, setAllData] = useState([]);
   const { data, loading } = useDataContext();
 
-  console.log("data", data);
-
   function homeSection3Fetch1() {
-    const cargoJogger = data.data.filter((item) =>
-      item.description.includes("cargo")
-    );
-    
-    const menCargoJogger = cargoJogger.filter(
-      (item) => item.gender === "Men"
-    );
-    setCargoData(menCargoJogger);
+    const cargoJogger = data.data.length > 0 && data.data.filter(
+      (item) => item.description.includes("cargo"))
+      .filter((item) => item.gender === "Men");
+      setCargoData(cargoJogger);
+  }
+
+  function homeSection3Fetch2() {
+    const result = data.data.length > 0 && data.data.filter(
+      (item) => item.gender === "Men");
+      setAllData(result);
   }
 
   useEffect(() => {
-    setTimeout(()=> {
-      homeSection3Fetch1();
-    }, 2000)
-  }, []);
-
-  useEffect(() => {
-    async function homeSection3Fetch2() {
-      const data = await getProductList();
-      const result = data.data;
-      const result2 = result.filter((item) => {
-        return item.gender === "Men";
-      });
-      setAllSong(result2);
+    if (data) {
+      setTimeout(() => {
+        homeSection3Fetch1();
+        homeSection3Fetch2();
+      }, 0);
     }
+  }, [data]);
 
-    homeSection3Fetch2();
-  }, []);
-
-  console.log("cargoData", cargoData)
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-
-
-
-  // useEffect(() => {
-  //   const title = "description";
-  //   const search_term = "cargo jogger";
-
-  //   async function homeSection3Fetch1() {
-  //     const data = await getTypesOfClothsList(title, search_term);
-  //     const result = data.data;
-  //     const result2 = result.filter((item)=> {
-  //       return item.gender==="Men"
-  //     });
-
-  //     setCargoData(result2);
-  //   }
-
-  //   async function homeSection3Fetch2() {
-  //     const data = await getProductList();
-  //     const result = data.data;
-  //     const result2 = result.filter((item)=> {
-  //       return item.gender==="Men"
-  //     });
-  //     setAllSong(result2);
-  //   }
-
-  //   homeSection3Fetch1();
-  //   homeSection3Fetch2();
-  // }, []);
 
   return (
     <>
@@ -92,7 +49,7 @@ const HomeCarouselSection3 = () => {
           >
             <img className="w-full" src={image1} alt="img" />
           </Link>
-          <Link className="w-full" to="/clothing/all" state={{ data: allSong }}>
+          <Link className="w-full" to="/clothing/all" state={{ data: allData }}>
             <img className="w-full" src={image2} alt="img" />
           </Link>
         </div>

@@ -15,7 +15,7 @@ export function DataProvider({ children }) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://academics.newtonschool.co/api/v1/ecommerce/clothes/products?limit=100", {
+          "https://academics.newtonschool.co/api/v1/ecommerce/clothes/products?limit=1800", {
             method: 'GET',
             headers: {
               'projectId': projectId
