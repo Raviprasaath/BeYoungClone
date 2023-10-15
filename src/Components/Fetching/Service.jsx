@@ -20,3 +20,4 @@ export const getTypesOfClothsList = (title, search_term, limit = LIMIT) => {
     const apiUrl = GET_VARIETY_LIST(title, search_term);
     return generalService(apiUrl, methods.GET, limit, "&");
 }
+

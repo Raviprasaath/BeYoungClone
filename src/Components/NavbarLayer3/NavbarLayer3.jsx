@@ -38,6 +38,7 @@ const NavbarLayer3 = (props) => {
         <div className="bg-white w-[75vw] duration-1000">
           <div className="w-full bg-yellow-300 p-2.5 font-black text-center text-3xl">
             BEYOUNG
+            
           </div>
           <Tabs.Root className="TabsRoot" defaultValue="tab1">
             <Tabs.List className="TabsList" aria-label="Manage your account">

@@ -21,8 +21,6 @@ import { useLocation } from "react-router-dom";
 let mySet1 = new Set();
 let arr = [];
 
-
-
 const ClothingPage = ({ handlerOpenFilter }) => {
   const location = useLocation();
   const [dataRender, setDataRender] = useState();
@@ -36,9 +34,7 @@ const ClothingPage = ({ handlerOpenFilter }) => {
   useEffect(() => {
     const dataFromHP3 = location?.state?.data;
     setDataRender(dataFromHP3);
-  }, []);
-
-
+  }, [location.pathname]);
 
   useEffect(()=> {
     const localStore = JSON.parse(localStorage.getItem("favDress")) || [];
@@ -61,12 +57,8 @@ const ClothingPage = ({ handlerOpenFilter }) => {
     localStorage.setItem("favDress", JSON.stringify(arr));
     setActivateHeartId( ()=>arr )
   };
-
-
-
   
-
-
+  console.log("dataRender", dataRender)
   
 
   const contentBody = (
@@ -118,7 +110,7 @@ const ClothingPage = ({ handlerOpenFilter }) => {
                     </div>
                   </div>
                   
-                </div>
+              </div>
           ))
         )
         }
