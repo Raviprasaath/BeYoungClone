@@ -59,8 +59,9 @@ function App() {
         <Routes>
           <Route path="/" element={ <Homepage /> } />
           <Route path="/clothing/:name" element={ <ClothingPage handlerOpenFilter={handlerOpenFilter} /> } />
+          <Route path="/clothing/:name/:productName" element={ <ProductPage /> } />
         </Routes>
-        {/* <ProductPage />         */}
+        
         
         {/* <Footer /> */}
         

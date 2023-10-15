@@ -70,8 +70,8 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
           ["description", "plain", (item) => item.gender === "Men" && item.subCategory === "tshirt", setPlainTShirt],
           ["description", "polo", (item) => item.subCategory === "tshirt", setPoloTShirt],
           ["name", "full", (item) => item.gender === "Men", setFullSleeveTShirt],
-          ["description", "active%20wear", (item) => item.gender === "Men", setActiveWear],
-          ["name", "plus%20size%20t-shirt", (item) => item.gender === "Men", setPlusSizeTShirt],
+          ["description", "active wear", (item) => item.gender === "Men", setActiveWear],
+          ["name", "plus size t-shirt", (item) => item.gender === "Men", setPlusSizeTShirt],
           ["subCategory", "jogger", (item) => item.gender === "Men", setJoggers],
           ["subCategory", "pyjamas", (item) => item.gender === "Men", setPyjamas],
           ["description", "jeans", (item) => item.gender === "Men", setJeans],
@@ -81,11 +81,11 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
           ["description", "travel", (item) => item.gender === "Men", setTravelData],
           ["description", "urban", (item) => item.gender === "Men" && item.subCategory === "shirt", setUrban],
           ["description", "casual", (item) => item.gender === "Men" && item.subCategory === "shirt", setCasual],
-          ["description", "cargo%20jogger", (item) => item.gender === "Men", setCargoJogger],
+          ["description", "cargo jogger", (item) => item.gender === "Men", setCargoJogger],
           ["description", "knitted", (item) => item.gender === "Men", setKnitted],
           ["name", "shorts", (item) => item.gender === "Men", setShorts],
           ["description", "Athleisure", (item) => item.gender === "Men", setAthleisure],
-          ["description", "half%20sleeve", (item) => item.gender === "Men", setHalfSleeve],
+          ["description", "half sleeve", (item) => item.gender === "Men", setHalfSleeve],
           ["description", "combo", (item) => item.gender === "Men", setCombo],
           ["description", "chino", (item) => item.gender === "Men", setChino],
           ["description", "gym", (item) => item.gender === "Men", setGym],
@@ -103,7 +103,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
       }, 0);
     }
   }, [data]);
-  
+  //#endregion ------------------------Men-----------------
 
   //#region ---------------------------------
   const [printedTShirtWomen, setPrintedTShirtWomen] = useState([]);
@@ -131,14 +131,20 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const [godWomen, setGodWomen] = useState([]);
   const [quotesWomen, setQuotesWomen] = useState([]);
 
-  const [coupleTShirtsWomen, setCoupleTShirtsWomen] = useState([]);
-  const [bestSellerWomen, setBestSellerWomen] = useState([]);
-  const [dealsWomen, setDealsWomen] = useState([]);
-
   const [jacketsWomen, setJacketsWomen] = useState([]);
   const [sweatShirtsWomen, setSweatShirtsWomen] = useState([]);
   const [hoodiesWomen, setHoodiesWomen] = useState([]);
   const [topsWomen, setTopsWomen] = useState([]);
+  
+  const [travelCommon, setTravelCommon] = useState([]);
+  const [urbanCommon, setUrbanCommon] = useState([]);
+  const [tShirtsCommon, setTShirtsCommon] = useState([]);
+  const [hawaiianCommon, setHawaiianCommon] = useState([]);
+  const [savageCommon, setSavageCommon] = useState([]);
+  
+  const [shopByLook, setShopByLook] = useState([]);
+
+
 
   useEffect(() => {
     if (data) {
@@ -147,25 +153,37 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
           ["description", "oversized", (item) => item.gender === "Women" && item.subCategory === "tshirt", setOverSizedTShirtWomen],
           ["subCategory", "kurti", (item) => item.gender === "Women", setKurtiWomen],
           ["subCategory", "kurta", (item) => item.gender === "Women", setKurtaWomen],
-          ["subCategory", "crop%20top", (item) => item.gender === "Women", setCropTopsWomen],
+          ["description", "crop top", (item) => item.gender === "Women", setCropTopsWomen],
           ["name", "printed", (item) => item.gender === "Women" && item.subCategory === "tshirt", setPrintedTShirtWomen],
           ["description", "plain", (item) => item.gender === "Women" && item.subCategory === "tshirt", setPlainTShirtWomen],
           ["name", "full", (item) => item.gender === "Women", setFullSleeveTShirtWomen],
           ["description", "boxer", (item) => item.gender === "Women", setBoxerWomen],
           ["description", "shirts", (item) => item.gender === "Women" && item.subCategory === "shirt", setShirtsWomen],
           ["description", "tops", (item) => item.gender === "Women" && item.subCategory === "shirt", setTopsWomen],
-          ["name", "plus%20size%20t-shirt", (item) => item.gender === "Men", setPlusSizeTShirtWomen],
-          ["description", "half%20sleeve", (item) => item.gender === "Women", setHalfSleeveWomen],
+          ["description", "plus size t-shirt", (item) => item.gender === "Women", setPlusSizeTShirtWomen],
+          ["description", "half sleeve", (item) => item.gender === "Women", setHalfSleeveWomen],
           ["description", "combo", (item) => item.gender === "Women", setComboWomen],
           ["description", "gym", (item) => item.gender === "Women", setGymWomen],
           ["description", "cartoon", (item) => item.gender === "Women", setCartoonWomen],
           ["description", "sports", (item) => item.gender === "Women", setSportsWomen],
           ["description", "music", (item) => item.gender === "Women", setMusicWomen],
-          ["description", "Jackets", (item) => item.gender === "Women", setJacketsWomen],
-          ["description", "sweat", (item) => item.gender === "Women", setSweatShirtsWomen],
+          ["description", "jacket", (item) => item.gender === "Women", setJacketsWomen],
+          ["description", "sweatshirt", (item) => item.gender === "Women", setSweatShirtsWomen],
           ["description", "hoodies", (item) => item.gender === "Women", setHoodiesWomen],
           ["description", "travel", (item) => item.gender === "Women", setTravelWomen],
-        ];
+          ["description", "jeggings", (item) => item.gender === "Women", setJeggingsWomen],
+          ["description", "pants", (item) => item.gender === "Women", setPantsWomen],
+          ["description", "bike", (item) => item.gender === "Women", setBikerWomen],
+          ["description", "funky", (item) => item.gender === "Women", setFunkyWomen],
+          ["description", "god", (item) => item.gender === "Women", setGodWomen],
+          ["description", "quote", (item) => item.gender === "Women", setQuotesWomen],
+          ["description", "travel", (item) => item , setTravelCommon],
+          ["description", "urban", (item) => item.subCategory === "shirt" , setUrbanCommon],
+          ["subCategory", "tshirt", (item) => item , setTShirtsCommon],
+          ["description", "hawaiian", (item) => item , setHawaiianCommon],
+          ["description", "savage", (item) => item , setSavageCommon],
+          ["description", "", (item) => item , setShopByLook],
+        ]; 
   
         filters.forEach(([title, searchTerm, filterFunction, setDataFunction]) => fetchDataAndFilter(title, searchTerm, filterFunction, setDataFunction));
       }, 0);
@@ -176,6 +194,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
 
   //#endregion ------------------------------------
 
+  
   return (
     <>
       {!isMobile && (
@@ -523,41 +542,190 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                               </Link>
                             
                             </div>
-                            <div>Plus Size T-Shirts</div>
-                            <div>Combos</div>
-                            <div className="MenubarSeparator"></div>
-                            <div className="font-bold text-[1.1rem]">
-                              Bottom Wear
+                            <div>
+                              <Link
+                                to="clothing/plus-size-t-shirt-women"
+                                state={{ data: plusSizeTShirtsWomen }}
+                              >
+                                Plus Size T-Shirts
+                              </Link>
+                            
                             </div>
-                            <div>Boxer for Women</div>
-                            <div>Jeggings</div>
-                            <div>Women Pants</div>
-                            <div>Couple Boxers</div>
+                            <div>
+                              <Link to="/coming-soon">
+                                Combos
+                              </Link>
+                            </div>
+                            <div className="MenubarSeparator"></div>
+                            <div className="font-bold text-[1.1rem]">                              
+                                Bottom Wear                                                            
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/boxer-women"
+                                state={{ data: boxerWomen }}
+                              >
+                                Boxer for Women
+                              </Link>
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/jeggings-women"
+                                state={{ data: jeggingsWomen }}
+                              >
+                                Jeggings
+                              </Link>
+                            
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/pants-women"
+                                state={{ data: pantsWomen }}
+                              >
+                                Women Pants
+                              </Link>
+                            
+                            </div>
+                            <div>
+                              <Link
+                                to="/coming-soon"
+                              >
+                                Couple Boxers
+                              </Link>                            
+                            </div>
                           </div>
                           <div className="flex flex-col gap-1">
                             <div className="font-bold text-[1.1rem]">Theme</div>
-                            <div>Travel</div>
-                            <div>Gym</div>
-                            <div>Cartoon</div>
-                            <div>Sports</div>
-                            <div>Music</div>
-                            <div>Biker</div>
-                            <div>Funky</div>
-                            <div>God</div>
-                            <div>Quotes</div>
+                            <div>
+                              <Link
+                                to="clothing/travel-women"
+                                state={{ data: travelWomen }}
+                              >
+                                Travel
+                              </Link>                          
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/gym-women"
+                                state={{ data: gymWomen }}
+                              >
+                                Gym
+                              </Link>
+                            
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/cartoon-women"
+                                state={{ data: cartoonWomen }}
+                              >
+                                Cartoon
+                              </Link>
+                            
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/sports-women"
+                                state={{ data: sportsWomen }}
+                              >
+                                Sports
+                              </Link>
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/music-women"
+                                state={{ data: musicWomen }}
+                              >
+                                Music
+                              </Link>
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/biker-women"
+                                state={{ data: bikerWomen }}
+                              >
+                                Biker
+                              </Link>
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/funky-women"
+                                state={{ data: funkyWomen }}
+                              >
+                                Funky
+                              </Link>                            
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/god-women"
+                                state={{ data: godWomen }}
+                              >
+                                God
+                              </Link>
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/quote-women"
+                                state={{ data: quotesWomen }}
+                              >
+                                Quotes
+                              </Link>
+                            </div>
                           </div>
                           <div className="flex flex-col gap-1">
                             <div className="font-bold text-[1.1rem]">
                               Special
                             </div>
-                            <div>Couple T-Shirts</div>
-                            <div>Bestseller T Shirts</div>
-                            <div>Deals and Offers</div>
+                            <div>
+                              <Link
+                                to="/coming-soon"                                
+                              >
+                                Couple T-Shirts
+                              </Link>
+                              </div>
+                              
+                            <div>
+                              <Link
+                                to="/coming-soon"                                
+                              >
+                                Bestseller T Shirts
+                              </Link>
+                            </div>
+                            <div>
+                              <Link
+                                to="/coming-soon"                                
+                              >
+                                Deals and Offers
+                              </Link>
+                            </div>
                             <div className="MenubarSeparator"></div>
                             <div className="font-bold">Winter Wears</div>
-                            <div>Jackets</div>
-                            <div>Sweatshirts</div>
-                            <div>Hoodies</div>
+                            <div>
+                              <Link
+                                to="clothing/jackets-women"
+                                state={{ data: jacketsWomen }}
+                              >
+                                Jackets
+                              </Link>
+                            
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/sweatshirt-women"
+                                state={{ data: sweatShirtsWomen }}                                
+                              >
+                                Sweatshirts
+                              </Link>
+                            
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/hoodies-women"
+                                state={{ data: hoodiesWomen }}                                
+                              >
+
+                                Hoodies
+                              </Link>
+                              </div>
                           </div>
                           <div>
                             <img
@@ -572,19 +740,41 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
 
                     <NavigationMenu.Item className="hover:bg-yellow-300">
                       <NavigationMenu.Trigger className="hover:bg-yellow-300 MenubarTrigger cursor-pointer text-[0.85rem] font-bold">
-                        COMBOS
+                        <Link to="/coming-soon">
+                          COMBOS
+                        </Link>
                       </NavigationMenu.Trigger>
                     </NavigationMenu.Item>
 
                     <NavigationMenu.Item className="hover:bg-yellow-300">
                       <NavigationMenu.Trigger className="hover:bg-yellow-300 MenubarTrigger cursor-pointer text-[0.85rem] font-bold">
-                        JOGGERS
+                        <Link
+                          to="clothing/joggers"
+                          state={{ data: joggers }}                                
+                        >
+                          JOGGERS
+                        </Link>
+
                       </NavigationMenu.Trigger>
                       <NavigationMenu.Content className="relative">
                         <div className="absolute top-0 left-0 bg-white flex flex-row w-[200px] h-[100px] justify-between font-sans px-5 py-5">
                           <div className="flex flex-col gap-2">
-                            <div>Cargo Joggers</div>
-                            <div>Knitted Joggers</div>
+                            <div>
+                              <Link
+                                to="clothing/cargo"
+                                state={{ data: cargoJogger }}                                
+                              >
+                                Cargo Joggers
+                              </Link>
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/knitted"
+                                state={{ data: knitted }}                                
+                              >
+                                Knitted Joggers
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </NavigationMenu.Content>
@@ -592,23 +782,78 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
 
                     <NavigationMenu.Item className="hover:bg-yellow-300">
                       <NavigationMenu.Trigger className="hover:bg-yellow-300 MenubarTrigger cursor-pointer text-[0.85rem] font-bold">
-                        SHOP THE LOOK
+                        <Link
+                          to="clothing/shop-by-look"
+                          state={{ data: shopByLook }}                                
+                        >
+                          SHOP THE LOOK
+                        </Link>
+                        
                       </NavigationMenu.Trigger>
                     </NavigationMenu.Item>
 
                     <NavigationMenu.Item className="hover:bg-yellow-300">
                       <NavigationMenu.Trigger className="hover:bg-yellow-300 MenubarTrigger cursor-pointer text-[0.85rem] font-bold">
-                        SHOP BY COLLECTION
+                              <Link
+                                to="clothing/shop-by-collection"
+                                state={{ data: tShirtsCommon }}                                
+                              >
+                                SHOP BY COLLECTION
+                              </Link>
+
                       </NavigationMenu.Trigger>
                       <NavigationMenu.Content className="relative">
                         <div className="absolute top-0 left-0 bg-white flex flex-row w-[200px] h-[250px] justify-between font-sans px-5 py-5">
                           <div className="flex flex-col gap-2">
-                            <div>Travel</div>
-                            <div>Urban Shirts</div>
-                            <div>T-Shirts</div>
-                            <div>Hawaiian Shirts</div>
-                            <div>Savage Denim</div>
-                            <div>Beyoung Originals</div>
+                            <div>
+                              <Link
+                                to="clothing/travel-common"
+                                state={{ data: travelCommon }}                                
+                              >                            
+                              Travel
+                            </Link>
+                            </div>
+                            <div>
+                            <Link
+                                to="clothing/urban-common"
+                                state={{ data: urbanCommon }}                                
+                              >
+                                Urban Shirts
+                              </Link>                          
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/tshirt-common"
+                                state={{ data: tShirtsCommon }}                                
+                              >
+                                T-Shirts
+                              </Link>
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/hawaiian-common"
+                                state={{ data: hawaiianCommon }}                                
+                              >
+                                Hawaiian Shirts
+                              </Link>
+                            
+                            </div>
+                            <div>
+                              <Link
+                                to="clothing/savage-common"
+                                state={{ data: savageCommon }}                                
+                              >
+                                Savage Denim
+                              </Link>                            
+                            </div>
+                            <div>
+                            <Link
+                                to="/coming-soon"
+                                state={{ data: travelCommon }}                                
+                              >
+                                Beyoung Originals
+                              </Link>                              
+                            </div>
                           </div>
                         </div>
                       </NavigationMenu.Content>

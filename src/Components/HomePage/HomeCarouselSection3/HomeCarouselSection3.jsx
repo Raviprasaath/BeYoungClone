@@ -11,14 +11,14 @@ const HomeCarouselSection3 = () => {
   const { data, loading } = useDataContext();
 
   function homeSection3Fetch1() {
-    const cargoJogger = data.data.length > 0 && data.data.filter(
+    const cargoJogger = data.data.filter(
       (item) => item.description.includes("cargo"))
       .filter((item) => item.gender === "Men");
       setCargoData(cargoJogger);
   }
 
   function homeSection3Fetch2() {
-    const result = data.data.length > 0 && data.data.filter(
+    const result = data.data.filter(
       (item) => item.gender === "Men");
       setAllData(result);
   }

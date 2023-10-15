@@ -15,7 +15,7 @@ import sample1 from "../../assets/Clothing/sample-image.jpg";
 import sample2 from "../../assets/Clothing/sample-image2.jpg";
 
 import "./ClothingPage.css";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 
 let mySet1 = new Set();
@@ -40,14 +40,12 @@ const ClothingPage = ({ handlerOpenFilter }) => {
     const localStore = JSON.parse(localStorage.getItem("favDress")) || [];
     if (localStore.length !== 0) {
       arr.push(localStore);
-      console.log("array ",arr)
     }
     setActivateHeartId( ()=>arr[0] );
   }, [])
 
   const handlerFavAdding = (idVal) => {
     const idCheck = mySet1.has(idVal);
-    console.log("idCheck", idCheck);
     if (idCheck) {
       mySet1.delete(idVal);
     } else {
@@ -57,9 +55,6 @@ const ClothingPage = ({ handlerOpenFilter }) => {
     localStorage.setItem("favDress", JSON.stringify(arr));
     setActivateHeartId( ()=>arr )
   };
-  
-  console.log("dataRender", dataRender)
-  
 
   const contentBody = (
     <>
@@ -74,42 +69,43 @@ const ClothingPage = ({ handlerOpenFilter }) => {
               key={item._id}
               className="relative max-w-[200px] flex flex-col justify-center items-center"
               >            
-                  <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-                    <div>
-                      <img className="max-w-[200px] rounded-md" src={item.displayImage} alt="" />
+                  <Link to={`${location.pathname}/${item._id}`}>                  
+                    <div className="relative max-w-[200px] flex flex-col justify-center items-center">
+                      <div>
+                        <img className="max-w-[200px] rounded-md" src={item.displayImage} alt="" />
+                      </div>
+                      <div>
+                        <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                          {item.name}
+                        </p>
+                        <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                          {item.subCategory}
+                        </p>
+                        <p className="flex flex-row justify-center items-center">
+                          <span className="px-1.5 font-bold text-[0.9rem]">
+                            ₹{item.price}
+                          </span>
+                          <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
+                            ₹{item.price + (item.price * ( 50 / 100 ) )}
+                          </span>
+                          <span className="px-1 font-bold text-[0.8rem] text-green-500">
+                            (50% Off)
+                          </span>
+                        </p>
+                      </div>
+                      <div
+                        className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
+                        onClick={() => handlerFavAdding(item._id)}
+                      >
+                        {
+                        activateHeartId?.includes(item._id)  ? (
+                          <AiFillHeart className="text-red-500" />
+                          ) : (
+                          <AiOutlineHeart />
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-                        {item.name}
-                      </p>
-                      <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-                        {item.subCategory}
-                      </p>
-                      <p className="flex flex-row justify-center items-center">
-                        <span className="px-1.5 font-bold text-[0.9rem]">
-                          ₹{item.price}
-                        </span>
-                        <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                          ₹{item.price + (item.price * ( 50 / 100 ) )}
-                        </span>
-                        <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                          (50% Off)
-                        </span>
-                      </p>
-                    </div>
-                    <div
-                      className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-                      onClick={() => handlerFavAdding(item._id)}
-                    >
-                      {
-                      activateHeartId?.includes(item._id)  ? (
-                        <AiFillHeart className="text-red-500" />
-                        ) : (
-                        <AiOutlineHeart />
-                      )}
-                    </div>
-                  </div>
-                  
+                  </Link>
               </div>
           ))
         )
