@@ -83,27 +83,27 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
           ["name", "plus size t-shirt", (item) => item.gender === "Men", setPlusSizeTShirt],
           ["subCategory", "jogger", (item) => item.gender === "Men", setJoggers],
           ["subCategory", "pyjamas", (item) => item.gender === "Men", setPyjamas],
-          ["description", "jeans", (item) => item.gender === "Men", setJeans],
+          ["subCategory", "jeans", (item) => item.gender === "Men", setJeans],
           ["description", "chinos", (item) => item.gender === "Men", setChinos],
           ["description", "boxer", (item) => item.gender === "Men", setBoxer],
           ["description", "oversized", (item) => item.gender === "Men" && item.subCategory === "tshirt", setOverSizedTShirt],
           ["description", "travel", (item) => item.gender === "Men", setTravelData],
           ["description", "urban", (item) => item.gender === "Men" && item.subCategory === "shirt", setUrban],
           ["description", "casual", (item) => item.gender === "Men" && item.subCategory === "shirt", setCasual],
-          ["description", "cargo jogger", (item) => item.gender === "Men", setCargoJogger],
+          ["description", "cargo-jogger", (item) => item.gender === "Men", setCargoJogger],
           ["description", "knitted", (item) => item.gender === "Men", setKnitted],
           ["name", "shorts", (item) => item.gender === "Men", setShorts],
           ["description", "Athleisure", (item) => item.gender === "Men", setAthleisure],
           ["description", "half sleeve", (item) => item.gender === "Men", setHalfSleeve],
           ["description", "combo", (item) => item.gender === "Men", setCombo],
-          ["description", "chino", (item) => item.gender === "Men", setChino],
+          ["subCategory", "shorts", (item) => item.gender === "Men", setChino],
           ["description", "gym", (item) => item.gender === "Men", setGym],
           ["description", "cartoon", (item) => item.gender === "Men", setCartoon],
           ["description", "sports", (item) => item.gender === "Men", setSports],
           ["description", "music", (item) => item.gender === "Men", setMusic],
           ["description", "Jackets", (item) => item.gender === "Men", setJackets],
-          ["description", "sweat", (item) => item.gender === "Men", setSweatShirts],
-          ["description", "hoodies", (item) => item.gender === "Men", setHoodies],
+          ["subCategory", "sweater", (item) => item.gender === "Men", setSweatShirts],
+          ["subCategory", "hoodie", (item) => item.gender === "Men", setHoodies],
           ["gender", "Men", (item) => item.gender === "Men", setMen],
           ["gender", "Women", (item) => item.gender === "Women", setWomen],
         ];
@@ -181,7 +181,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
           ["description", "hoodies", (item) => item.gender === "Women", setHoodiesWomen],
           ["description", "travel", (item) => item.gender === "Women", setTravelWomen],
           ["description", "jeggings", (item) => item.gender === "Women", setJeggingsWomen],
-          ["description", "pants", (item) => item.gender === "Women", setPantsWomen],
+          ["subCategory", "jeans", (item) => item.gender === "Women", setPantsWomen],
           ["description", "bike", (item) => item.gender === "Women", setBikerWomen],
           ["description", "funky", (item) => item.gender === "Women", setFunkyWomen],
           ["description", "god", (item) => item.gender === "Women", setGodWomen],
@@ -301,7 +301,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                               </Link>
                             </div>
                             <div>
-                              <Link to="clothing/combo" state={{ data: combo }}>
+                              <Link to="/coming-soon">
                                 Combos
                               </Link>
                             </div>

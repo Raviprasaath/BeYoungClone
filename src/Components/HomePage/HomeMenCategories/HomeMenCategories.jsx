@@ -86,14 +86,14 @@ const HomeMenCategories = () => {
         fetchDataAndFilter("name", "plus size", (item) => item.gender === "Men", setPlusSizeTShirt);
         fetchDataAndFilter("subCategory", "jogger", (item) => item.gender === "Men", setJoggers);
         fetchDataAndFilter("subCategory", "pyjamas", (item) => item.gender === "Men", setPyjamas);
-        fetchDataAndFilter("description", "jeans", (item) => item.gender === "Men", setJeans);
-        fetchDataAndFilter("description", "chinos", (item) => item.gender === "Men", setChinos);
-        fetchDataAndFilter("description", "boxer", (item) => item.gender === "Men", setBoxer);
+        fetchDataAndFilter("subCategory", "jeans", (item) => item.gender === "Men", setJeans);
+        fetchDataAndFilter("subCategory", "shorts", (item) => item.gender === "Men", setChinos);
+        fetchDataAndFilter("subCategory", "trouser", (item) => item.gender === "Men", setBoxer);
         fetchDataAndFilter("description", "oversized", (item) => item.gender === "Men", setOverSizedTShirt);
         fetchDataAndFilter("description", "travel", (item) => item.gender === "Men", setTravelData);
         fetchDataAndFilter("description", "urban", (item) => item.gender === "Men" && item.subCategory === "shirt", setUrban);
         fetchDataAndFilter("description", "casual", (item) => item.gender === "Men" && item.subCategory === "shirt", setCasual);
-        fetchDataAndFilter("description", "cargo jogger", (item) => item.gender === "Men", setCargoJogger);
+        fetchDataAndFilter("description", "cargo-jogger", (item) => item.gender === "Men", setCargoJogger);
         fetchDataAndFilter("description", "knitted", (item) => item.gender === "Men", setKnitted);
         fetchDataAndFilter("name", "shorts", (item) => item.gender === "Men", setShorts);
       }, 0);

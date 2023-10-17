@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+
+
 import './ProductPage.css'
 
 import img1a from "../../assets/product-discription/1.jpg"
@@ -25,13 +27,14 @@ import { Pagination, FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { Label } from "@radix-ui/react-menubar";
 import { useScreenSize } from "../CommonFunctions/CommonFunctions";
 
-import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
 const ProductPage = () => {
     const [singleProduct, setSingleProduct] = useState();
     const [productSizeSelection, setProductSizerSelection] = useState("");
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+    
 
     const screenSize = useScreenSize();
     const isMobile = screenSize < 960;
@@ -59,27 +62,55 @@ const ProductPage = () => {
 
     const reversedStrFinal = strFinal.split('').reverse().join('');
     
-    async function singleProductFetch () {
-        let myHeaders = new Headers();
-        myHeaders.append("projectID", "vflsmb93q9oc");
+    async function singleProductFetch() {
         const productId = reversedStrFinal;
-
-        let requestOptions = {
+      
+        try {
+          const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/product/${productId}`, {
             method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow'
-        };
-
-        const response =  await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/product/${productId}`, requestOptions)
-        const result = await response.json();
-        console.log("result", result.data);
-        setSingleProduct(result.data);
-    }
+            headers: {
+              'projectID': 'vflsmb93q9oc',
+              'Content-Type': 'application/json', 
+            },
+            mode: 'cors',
+          });
+      
+          const result = await response.json();
+          console.log("result", result.data);
+          setSingleProduct(result.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      
+      useEffect(() => {
+        singleProductFetch();
+      }, []);
+      
 
     useEffect(()=> {
-        singleProductFetch();
+        setTimeout(()=> {
+            singleProductFetch();
+        }, 100)
     }, [])
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 960) {
+                window.location.reload();
+            } else {
+                window.location.reload();
+            }
+        };      
+        window.addEventListener('resize', handleResize);
+      
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []);
+      
+
+    console.log("thumbsSwiper", thumbsSwiper);
 
     const handlerCheckout = () => {
         if(productSizeSelection === "") {
@@ -97,6 +128,9 @@ const ProductPage = () => {
         }
     };
     
+    const handlerSwiperData = () => {
+        setThumbsSwiper
+    }
 
     const imageContainer = (
         <>
@@ -120,92 +154,43 @@ const ProductPage = () => {
             </Swiper>
         }
 
-        {!isMobile &&
+        {!isMobile && singleProduct &&
             <>
+            <div className="flex flex-row-reverse">
                 <Swiper
-                    style={{
-                    '--swiper-navigation-color': '#fff',
-                    '--swiper-pagination-color': '#fff',
-                    }}
                     loop={true}
                     spaceBetween={10}
                     navigation={true}
-                    thumbs={{ swiper: thumbsSwiper }}
+                    thumbs={{ swiper: thumbsSwiper}}
                     modules={[FreeMode, Navigation, Thumbs]}
-                    className="mySwiper2"
+                    className="mySwiper2 w-[600px] h-[500px]"
                 >
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
-                </SwiperSlide>
-            </Swiper>
-            <Swiper
-                onSwiper={setThumbsSwiper}
-                loop={true}
-                spaceBetween={10}
-                slidesPerView={4}
-                freeMode={true}
-                watchSlidesProgress={true}
-                modules={[FreeMode, Navigation, Thumbs]}
-                className="mySwiper"
-            >
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
-                </SwiperSlide>
-            </Swiper>            
+                    {singleProduct?.images.map((item, index)=> (
+                        <SwiperSlide className="flex justify-center items-center" key={index} >                            
+                            <img className="h-[500px]" src={item} alt="" />                            
+                        </SwiperSlide>
+                    ))} 
+                </Swiper>
+                <Swiper
+                    // onSwiper={handlerSwiperData}
+                    onSwiper={setThumbsSwiper}
+                    loop={true}
+                    spaceBetween={10}
+                    slidesPerView={4}
+                    freeMode={true}
+                    direction="vertical"
+                    watchSlidesProgress={true}
+                    modules={[FreeMode, Navigation, Thumbs]}
+                    className="mySwiper"
+                >
+                    {singleProduct?.images.map((item, index)=> (
+                        <SwiperSlide className="w-[100px] h-[250px]" key={index} >                            
+                            <img className="w-[200px] h-[100px]" src={item} alt="" />                            
+                        </SwiperSlide>
+                    ))} 
+                    
+                </Swiper>
+            </div>
             </>
         }
         </>
