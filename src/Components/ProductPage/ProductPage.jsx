@@ -1,78 +1,225 @@
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import img1 from "../../assets/categories-for-women/1.jpg"
-import img2 from "../../assets/categories-for-women/2.jpg"
-import img3 from "../../assets/categories-for-women/3.jpg"
-import img4 from "../../assets/categories-for-women/4.jpg"
-import img5 from "../../assets/categories-for-women/5.jpg"
-import img6 from "../../assets/categories-for-women/6.jpg"
 
-import { AiFillStar } from "react-icons/ai"
-import { GiPriceTag } from "react-icons/gi"
+import './ProductPage.css'
 
-// Import Swiper styles
+import img1a from "../../assets/product-discription/1.jpg"
+import img2a from "../../assets/product-discription/2.jpg"
+import img3a from "../../assets/product-discription/3.jpg"
+import img4a from "../../assets/product-discription/4.jpg"
+
+import { GiPriceTag, GiCash } from "react-icons/gi"
+import { FaShippingFast } from "react-icons/fa"
+import { AiFillStar, AiOutlineStar } from "react-icons/ai"
+import { MdShoppingCartCheckout } from "react-icons/md"
+import { GrFormNextLink } from "react-icons/gr"
+
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper/modules";
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import { Pagination, FreeMode, Navigation, Thumbs } from 'swiper/modules';
+
 import { Label } from "@radix-ui/react-menubar";
+import { useScreenSize } from "../CommonFunctions/CommonFunctions";
+
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 const ProductPage = () => {
+    const [singleProduct, setSingleProduct] = useState();
+    const [productSizeSelection, setProductSizerSelection] = useState("");
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+    const screenSize = useScreenSize();
+    const isMobile = screenSize < 960;
+
+
+    const location = useLocation();
+    const str = location.pathname;
+
+    const handlerSizeSelector = (e) => {
+        if (productSizeSelection === e.target.innerText) {
+            setProductSizerSelection("");
+        } else {
+            setProductSizerSelection(e.target.innerText);
+        }
+    }
+
+    let strFinal = "";
+    for (let i=str.length-1; i>=0; i--) {
+        if (str.charAt(i) !== '/') {
+            strFinal += (str.charAt(i));
+        } else {
+            break;
+        }
+    }
+
+    const reversedStrFinal = strFinal.split('').reverse().join('');
+    
+    async function singleProductFetch () {
+        let myHeaders = new Headers();
+        myHeaders.append("projectID", "vflsmb93q9oc");
+        const productId = reversedStrFinal;
+
+        let requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        const response =  await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/product/${productId}`, requestOptions)
+        const result = await response.json();
+        console.log("result", result.data);
+        setSingleProduct(result.data);
+    }
+
+    useEffect(()=> {
+        singleProductFetch();
+    }, [])
+
+
+    const handlerCheckout = () => {
+        if(productSizeSelection === "") {
+            handlerScrollToSizeChart();
+        } else {
+            console.log("success");
+        }
+    }
+
+    const handlerScrollToSizeChart = () => {
+        const element = document.getElementById('sizeChart');
+        if (element) {            
+            const offset = element.getBoundingClientRect().top + window.scrollY - 50;
+            window.scrollTo({ top: offset, behavior: 'smooth' });
+        }
+    };
+    
 
     const imageContainer = (
-    <>
-      <Swiper
-        spaceBetween={30}
-        pagination={{
-          clickable: true,
-        }}
-        loop={true}
-        modules={[Pagination]}
-        className="mySwiper"
-      >
-        <SwiperSlide>
-            <div className="grid place-items-center">
-                <img className="w-[80%]" src={img1} alt="" />
-            </div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div className="grid place-items-center">
-                <img className="w-[80%]" src={img2} alt="" />
-            </div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div className="grid place-items-center">
-                <img className="w-[80%]" src={img3} alt="" />
-            </div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div className="grid place-items-center">
-                <img className="w-[80%]" src={img4} alt="" />
-            </div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div className="grid place-items-center">
-                <img className="w-[80%]" src={img5} alt="" />
-            </div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div className="grid place-items-center">
-                <img className="w-[80%]" src={img6} alt="" />
-            </div>
-        </SwiperSlide>
+        <>
+        {isMobile &&         
+            <Swiper
+                spaceBetween={30}
+                pagination={{
+                clickable: true,
+                }}
+                loop={true}
+                modules={[Pagination]}
+                className="mySwiper"
+            >
+                {singleProduct?.images.map((item, index)=> (
+                    <SwiperSlide key={index} >
+                        <div className="grid place-items-center">
+                            <img className="w-[80%]" src={item} alt="" />
+                        </div>
+                    </SwiperSlide>
+                ))}         
+            </Swiper>
+        }
 
-      </Swiper>
-    </>
+        {!isMobile &&
+            <>
+                <Swiper
+                    style={{
+                    '--swiper-navigation-color': '#fff',
+                    '--swiper-pagination-color': '#fff',
+                    }}
+                    loop={true}
+                    spaceBetween={10}
+                    navigation={true}
+                    thumbs={{ swiper: thumbsSwiper }}
+                    modules={[FreeMode, Navigation, Thumbs]}
+                    className="mySwiper2"
+                >
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
+                </SwiperSlide>
+            </Swiper>
+            <Swiper
+                onSwiper={setThumbsSwiper}
+                loop={true}
+                spaceBetween={10}
+                slidesPerView={4}
+                freeMode={true}
+                watchSlidesProgress={true}
+                modules={[FreeMode, Navigation, Thumbs]}
+                className="mySwiper"
+            >
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
+                </SwiperSlide>
+            </Swiper>            
+            </>
+        }
+        </>
     );
-
     const productPriceDescription = (
         <div className="px-2">
-            <p className="text-[0.9rem] font-bold px-2">Product name</p>
-            <p className="text-[0.8rem] opacity-70 px-2">Category</p>
+            <p className="text-[1rem] font-bold px-2">{singleProduct?.name}</p>
+            <p className="text-[0.9rem] opacity-70 px-2">{singleProduct?.subCategory}</p>
             <p className="px-2">
                 <span className="text-[1rem] font-bold">                    
-                    ₹ 799 
+                    ₹ {singleProduct?.price}
                 </span>
                 <span className="line-through text-[0.8rem] px-1 opacity-70">
-                    ₹ 1598 
+                    ₹ {singleProduct?.price + (singleProduct?.price * ( 50 / 100 ) )}
                 </span>
                 <span className="px-1 text-[0.9rem] text-green-500 font-bold">
                     (50% Off)
@@ -87,25 +234,31 @@ const ProductPage = () => {
             </div>
         </div>
     )
-
     const sizeSelection = (
+        <div id="sizeChart" className="px-2">
+        <h4 className="text-[0.9rem] font-medium">SIZE</h4>
+        {productSizeSelection ==="" &&
+            <p className="text-[0.7rem] text-red-500">Please select a size</p>
+        }
+        
         <div className="flex items-center gap-2.5 justify-center" >
-                <div className="text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center">
-                    S
-                </div>
-                <div className="text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center">
-                    M
-                </div>
-                <div className="text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center">
-                    L
-                </div>
-                <div className="text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center">
-                    XL
-                </div>
-                <div className="text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center">
-                    XXL
-                </div>
+            <div onClick={(event)=>handlerSizeSelector(event)} className={`text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center ${productSizeSelection === "S" ? 'border-teal-400' : ''}`}>
+                S
             </div>
+            <div onClick={(event)=>handlerSizeSelector(event)} className={`text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center ${productSizeSelection === "M" ? 'border-teal-400':""}`}>
+                M
+            </div>
+            <div onClick={(event)=>handlerSizeSelector(event)} className={`text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center ${productSizeSelection === "L" ? 'border-teal-400' : ''}`}>
+                L
+            </div>
+            <div onClick={(event)=>handlerSizeSelector(event)} className={`text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center ${productSizeSelection === "XL" ? 'border-teal-400' : ''}`}>
+                XL
+            </div>
+            <div onClick={(event)=>handlerSizeSelector(event)} className={`text-[0.75rem] rounded-full border-2 w-[30px] pt-[3.2px] h-[30px] text-center ${productSizeSelection === "XXL" ? 'border-teal-400' : ''}`}>
+                XXL
+            </div>
+        </div>
+        </div>
     )
     const quantity = (
         <div className="flex px-2">
@@ -124,29 +277,187 @@ const ProductPage = () => {
             </select>                
         </div>
     )
-    
-
-  return (
-    <>
-        {imageContainer}
-        <div>
-            {productPriceDescription}
-
-            <div className="my-2 border-2"></div>
-            {sizeSelection}
-            <div className="my-2 border-2"></div>
-            {quantity}
-            <div className="my-2 border-2"></div>
-            <div>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore cupiditate aut possimus, ea optio asperiores, fugit numquam beatae suscipit eos, impedit sint laboriosam ipsam? Consectetur eum veniam qui debitis quaerat!
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore cupiditate aut possimus, ea optio asperiores, fugit numquam beatae suscipit eos, impedit sint laboriosam ipsam? Consectetur eum veniam qui debitis quaerat!
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore cupiditate aut possimus, ea optio asperiores, fugit numquam beatae suscipit eos, impedit sint laboriosam ipsam? Consectetur eum veniam qui debitis quaerat!
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore cupiditate aut possimus, ea optio asperiores, fugit numquam beatae suscipit eos, impedit sint laboriosam ipsam? Consectetur eum veniam qui debitis quaerat!
-            </div>
-
+    const delivery = (
+        <div className="px-2">
+                <h4 className="text-[0.9rem] font-medium">DELIVERY OPTIONS</h4>
+                <div className="flex">
+                    <input className="my-2 px-2 border-solid border-2 border-stone-300 w-[70%]" type="text" placeholder="Enter Pincode"/>
+                    <Label className="my-2 w-[20%] text-white font-bold text-center bg-teal-400">CHECK</Label>
+                </div>
+                <div className="px-2">
+                    <div className="flex items-center gap-2 py-2">
+                        <GiCash className="bg-teal-100 text-[1.5rem]" /> 
+                        <p className="text-[0.8rem]">
+                            Cash On Delivery
+                        </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <FaShippingFast className="bg-teal-100 text-[1.5rem]" />
+                        <p className="text-[0.8rem]">
+                            Express Shipping
+                        </p>
+                    </div>
+                </div>
         </div>
-    </>
-  );
+    )
+    const productDescription = (
+        <div className="px-2">
+            <h4 className="text-[0.9rem] font-medium">PRODUCT DETAILS</h4>
+            <div className="my-2 text-[0.8rem]">
+                {singleProduct?.description}
+            </div>
+        </div>
+    )
+    const ratingReview = (
+        <div className="px-2">
+        <div className="my-3">
+            <h4 className="text-[0.9rem] font-medium">RATINGS & REVIEW</h4>
+            <div className="flex">
+                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-yellow-400" />
+                <AiOutlineStar className="text-yellow-400" />
+            </div>
+            <div className="flex flex-col">
+                <div className="flex">
+                    <p className="text-gray-400 text-[0.9rem]">User Name</p>
+                    <p className="px-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odio libero fugit delectus cumque deleniti distinctio enim ratione temporibus perspiciatis ea. Esse nobis quasi quaerat libero incidunt voluptate consectetur beatae nulla!</p>
+                </div>
+            </div>
+        </div>
+        <div className="my-3">            
+            <div className="flex">
+                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-yellow-400" />
+                <AiOutlineStar className="text-yellow-400" />
+            </div>
+            <div className="flex flex-col">
+                <div className="flex">
+                    <p className="text-gray-400 text-[0.9rem]">User Name</p>
+                    <p className="px-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum illum corporis libero pariatur illo! Corrupti aperiam, a expedita corporis rem molestiae ipsa accusantium temporibus itaque consectetur laudantium. Ea, aliquam voluptate?</p>
+                </div>
+                <button className="w-[50px] text-center bg-teal-300 text-white px-2">Delete</button>
+                 
+            </div>
+        </div>
+        <div className="my-3">
+            
+            <div className="flex">
+                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-yellow-400" />
+                <AiOutlineStar className="text-yellow-400" />
+            </div>
+            <div className="flex flex-col">
+                <textarea className="border-2 border-solid border-gray-300" type="text" placeholder="Add a review" />
+                <button className="w-[50px] my-2 text-center bg-teal-300 text-white px-2">Add</button>
+            </div>
+        </div>
+        
+    </div>
+    )
+    const branding = (
+        <div className="flex gap-2 justify-center">
+                <div className="flex flex-col justify-center items-center border-2 2-fit">
+                    <img className="w-[80px]" src={img1a} alt="" />
+                    <p className="text-center px-2 text-[0.7rem] ">
+                        1.5M+ Happy Customers
+                    </p>
+                </div>
+                <div className="flex flex-col justify-center items-center border-2 2-fit">
+                    <img className="w-[80px]" src={img2a} alt="" />
+                    <p className="text-center px-2 text-[0.7rem] ">
+                        15 Days Easy Returns
+                    </p>
+                </div>
+                <div className="flex flex-col justify-center items-center border-2 2-fit">
+                    <img className="w-[80px]" src={img3a} alt="" />
+                    <p className="text-center px-2 text-[0.7rem] ">
+                        Homegrown Brand
+                    </p>
+                </div>
+                <div className="flex flex-col justify-center items-center border-2 2-fit">
+                    <img className="w-[80px]" src={img4a} alt="" />
+                    <p className="text-center px-2 text-[0.7rem] ">
+                        Packed with Safety
+                    </p>
+                </div>
+            </div>
+    )
+    const checkout = (
+        <>
+            <div className="flex">
+                <div className="flex font-bold justify-center items-center gap-2 text-[0.8rem] px-2 text-white py-2 rounded m-1 w-full bg-teal-400">
+                    <MdShoppingCartCheckout /> 
+                    <p onClick={()=>handlerCheckout()}>
+                        ADD TO CART
+                    </p>
+                </div>
+                <div className="flex font-bold justify-center items-center gap-2 text-[0.8rem] px-2 py-2 rounded m-1 w-full bg-yellow-300">
+                <GrFormNextLink />
+                    <p onClick={()=>handlerCheckout()}>
+                        BUY NOW
+                    </p>
+                    
+                </div>
+            </div>
+        </>
+    )
+
+    return (
+        <>
+        {!singleProduct && <>Loading</>}
+        {isMobile && 
+            <>
+                {singleProduct && 
+                    <>
+                        {imageContainer}
+                        <div>
+                            {productPriceDescription}
+                            <div className="my-2 border-2"></div>
+                            {sizeSelection}
+                            <div className="my-2 border-2"></div>
+                            {quantity}
+                            <div className="my-2 border-2"></div>
+                            {delivery}
+                            <div className="my-2 border-2"></div>
+                            {productDescription}
+                            <div className="my-2 border-2"></div>
+                            {ratingReview}
+                            <div className="my-2 border-2"></div>
+                            {branding}
+                            <div className="my-2 border-2"></div>        
+                        </div>
+                        <div className="sticky z-20 bg-white bottom-0">
+                            {checkout}
+                        </div>
+                    </>
+                }
+            </>
+        }
+        {!isMobile &&
+            <>
+                <div className="flex w-[100%] justify-center gap-[20px] ">
+                    <div className="w-[40%]">
+                        {imageContainer}
+                    </div>
+                    <div className="w-[40%] bg-yellow--300">
+                        {productPriceDescription}                            
+                        {sizeSelection}
+                        {quantity}
+                        {delivery}
+                    </div>
+                </div>
+                    {productDescription}
+            </>
+
+        }
+        </>
+    );
 };
 
 export default ProductPage;

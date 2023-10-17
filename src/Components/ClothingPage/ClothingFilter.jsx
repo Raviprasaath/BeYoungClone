@@ -36,7 +36,7 @@ const ClothingFilter = (clothingData) => {
     const addedColors = new Set();
     
     receivedColors?.forEach((data, index) => {
-      const matchingColor = colors.find((color) => color.title === data.color);
+      const matchingColor = colors?.find((color) => color.title === data.color);
       if (matchingColor && !addedColors.has(matchingColor.title)) {
         colorElements.push(
           <div key={index} title={matchingColor.title} className={matchingColor.className}></div>

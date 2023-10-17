@@ -53,13 +53,22 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const [men, setMen] = useState([]);
   const [women, setWomen] = useState([]);
 
-  function fetchDataAndFilter(
-    title, searchTerm, filterFunction, setDataFunction) {
-    const filteredData = data.data.filter((item) => {
-      return item[title].includes(searchTerm) && filterFunction(item);
-    });
-    setDataFunction(filteredData);
+  // function fetchDataAndFilter(
+  //   title, searchTerm, filterFunction, setDataFunction) {
+  //   const filteredData = data.data.filter((item) => {
+  //     return item[title].includes(searchTerm) && filterFunction(item);
+  //   });
+  //   setDataFunction(filteredData);
+  // }
+  function fetchDataAndFilter(title, searchTerm, filterFunction, setDataFunction) {
+    if (data && Array.isArray(data.data) ) {
+      const filteredData = data.data.filter((item) => {
+        return item[title].includes(searchTerm) && filterFunction(item);
+      });
+      setDataFunction(filteredData);
+    }
   }
+  
 
   useEffect(() => {
     if (data) {
