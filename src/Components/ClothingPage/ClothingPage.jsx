@@ -21,15 +21,17 @@ import { Link, useLocation } from "react-router-dom";
 let mySet1 = new Set();
 let arr = [];
 
+
 const ClothingPage = ({ handlerOpenFilter }) => {
   const location = useLocation();
   const [dataRender, setDataRender] = useState();
-
 
   const [activateHeartId, setActivateHeartId] = useState([]);
 
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+
+  console.log("dataRender", dataRender);
 
   useEffect(() => {
     const dataFromHP3 = location?.state?.data;
@@ -64,49 +66,48 @@ const ClothingPage = ({ handlerOpenFilter }) => {
         ) : dataRender.length === 0 ? (
           <p>No Data Found</p>
         ) : (
-          dataRender.map((item) => (
-              <div
+          dataRender.map((item) => (          
+            <Link 
               key={item._id}
-              className="relative max-w-[200px] flex flex-col justify-center items-center"
-              >            
-                  <Link to={`${location.pathname}/${item._id}`}>                  
-                    <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-                      <div>
-                        <img className="max-w-[200px] rounded-md" src={item.displayImage} alt="" />
-                      </div>
-                      <div>
-                        <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-                          {item.name}
-                        </p>
-                        <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-                          {item.subCategory}
-                        </p>
-                        <p className="flex flex-row justify-center items-center">
-                          <span className="px-1.5 font-bold text-[0.9rem]">
-                            ₹{item.price}
-                          </span>
-                          <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                            ₹{item.price + (item.price * ( 50 / 100 ) )}
-                          </span>
-                          <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                            (50% Off)
-                          </span>
-                        </p>
-                      </div>
-                      <div
-                        className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-                        onClick={() => handlerFavAdding(item._id)}
-                      >
-                        {
-                        activateHeartId?.includes(item._id)  ? (
-                          <AiFillHeart className="text-red-500" />
-                          ) : (
-                          <AiOutlineHeart />
-                        )}
-                      </div>
-                    </div>
-                  </Link>
+              to={`${location.pathname}/${item._id}`}                    
+              state={{similarProducts : dataRender}}              
+            >                  
+              <div className="relative max-w-[200px] flex flex-col justify-center items-center">
+                <div>
+                  <img className="max-w-[200px] rounded-md" src={item.displayImage} alt="" />
+                </div>
+                <div>
+                  <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                    {item.name}
+                  </p>
+                  <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                    {item.subCategory}
+                  </p>
+                  <p className="flex flex-row justify-center items-center">
+                    <span className="px-1.5 font-bold text-[0.9rem]">
+                      ₹{item.price}
+                    </span>
+                    <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
+                      ₹{item.price + (item.price * ( 50 / 100 ) )}
+                    </span>
+                    <span className="px-1 font-bold text-[0.8rem] text-green-500">
+                      (50% Off)
+                    </span>
+                  </p>
+                </div>
+                <div
+                  className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
+                  onClick={() => handlerFavAdding(item._id)}
+                >
+                  {
+                  activateHeartId?.includes(item._id)  ? (
+                    <AiFillHeart className="text-red-500" />
+                    ) : (
+                    <AiOutlineHeart />
+                  )}
+                </div>
               </div>
+            </Link>              
           ))
         )
         }
@@ -114,6 +115,7 @@ const ClothingPage = ({ handlerOpenFilter }) => {
     </>
   );
 
+      console.log("location", location);
   return (
     <>
       <div className="flex relative">
@@ -171,4 +173,5 @@ const ClothingPage = ({ handlerOpenFilter }) => {
   );
 };
 
-export default ClothingPage;
+
+export default ClothingPage
