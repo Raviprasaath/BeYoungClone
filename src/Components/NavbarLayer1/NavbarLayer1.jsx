@@ -1,9 +1,13 @@
 import { useScreenSize } from "../CommonFunctions/CommonFunctions"
 import { HiLocationMarker } from "react-icons/hi";
+import { useDataContext } from "../Fetching/DataContext";
+
 
 const NavbarLayer1 = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+
+  const { isDialogOpen, openDialog, closeDialog } = useDataContext();
 
   return (
     <>
@@ -26,12 +30,18 @@ const NavbarLayer1 = () => {
             <HiLocationMarker className="text-base" />
             Track order
           </div>
-          <div className="flex gap-2	 py-2.5 sm4:[flex justify-around] ">
-            <button className="outline-none bg-transparent text-white sm4:text-[1rem]">
-              Login
+          <div className="flex gap-2 py-2.5 sm4:flex sm4:justify-around ">
+          
+            <button 
+            onClick={openDialog}
+              className="outline-none bg-transparent text-white sm4:text-[1rem]">
+                Login
             </button>
+
             |
-            <button className="outline-none bg-transparent text-white">
+            <button 
+            onClick={openDialog}
+            className="outline-none bg-transparent text-white">
               Sign Up
             </button>
           </div>

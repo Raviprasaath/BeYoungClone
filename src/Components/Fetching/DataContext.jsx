@@ -39,8 +39,19 @@ export function DataProvider({ children }) {
     fetchData();
   }, []);
 
+
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const openDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
+
   return (
-    <DataContext.Provider value={{ data, loading }}>
+    <DataContext.Provider value={{ data, loading, isDialogOpen, openDialog, closeDialog }}>
       {children}
     </DataContext.Provider>
   );

@@ -41,7 +41,7 @@ const HomeCarouselSection3 = () => {
   return (
     <>
       <div className="flex justify-center my-4">
-        <div className="w-[90%] justify-center flex flex-row gap-2.5 overflow-x-scroll overflow-y-hidden p-2.5 touch-scroll sm4:[ w-[80%] flex flex-row ]">
+        <div className="w-[90%] justify-center flex flex-row gap-2.5 overflow-x-scroll overflow-y-hidden p-2.5 touch-scroll sm4:w-[80%] sm4:flex sm4:flex-row">
           <Link
             className="w-full"
             to={"/clothing/cargo"}
