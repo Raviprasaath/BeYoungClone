@@ -2,8 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-
-
 import './ProductPage.css'
 
 import img1a from "../../assets/product-discription/1.jpg"
@@ -17,7 +15,6 @@ import { AiOutlineHeart, AiFillHeart, AiFillStar, AiOutlineStar } from "react-ic
 import { MdShoppingCartCheckout } from "react-icons/md"
 import { GrFormNextLink } from "react-icons/gr"
 
-
 import "swiper/css";
 import "swiper/css/pagination";
 import 'swiper/css/free-mode';
@@ -28,8 +25,8 @@ import { Pagination, FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { Label } from "@radix-ui/react-menubar";
 import { useScreenSize } from "../CommonFunctions/CommonFunctions";
 
-
 import "react-image-gallery/styles/css/image-gallery.css";
+
 let mySet1 = new Set();
 let arr = [];
 
@@ -96,10 +93,10 @@ const ProductPage = () => {
         singleProductFetch();
 
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
+        // window.scrollTo({
+        //     top: 0,
+        //     behavior: "smooth",
+        //   });
 
     }, [reversedStrFinal]);
 
@@ -108,7 +105,6 @@ const ProductPage = () => {
         setSimilarProduct(dataFromHP3);
     }, [location.pathname]);
     
-
     const handlerCheckout = () => {
         if(productSizeSelection === "") {
             handlerScrollToSizeChart();
@@ -116,22 +112,17 @@ const ProductPage = () => {
             console.log("success");
         }
     }
-
     const handlerScrollToSizeChart = () => {
         const element = document.getElementById('sizeChart');
         if (element) {            
             const offset = element.getBoundingClientRect().top + window.scrollY - 50;
             window.scrollTo({ top: offset, behavior: 'smooth' });
         }
-    };
-    
+    };  
     const handlerSwiperData = (e) => {
         singleProductFetch();
         setThumbsSwiper(e);
     }
-
-
-
     const imageContainer = (
         <>
         {isMobile &&         
@@ -157,24 +148,20 @@ const ProductPage = () => {
         {!isMobile && singleProduct &&
             <>
             <div className="flex flex-row-reverse">
-                 
-                    <Swiper
-                        loop={true}
-                        spaceBetween={10}
-                        navigation={true}
-                        thumbs={{ swiper: thumbsSwiper?thumbsSwiper:  ""  }}
-                        modules={[FreeMode, Navigation, Thumbs]}
-                        className="mySwiper2 w-[600px] h-[500px]"
-                    >
-                    {singleProduct?.images.map((item, index)=> (
-                        <SwiperSlide className="flex justify-center items-center" key={index} >                            
-                            <img className="h-[500px]" src={item} alt="" />                            
-                        </SwiperSlide>
-                    ))} 
+                <Swiper
+                    loop={true}
+                    spaceBetween={10}
+                    navigation={true}
+                    thumbs={{ swiper: thumbsSwiper?thumbsSwiper:  ""  }}
+                    modules={[FreeMode, Navigation, Thumbs]}
+                    className="mySwiper2 w-[600px] h-[500px]"
+                >
+                {singleProduct?.images.map((item, index)=> (
+                    <SwiperSlide className="flex justify-center items-center" key={index} >
+                        <img className="h-[500px]" src={item} alt="" />
+                    </SwiperSlide>
+                ))}
                 </Swiper>
-                
-
-
                 <Swiper
                     onSwiper={handlerSwiperData}
                     // onSwiper={setThumbsSwiper}
@@ -191,8 +178,7 @@ const ProductPage = () => {
                         <SwiperSlide className="w-[100px] h-[100%]" key={index} >                            
                             <img className="w-[200px] h-[auto]" src={item} alt="" />                            
                         </SwiperSlide>
-                    ))} 
-                    
+                    ))}
                 </Swiper>
             </div>
             </>
@@ -294,7 +280,6 @@ const ProductPage = () => {
         const regex = /<[^>]+>/g;
         return input.replace(regex, '');
     }
-      
     const productDescription = (
         <div className="px-2">
             <h4 className={`${isMobile?'text-[0.9rem]':'text-[1.3rem]'} font-medium`}>PRODUCT DETAILS</h4>
@@ -304,54 +289,54 @@ const ProductPage = () => {
         </div>
     )
     const ratingReview = (
-        <div className="px-2">
-        <div className="my-3">
+        <div className="p-2 bg-gray-100">
             <h4 className={`my-2 ${isMobile?'text-[0.9rem]':'text-[1.3rem]'} font-medium`}>RATINGS & REVIEW</h4>
-            <div className="flex">
-                <AiFillStar className="text-yellow-400" />
-                <AiFillStar className="text-yellow-400" />
-                <AiFillStar className="text-yellow-400" />
-                <AiFillStar className="text-yellow-400" />
-                <AiOutlineStar className="text-yellow-400" />
-            </div>
-            <div className="flex flex-col">
+            <div className="m-2 p-2 bg-white flex flex-col gap-2 md1:flex-row">
+                <div className="w-[120px] flex flex-col gap-2">
+                    <div className="flex">
+                        <AiFillStar className="text-yellow-400" />
+                        <AiFillStar className="text-yellow-400" />
+                        <AiFillStar className="text-yellow-400" />
+                        <AiFillStar className="text-yellow-400" />
+                        <AiOutlineStar className="text-yellow-400" />
+                    </div>
+                    <p className={`text-gray-400 text-[0.9rem]`}>User Name</p>
+                </div>
                 <div className="flex">
-                    <p className={`text-gray-400 text-[0.9rem] ${!isMobile?'w-[30%]':'w-[100%]'}`}>User Name</p>
-                    <p className="px-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odio libero fugit delectus cumque deleniti distinctio enim ratione temporibus perspiciatis ea. Esse nobis quasi quaerat libero incidunt voluptate consectetur beatae nulla!</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odio libero fugit delectus cumque deleniti distinctio enim ratione temporibus perspiciatis ea. Esse nobis quasi quaerat libero incidunt voluptate consectetur beatae nulla!</p>
+                </div>
+            </div>         
+            <div className="m-2 p-2 bg-white flex flex-col gap-2 md1:flex-row">
+                <div className="w-[120px]">
+                    <div className="flex">
+                        <AiFillStar className="text-yellow-400" />
+                        <AiFillStar className="text-yellow-400" />
+                        <AiFillStar className="text-yellow-400" />
+                        <AiFillStar className="text-yellow-400" />
+                        <AiOutlineStar className="text-yellow-400" />
+                    </div>
+                    <p className={`text-gray-400 text-[0.9rem]`}>User Name</p>
+                </div>
+                <div className="flex flex-col gap-2 md1:flex-row">
+                    <div className="flex">
+                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum illum corporis libero pariatur illo! Corrupti aperiam, a expedita corporis rem molestiae ipsa accusantium temporibus itaque consectetur laudantium. Ea, aliquam voluptate?</p>
+                    </div>
+                    <button className="h-fit md1:m-auto w-[50px] text-center bg-teal-300 text-white px-2">Delete</button>
+                </div>                
+            </div>
+            <div className="m-2 p-2 bg-white flex flex-col gap-2 md1:flex-row ">
+                <div className="flex">
+                    <AiFillStar className="text-yellow-400" />
+                    <AiFillStar className="text-yellow-400" />
+                    <AiFillStar className="text-yellow-400" />
+                    <AiFillStar className="text-yellow-400" />
+                    <AiOutlineStar className="text-yellow-400" />
+                </div>
+                <div className="flex flex-col w-full gap-2 md1:flex-row ">
+                    <textarea className="w-[100%] border-2 border-solid border-gray-300" type="text" placeholder="Add a review" />
+                    <button className="h-fit w-[50px] my-2 text-center bg-teal-300 text-white px-2">Add</button>
                 </div>
             </div>
-        </div>
-        <div className="my-3">            
-            <div className="flex">
-                <AiFillStar className="text-yellow-400" />
-                <AiFillStar className="text-yellow-400" />
-                <AiFillStar className="text-yellow-400" />
-                <AiFillStar className="text-yellow-400" />
-                <AiOutlineStar className="text-yellow-400" />
-            </div>
-            <div className="flex flex-col">
-                <div className="flex">
-                    <p className={`text-gray-400 text-[0.9rem] ${!isMobile?'w-[30%]':'w-[100%]'}`}>User Name</p>
-                    <p className="px-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum illum corporis libero pariatur illo! Corrupti aperiam, a expedita corporis rem molestiae ipsa accusantium temporibus itaque consectetur laudantium. Ea, aliquam voluptate?</p>
-                </div>
-                <button className="w-[50px] text-center bg-teal-300 text-white px-2">Delete</button>
-                 
-            </div>
-        </div>
-        <div className="my-3">
-            
-            <div className="flex">
-                <AiFillStar className="text-yellow-400" />
-                <AiFillStar className="text-yellow-400" />
-                <AiFillStar className="text-yellow-400" />
-                <AiFillStar className="text-yellow-400" />
-                <AiOutlineStar className="text-yellow-400" />
-            </div>
-            <div className="flex flex-col">
-                <textarea className="border-2 border-solid border-gray-300" type="text" placeholder="Add a review" />
-                <button className="w-[50px] my-2 text-center bg-teal-300 text-white px-2">Add</button>
-            </div>
-        </div>
         
     </div>
     )
@@ -468,7 +453,7 @@ const ProductPage = () => {
         arr = Array.from(mySet1);
         localStorage.setItem("favDress", JSON.stringify(arr));
         setActivateHeartId( ()=>arr )
-      };
+    };
 
 
     return (
@@ -514,15 +499,14 @@ const ProductPage = () => {
                         ) : (
                         <AiOutlineHeart onClick={()=>handlerFavorite()} className="absolute right-0 text-red-500 text-[2rem] border-2 rounded-full p-1"/>
                         )}
-                        
                         {productPriceDescription}
-                        <div className="py-2"></div>                         
+                        <div className="py-2"></div>
                         {sizeSelection}
-                        <div className="py-1"></div>                         
+                        <div className="py-1"></div>
                         {quantity}
-                        <div className="py-1"></div>                         
+                        <div className="py-1"></div>
                         {checkout}
-                        <div className="py-1"></div>                         
+                        <div className="py-1"></div>
                         {delivery}
                     </div>
                 </div>

@@ -57,7 +57,7 @@ const ClothingPage = ({ handlerOpenFilter }) => {
     localStorage.setItem("favDress", JSON.stringify(arr));
     setActivateHeartId( ()=>arr )
   };
-
+  
   const contentBody = (
     <>
       <div className="flex flex-row justify-center flex-wrap gap-4 p-4">
