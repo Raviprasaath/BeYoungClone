@@ -11,16 +11,18 @@ import { Label } from '@radix-ui/react-menubar'
 import { useScreenSize } from '../CommonFunctions/CommonFunctions'
 import { Link } from 'react-router-dom'
 
-const Checkout1 = () => {
+const CheckoutCart = () => {
     const screenSize = useScreenSize();
     const isMobile = screenSize < 960;
 
     const checkoutHeader1 = (
         <div className='w-full md2:w-[80%] md2:m-auto border'>
             <div className="flex shadow-lg h-[50px]">
-                <div className={`font-bold w-1/2 bg-white flex items-center justify-center ${isMobile?"text-[0.8rem]":"text-[1rem]"}`}>
-                    BEYOUNG
-                </div>
+                    <div className={`font-bold w-1/2 bg-white flex items-center justify-center ${isMobile?"text-[0.8rem]":"text-[1rem]"}`}>
+                <Link to="/">
+                        BEYOUNG
+                </Link>
+                    </div>
                 <div className="font-bold w-1/2 flex gap-2 items-center justify-center bg-gray-100">
                     <div>
                         <RiSecurePaymentLine />
@@ -34,9 +36,9 @@ const Checkout1 = () => {
     )
     const checkoutHeader2 = (
         <>
-            <div className='my-4 relative z-[1] bg-gray-100 md2:w-[80%] m-auto'>
-                <div className='absolute z-[2] left-[15%] md1:left-[17%] md1:right[14%] right-[15%] top-[18px] border border-gray-400 md2:w-[600px] m-auto'></div>            
-                <div className='relative z-[3] my-4 flex justify-around w-full md2:w-[900px] md2:m-auto'>
+            <div className='py-4 my-4 relative z-[1] bg-gray-100 lg:w-[80%] m-auto'>
+                <div className='absolute z-[2] left-[15%] lg:left-[17%] lg:right[14%] right-[18%] top-[48px] lg:top-[30px] border border-gray-400 lg:w-[600px] m-auto'></div>            
+                <div className='relative z-[3] my-4 flex justify-around w-full lg:w-[900px] lg:m-auto'>
                     <div className='flex flex-col justify-center items-center'>
                         <div>
                             <AiOutlineShoppingCart className='border-2 bg-white text-[2rem] rounded-full p-1'/>
@@ -331,7 +333,7 @@ const Checkout1 = () => {
                                 <Label className="cursor-pointer my-2 w-[20%] text-white font-bold text-center bg-teal-400">Apply</Label>
                             </div>
                             <div className='border-2'></div>
-                            <div className='p-2 flex justify-aroundz text-[0.8rem]'>
+                            <div className='p-2 flex justify-around text-[0.8rem]'>
                                 <div>
                                     Flat ₹100 Off OnOrders Above ₹999
                                 </div>
@@ -385,7 +387,7 @@ const Checkout1 = () => {
                             You Saved ₹6702 On This Order
                         </div>
                         {!isMobile &&                 
-                            <Link >
+                            <Link to="/checkout/shipping">
                                 <div className='bg-teal-300 text-white font-semibold text-center p-2'>
                                     CHECKOUT SECURELY
                                 </div>
@@ -420,9 +422,11 @@ const Checkout1 = () => {
                         </div>
                     </div>
                     <div>
+                    <Link to="/checkout/shipping">
                         <button className='bg-teal-400 text-white font-semibold p-2 rounded text-[0.8rem]'>
                             CHECKOUT SECURELY
                         </button>
+                        </Link>
                     </div>
 
                 </div>
@@ -441,4 +445,4 @@ const Checkout1 = () => {
 
 }
 
-export default Checkout1;
+export default CheckoutCart;

@@ -12,8 +12,9 @@ import ClothingFilter from "./Components/ClothingPage/ClothingFilter";
 import { useScreenSize } from "./Components/CommonFunctions/CommonFunctions";
 import ProductPage from "./Components/ProductPage/ProductPage";
 import UserAuthentication from "./Components/UserAuthentication/UserAuthentication";
-import Checkout1 from "./Components/Checkout/Checkout1";
-import Checkout2 from "./Components/Checkout/Checkout2";
+import CheckoutCart from "./Components/Checkout/CheckoutCart";
+import CheckoutShipping from "./Components/Checkout/CheckoutShipping";
+import CheckoutPayment from "./Components/Checkout/CheckoutPayment";
 
 function App() { 
   const screenSize = useScreenSize();
@@ -41,7 +42,10 @@ function App() {
         </div>
       }
       <div className="z-10">
-      {location.pathname !== "/checkout/cart" &&
+      {location.pathname !== "/checkout/cart" && 
+      location.pathname !== "/checkout/shipping" &&
+      location.pathname !== "/checkout/payment" &&
+
       <>
         <NavbarLayer1 />
         <div className="sticky -top-0.5 left-0 z-20">
@@ -74,8 +78,9 @@ function App() {
           <Route path="/" element={ <Homepage /> } />
           <Route path="/clothing/:name" element={ <ClothingPage handlerOpenFilter={handlerOpenFilter} /> } />
           <Route path="/clothing/:name/:productName" element={ <ProductPage /> } />
-          <Route path="/checkout/cart" element={ <Checkout1 /> } />
-          <Route path="/checkout/shipping" element={ <Checkout2 /> } />
+          <Route path="/checkout/cart" element={ <CheckoutCart /> } />
+          <Route path="/checkout/shipping" element={ <CheckoutShipping /> } />
+          <Route path="/checkout/payment" element={ <CheckoutPayment /> } />
         </Routes>
         
         {location.pathname !== "/checkout" &&
