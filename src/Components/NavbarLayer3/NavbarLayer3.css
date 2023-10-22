@@ -8,7 +8,6 @@
 .TabsList {
   flex-shrink: 0;
   display: flex;
-  border-bottom: 1px solid var(--mauve-6);
 }
 
 .TabsTrigger {

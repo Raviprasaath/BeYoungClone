@@ -212,10 +212,10 @@ const CheckoutPayment = () => {
             <div className='bg-gray-100 w-full flex flex-col md2:w-[80%]  md2:flex-row'>
                 <div className='bg-gray-100 p-2 flex flex-col items-center w-full md2:w-[60%]'>
                 {!isMobile && 
-                    <Tabs.Root className="TabsRoot" defaultValue="tab1">
-                        <Tabs.List className="TabsList" aria-label="Manage your account">
+                    <Tabs.Root className="TabsRoot flex flex-row w-full" defaultValue="tab1">
+                        <Tabs.List className="TabsList flex flex-col shrink-0 " aria-label="Manage your account">
                         
-                        <Tabs.Trigger className="TabsTrigger" value="tab1">
+                        <Tabs.Trigger className="TabsTrigger TabsTriggerActive h-[50px] p-[20px]" value="tab1">
                             <div className="flex  w-full items-center gap-2">
                                     <img src={paytm} className="h-[50px]" alt="" />
                                     <p>
@@ -224,7 +224,7 @@ const CheckoutPayment = () => {
                             </div>
                         </Tabs.Trigger>
 
-                        <Tabs.Trigger className="TabsTrigger" value="tab2">
+                        <Tabs.Trigger className="TabsTrigger TabsTriggerActive h-[50px] p-[20px]" value="tab2">
                             <div className="flex  w-full items-center gap-2">
                                 <img src={creditCard} className="w-[50px]" alt="" />
                                 <p>
@@ -233,7 +233,7 @@ const CheckoutPayment = () => {
                             </div>
                         </Tabs.Trigger>
 
-                        <Tabs.Trigger className="TabsTrigger" value="tab3">
+                        <Tabs.Trigger className="TabsTrigger TabsTriggerActive h-[50px] p-[20px]" value="tab3">
                             <div className="flex w-full items-center gap-2">
                                 <img src={upi} className="w-[50px]" alt="" />
                                 <p>
@@ -242,7 +242,7 @@ const CheckoutPayment = () => {
                             </div>
                         </Tabs.Trigger>
                         
-                        <Tabs.Trigger className="TabsTrigger" value="tab4">
+                        <Tabs.Trigger className="TabsTrigger TabsTriggerActive h-[50px] p-[20px]" value="tab4">
                             <div className="flex  w-full items-center gap-2">
                                 <img src={wallet} className="w-[50px]" alt="" />
                                 <p>
@@ -251,7 +251,7 @@ const CheckoutPayment = () => {
                             </div>
                         </Tabs.Trigger>
 
-                        <Tabs.Trigger className="TabsTrigger" value="tab5">
+                        <Tabs.Trigger className="TabsTrigger TabsTriggerActive h-[50px] p-[20px]" value="tab5">
                             <div className="flex  w-full items-center gap-2">
                                 <img src={netBanking} className="w-[50px]" alt="" />
                                 <p>
@@ -260,11 +260,11 @@ const CheckoutPayment = () => {
                             </div>
                         </Tabs.Trigger>
 
-                        <Tabs.Trigger className="TabsTrigger" value="tab6">
+                        <Tabs.Trigger className="TabsTrigger TabsTriggerActive h-[50px] p-[20px]" value="tab6">
                             Pay using Epay
                         </Tabs.Trigger>
 
-                        <Tabs.Trigger className="TabsTrigger" value="tab7">
+                        <Tabs.Trigger className="TabsTrigger TabsTriggerActive h-[50px] p-[20px]" value="tab7">
                             Cash on Delivery
                         </Tabs.Trigger>
 

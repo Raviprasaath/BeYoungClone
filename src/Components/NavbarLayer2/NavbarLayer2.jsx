@@ -18,6 +18,17 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const { data, loading } = useDataContext();
 
 
+  const [searchBarOpen, setSearchBarOpen] = useState(false);
+  const [searchBarResult, setSearchBarResult] = useState(false);
+
+  const handlerSearchOpen = () => {
+    setSearchBarOpen(!searchBarOpen);
+  }
+  const handlerSearchResult = () => {
+    setSearchBarResult(!searchBarResult);
+  }
+
+
   //#region ------------------------Men-----------------
 
   const [travelData, setTravelData] = useState([]);
@@ -301,7 +312,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                               </Link>
                             </div>
                             <div>
-                              <Link to="/coming-soon">
+                              <Link to="/out-of-stock">
                                 Combos
                               </Link>
                             </div>
@@ -422,10 +433,10 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                               Special
                             </div>
                             <div>
-                              <Link to="/coming-soon">Couple T-Shirts</Link>
+                              <Link to="/out-of-stock">Couple T-Shirts</Link>
                             </div>
                             <div>
-                              <Link to="/coming-soon">Bestseller T Shirts</Link>
+                              <Link to="/out-of-stock">Bestseller T Shirts</Link>
                             </div>
                             <div className="MenubarSeparator"></div>
                             <div className="font-bold">Winter Wears</div>
@@ -561,7 +572,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                             
                             </div>
                             <div>
-                              <Link to="/coming-soon">
+                              <Link to="/out-of-stock">
                                 Combos
                               </Link>
                             </div>
@@ -597,7 +608,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                             </div>
                             <div>
                               <Link
-                                to="/coming-soon"
+                                to="/out-of-stock"
                               >
                                 Couple Boxers
                               </Link>                            
@@ -686,7 +697,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                             </div>
                             <div>
                               <Link
-                                to="/coming-soon"                                
+                                to="/out-of-stock"                                
                               >
                                 Couple T-Shirts
                               </Link>
@@ -694,14 +705,14 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                               
                             <div>
                               <Link
-                                to="/coming-soon"                                
+                                to="/out-of-stock"                                
                               >
                                 Bestseller T Shirts
                               </Link>
                             </div>
                             <div>
                               <Link
-                                to="/coming-soon"                                
+                                to="/out-of-stock"                                
                               >
                                 Deals and Offers
                               </Link>
@@ -749,7 +760,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
 
                     <NavigationMenu.Item className="hover:bg-yellow-300">
                       <NavigationMenu.Trigger className="hover:bg-yellow-300 MenubarTrigger cursor-pointer text-[0.85rem] font-bold">
-                        <Link to="/coming-soon">
+                        <Link to="/out-of-stock">
                           COMBOS
                         </Link>
                       </NavigationMenu.Trigger>
@@ -857,7 +868,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                             </div>
                             <div>
                             <Link
-                                to="/coming-soon"
+                                to="/out-of-stock"
                                 state={{ data: travelCommon }}                                
                               >
                                 Beyoung Originals
@@ -871,10 +882,54 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                 </NavigationMenu.Root>
               </div>
               <div className="flex absolute right-0 top-[20px] gap-4 text-[1.3rem]">
-                <AiOutlineSearch />
-                <AiFillHeart />
-                <BsFillCartFill />
+                <AiOutlineSearch onClick={()=>handlerSearchOpen()} className="cursor-pointer" />
+                <AiFillHeart className="cursor-pointer"/>
+                <Link to="/checkout/cart">
+                  
+                <div>
+                  <BsFillCartFill className="cursor-pointer"/>
+                </div>
+                <div className="absolute -top-[15px] text-[0.7rem] -right-[10px] bg-yellow-300 border rounded-full w-[18px] h-[18px] text-center">
+                  1
+                </div>
+                  
+                </Link>
               </div>
+
+
+            {/* search bar */}
+
+            {searchBarOpen && (
+              <div className="absolute border-2 border-gray-300 right-[0px] top-[58px] bg-white">
+                <input className="p-1.5 w-[170px]" type="text" name="search" id="search" />
+                <label onClick={() => handlerSearchResult()} className="px-2.5 py-1 m-1 bg-black text-white">
+                  Search
+                </label>
+              </div>
+            )}
+
+            { searchBarOpen && searchBarResult && (
+              <div className="absolute right-[0px] top-[97px] bg-white w-[259.9px] h-[150px] overflow-auto">
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+              </div>
+            )}
+
+
             </div>
           </div>
         </>
@@ -892,11 +947,49 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 text-[1.2rem]">
-              <AiOutlineSearch />
-              <AiFillHeart />
-              <BsFillCartFill />
+            <div className="relative flex items-center gap-2.5 text-[1.2rem]">
+              <AiOutlineSearch onClick={()=>handlerSearchOpen()} className="cursor-pointer" />
+              <AiFillHeart className="cursor-pointer"/>
+              <Link to="/checkout/cart">
+                <div>
+                  <BsFillCartFill className="cursor-pointer"/>
+                </div>
+                <div className="absolute -top-[10px] text-[0.7rem] -right-[5px] bg-yellow-300 border rounded-full w-[15px] h-[15px] text-center">
+                  1
+                </div>
+              </Link>
             </div>
+
+            
+            
+            
+            {/* search bar */}
+            { searchBarOpen && 
+              <div className="absolute border-2 border-gray-300 right-[15px] top-[40px] bg-white">
+                <input className="p-1.5 w-[170px]" type="text" name="search" id="search" />
+                <label onClick={() => handlerSearchResult()} className="px-2.5 py-1 m-1 bg-black text-white">
+                  Search
+                </label>
+              </div>
+            }
+
+            {searchBarOpen && searchBarResult && 
+              <div className="absolute right-[15px] top-[79px] bg-white w-[259.9px] h-[150px] overflow-auto ">
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+                <div className="px-2 text-[1.1rem]">ans</div>
+                <div className="border"></div>
+              </div>
+            }
+
           </div>
         </div>
       )}

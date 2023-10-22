@@ -265,7 +265,7 @@ const NavbarLayer3 = (props) => {
                       </Link>
                     </AccordionContent>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                      <Link to="/coming-soon">
+                      <Link to="/out-of-stock">
                         Beyoung Originals
                       </Link>
                     </AccordionContent>
@@ -449,7 +449,7 @@ const NavbarLayer3 = (props) => {
                   <Accordion.Item className="AccordionItem" value="item-4">
                   <AccordionTrigger>BEYOUNG ORIGINALS</AccordionTrigger>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                    <Link to="/coming-soon">
+                    <Link to="/out-of-stock">
                       Combos
                     </Link>
                     </AccordionContent>
@@ -461,7 +461,7 @@ const NavbarLayer3 = (props) => {
                       </Link>                    
                     </AccordionContent>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                    <Link to="coming-soon">
+                    <Link to="out-of-stock">
                       Couple T-Shirts
                     </Link>                    
                     </AccordionContent>
@@ -638,7 +638,7 @@ const NavbarLayer3 = (props) => {
                 <Accordion.Item className="AccordionItem" value="item-4">
                 <AccordionTrigger>BEYOUNG ORIGINALS</AccordionTrigger>
                   <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                  <Link to="coming-soon">
+                  <Link to="out-of-stock">
                     Combos
                   </Link>
                   </AccordionContent>

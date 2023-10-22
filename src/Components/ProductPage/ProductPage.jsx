@@ -437,7 +437,7 @@ const ProductPage = () => {
                   </div>
                   <div
                     className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-                    onClick={() => handlerFavAdding(item._id)}
+                    onClick={(event) => handlerFavAdding(event,item._id)}
                   >
                     {
                     activateHeartId?.includes(item._id)  ? (
@@ -456,7 +456,8 @@ const ProductPage = () => {
         </>
     )
 
-    const handlerFavAdding = (idVal) => {
+    const handlerFavAdding = (event, idVal) => {
+        event.preventDefault();
         const idCheck = mySet1.has(idVal);
         if (idCheck) {
           mySet1.delete(idVal);

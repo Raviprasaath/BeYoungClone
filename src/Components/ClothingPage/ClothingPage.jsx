@@ -11,8 +11,6 @@ import ClothingFilter from "./ClothingFilter";
 
 import { useScreenSize } from "../CommonFunctions/CommonFunctions";
 
-import sample1 from "../../assets/Clothing/sample-image.jpg";
-import sample2 from "../../assets/Clothing/sample-image2.jpg";
 
 import "./ClothingPage.css";
 import { Link, useLocation } from "react-router-dom";
@@ -22,7 +20,7 @@ let mySet1 = new Set();
 let arr = [];
 
 
-const ClothingPage = ({ handlerOpenFilter }) => {
+const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   const location = useLocation();
   const [dataRender, setDataRender] = useState();
 
@@ -46,7 +44,8 @@ const ClothingPage = ({ handlerOpenFilter }) => {
     setActivateHeartId( ()=>arr[0] );
   }, [])
 
-  const handlerFavAdding = (idVal) => {
+  const handlerFavAdding = (event, idVal) => {
+    event.preventDefault()
     const idCheck = mySet1.has(idVal);
     if (idCheck) {
       mySet1.delete(idVal);
@@ -97,7 +96,7 @@ const ClothingPage = ({ handlerOpenFilter }) => {
                 </div>
                 <div
                   className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-                  onClick={() => handlerFavAdding(item._id)}
+                  onClick={(event) => handlerFavAdding(event, item._id)}
                 >
                   {
                   activateHeartId?.includes(item._id)  ? (
@@ -115,7 +114,6 @@ const ClothingPage = ({ handlerOpenFilter }) => {
     </>
   );
 
-      console.log("location", location);
   return (
     <>
       <div className="flex relative">
@@ -123,7 +121,7 @@ const ClothingPage = ({ handlerOpenFilter }) => {
           <div className="sticky">
             <>
               <div className="flex">
-                <div>{<ClothingFilter clothingData={dataRender} />}</div>
+                <div>{<ClothingFilter clothingData={dataRender}/>}</div>
                 <div className="z-1">{contentBody}</div>
               </div>
             </>
@@ -132,12 +130,15 @@ const ClothingPage = ({ handlerOpenFilter }) => {
 
         {isMobile && <div className="z-1">{contentBody}</div>}
 
-        {/* footer */}
+
         {isMobile && (
           <>
             <div className="fixed flex flex-row bottom-0 w-full justify-around bg-white py-2">
               <div
-                onClick={() => handlerOpenFilter(true)}
+                onClick={() => {
+                  handlerOpenFilter(true);
+                  handlerFilterData(dataRender);
+                }}
                 className="flex justify-center items-center gap-2 w-1/2 cursor-pointer"
               >
                 <IoIosOptions />

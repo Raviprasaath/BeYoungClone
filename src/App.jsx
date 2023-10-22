@@ -15,7 +15,7 @@ import UserAuthentication from "./Components/UserAuthentication/UserAuthenticati
 import CheckoutCart from "./Components/Checkout/CheckoutCart";
 import CheckoutShipping from "./Components/Checkout/CheckoutShipping";
 import CheckoutPayment from "./Components/Checkout/CheckoutPayment";
-import ComingSoonPage from "./Components/ComingSoonPage/ComingSoonPage";
+import OutOfStock from "./Components/OutOfStock/OutOfStock";
 
 function App() { 
   const screenSize = useScreenSize();
@@ -25,6 +25,9 @@ function App() {
   
   const [sideNavbar, setSideNavbar] = useState(false);
   const [filterScreenOpen, setFilterScreenOpen] = useState(false);
+  const [filteredData, setFilteredData] = useState();
+
+  console.log('filteredData', filteredData);
 
   const handlerNavbarToggle = (value) => {
     setSideNavbar(value);
@@ -34,6 +37,9 @@ function App() {
     setFilterScreenOpen(value);
   }
 
+  const handlerFilterData = (value) => {
+    setFilteredData(value)
+  }
 
   return (
     <>
@@ -60,29 +66,29 @@ function App() {
         </div>
       </>
       }
-        {location.pathname !== "/checkout" && filterScreenOpen && isMobile && 
+        {filterScreenOpen && isMobile && 
           <>
             <div className="fixed top-0 z-50 flex flex-row w-[100%] h-full">
                 <div className=" z-1 max-w-[270px] h-full bg-white">
-                  {<ClothingFilter />}
+                  {<ClothingFilter filteredData={filteredData} />}
                 </div>
                 <div
                   className=" z-1 w-full h-full backdrop-blur-sm bg-gray-rgba "
                   onClick={()=>handlerOpenFilter(false)}
                 >
                 </div>
-              </div>            
-          </>          
+              </div>
+          </>
         }
         
         <Routes>
           <Route path="/" element={ <Homepage /> } />
-          <Route path="/clothing/:name" element={ <ClothingPage handlerOpenFilter={handlerOpenFilter} /> } />
+          <Route path="/clothing/:name" element={ <ClothingPage handlerOpenFilter={handlerOpenFilter} handlerFilterData={handlerFilterData} /> } />
           <Route path="/clothing/:name/:productName" element={ <ProductPage /> } />
           <Route path="/checkout/cart" element={ <CheckoutCart /> } />
           <Route path="/checkout/shipping" element={ <CheckoutShipping /> } />
           <Route path="/checkout/payment" element={ <CheckoutPayment /> } />
-          <Route path="/coming-soon" element={ <ComingSoonPage /> } />
+          <Route path="/out-of-stock" element={ <OutOfStock /> } />
         </Routes>
         
         {location.pathname !== "/checkout" &&

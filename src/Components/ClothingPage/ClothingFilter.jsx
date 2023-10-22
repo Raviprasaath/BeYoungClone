@@ -5,9 +5,11 @@ import classNames from "classnames";
 import React, { useState } from "react";
 
 
-const ClothingFilter = (clothingData) => {
+const ClothingFilter = ( {filteredData, clothingData} ) => {
     const [price, setPrice] = useState("low");
-    
+
+    console.log(filteredData);
+
     const colors = [
       {title:"BLACK" , className:"bg-black rounded-full w-[25px] h-[25px] m-1"},
       {title:"BROWN" , className:"bg-amber-700 rounded-full w-[25px] h-[25px] m-1" },
@@ -30,12 +32,24 @@ const ClothingFilter = (clothingData) => {
       {title:"SILVER" , className:"bg-zinc-300 rounded-full w-[25px] h-[25px] m-1" },
     ]
     
-    const receivedColors = clothingData.clothingData;
+    const receivedData = clothingData;
+
+    console.log("receivedData", receivedData);
     
     const colorElements = [];
     const addedColors = new Set();
     
-    receivedColors?.forEach((data, index) => {
+    receivedData?.forEach((data, index) => {
+      const matchingColor = colors?.find((color) => color.title === data.color);
+      if (matchingColor && !addedColors.has(matchingColor.title)) {
+        colorElements.push(
+          <div key={index} title={matchingColor.title} className={matchingColor.className}></div>
+        );
+        addedColors.add(matchingColor.title);
+      }
+    });
+    
+    filteredData?.forEach((data, index) => {
       const matchingColor = colors?.find((color) => color.title === data.color);
       if (matchingColor && !addedColors.has(matchingColor.title)) {
         colorElements.push(
@@ -45,15 +59,16 @@ const ClothingFilter = (clothingData) => {
       }
     });
 
+
     return (
         <>
             <div className="max-w-[250px] sticky top-4">
                 <h2 className="px-[20px] border-b border-dotted">FILTER</h2>
                 <Accordion.Root
-                className="AccordionRoot w-[250px]"
-                type="single"
-                defaultValue="item-1"
-                collapsible
+                  className="AccordionRoot w-[250px]"
+                  type="single"
+                  defaultValue="item-1"
+                  collapsible
                 >
                 <Accordion.Item className="AccordionItem" value="item-1">
                     <AccordionTrigger>COLOR</AccordionTrigger>
@@ -75,12 +90,12 @@ const ClothingFilter = (clothingData) => {
                     <div>XXL</div>
                     </AccordionContent>
                 </Accordion.Item>
-                <Accordion.Item className="AccordionItem" value="item-3">
+                {/* <Accordion.Item className="AccordionItem" value="item-3">
                     <AccordionTrigger>DESIGN</AccordionTrigger>
                     <AccordionContent>
                     <div>Checks Shirts</div>
                     </AccordionContent>
-                </Accordion.Item>
+                </Accordion.Item> */}
                 <Accordion.Item className="AccordionItem" value="item-4">
                     <AccordionTrigger>PRICE</AccordionTrigger>
                     <AccordionContent>
