@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 import * as Tabs from "@radix-ui/react-tabs";
 import { RiSecurePaymentLine } from 'react-icons/ri'
 import { CiLocationOn } from 'react-icons/ci'
@@ -5,6 +7,21 @@ import { MdPayment } from 'react-icons/md'
 import { BsCash } from 'react-icons/bs'
 import { TiTick } from 'react-icons/ti'
 import { PiTruckBold } from 'react-icons/pi'
+import TextField from "@mui/material/TextField";
+
+import * as Accordion from "@radix-ui/react-accordion";
+import classNames from "classnames";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+
+import * as Checkbox from '@radix-ui/react-checkbox';
+import { CheckIcon } from '@radix-ui/react-icons';
+
+import paytm from "../../assets/paytm.png"
+import upi from "../../assets/upi.png"
+import creditCard from "../../assets/card-cradit.png"
+import wallet from "../../assets/wallet.png"
+import netBanking from "../../assets/netbanking.png"
+import cvv from "../../assets/cvv-icon.png"
 
 
 import { Label } from '@radix-ui/react-menubar'
@@ -17,6 +34,58 @@ import './CheckoutPayment.css'
 const CheckoutPayment = () => {
     const screenSize = useScreenSize();
     const isMobile = screenSize < 960;
+    
+    const [checked, setChecked] = useState(false);
+
+    const [creditCardNumber, setCreditCardNumber] = useState(false);
+    const [creditCardName, setCreditCardName] = useState(false);
+    const [creditCardMonth, setCreditCardMonth] = useState(false);
+    const [creditCardYear, setCreditCardYear] = useState(false);
+    const [creditCardCvv, setCreditCardCvv] = useState(false);
+
+
+
+
+    let booleanCondition = creditCardNumber && creditCardName && creditCardMonth
+    && creditCardYear && creditCardCvv || checked
+    ? true : false;
+
+    const handlerCardNumber = (e) => {
+        if (e.target.value.length === 16) {
+            setCreditCardNumber(true);
+        } else {
+            setCreditCardNumber(false);
+        }
+    }
+    const handlerCardName = (e) => {
+        if (e.target.value.length > 5) {
+            setCreditCardName(true);
+        } else {
+            setCreditCardName(false);
+        }
+    }
+    const handlerCardMonth = (e) => {
+        if (e.target.value <= 12 && e.target.value >= 1) {
+            setCreditCardMonth(true);
+        } else {
+            setCreditCardMonth(false);
+        }
+    }
+    const handlerCardYear = (e) => {
+        if (e.target.value > 2022 && e.target.value.length === 4) {
+            setCreditCardYear(true);
+        } else {
+            setCreditCardYear(false);
+        }
+    }
+    const handlerCardCvv = (e) => {
+        if (e.target.value.length === 3) {
+            setCreditCardCvv(true);
+        } else {
+            setCreditCardCvv(false);
+        }
+    }
+
 
     const checkoutHeader1 = (
         <div className='w-full md2:w-[80%] md2:m-auto border'>
@@ -50,7 +119,7 @@ const CheckoutPayment = () => {
                     </div>
                     <div className='flex flex-col justify-center items-center'>                    
                         <div>
-                            <CiLocationOn  className='border-2 bg-white text-[2rem] rounded-full p-1'/>
+                            <TiTick  className='text-green-500 border-2 bg-white text-[2rem] rounded-full p-1'/>
                         </div>
                         <div className='text-[0.9rem]'>
                             Address
@@ -68,31 +137,127 @@ const CheckoutPayment = () => {
             </div>
         </>
     )
+    const debitCardPayment = (
+        <div className="flex flex-col gap-4">
+            <TextField
+                label="Card Number"
+                type="number"
+                error={creditCardNumber ? false : true}
+                className="textHeight w-full border-solid"
+                onChange={(e)=>handlerCardNumber(e)}
+            />
+            <TextField
+                label="Name On The Card"
+                type="text"
+                error={creditCardName ? false : true}
+                className=" w-full border-solid"
+                onChange={(e)=>handlerCardName(e)}
+            />
+            <div>
+                <p className="p-3 text-gray-500 text-[0.8rem]">VALID THROUGH (MM/YY)</p>
+                <div className="flex gap-3">
+                    <TextField
+                        label="MM"
+                        type="number"  
+                        error={creditCardMonth ? false : true}
+                        className=" w-[30%] border-solid"
+                        onChange={(e)=>handlerCardMonth(e)}
+                    />
+                    <TextField
+                        label="YY"
+                        type="number"
+                        error={creditCardYear ? false : true}
+                        className=" w-[30%] border-solid"
+                        onChange={(e)=>handlerCardYear(e)}
+                    />
+                    <div className=" flex relative">
+                        <div>
+                            <img src={cvv} className="absolute top-[10px] right-0" alt="" />
+                        </div>
+                        <TextField
+                            label="CVV"
+                            type="password"
+                            error={creditCardCvv ? false : true}
+                            className=" border-solid"
+                            onChange={(e)=>handlerCardCvv(e)}
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+    const checkbox = (
+        <div className="flex bg-gray-300 w-[80%]">
+                <div className="px-4 flex flex-col gap-2" >
+                    <div className="text-[0.8rem] text-gray-100">
+                        Pay online to avoid cash handling charges (₹50 per product)
+                    </div>
+                    <div className="flex items-center gap-3"> 
+                        <div className="text-[1rem]">
+                            I am accepting the Terms
+                        </div>
+                        <label htmlFor="c1" className=" w-[20px] border border-black h-[20px]">
+                            <Checkbox.Root className="CheckboxRoot"  checked={checked} onCheckedChange={setChecked} id="c1">
+                                <Checkbox.Indicator className="CheckboxIndicator">
+                                {checked ? <CheckIcon className="w-[20px] h-[20px] border-2 border-black" />:("Nope") } 
+                                </Checkbox.Indicator>                        
+                            </Checkbox.Root>
+                        </label>
+                    </div>
+                </div>                              
+        </div>
+    )
     const productsContainer = (
         <div className='flex justify-center '>
             <div className='bg-gray-100 w-full flex flex-col md2:w-[80%]  md2:flex-row'>
                 <div className='bg-gray-100 p-2 flex flex-col items-center w-full md2:w-[60%]'>
+                {!isMobile && 
                     <Tabs.Root className="TabsRoot" defaultValue="tab1">
                         <Tabs.List className="TabsList" aria-label="Manage your account">
                         
                         <Tabs.Trigger className="TabsTrigger" value="tab1">
-                            Pay With Paytm
+                            <div className="flex  w-full items-center gap-2">
+                                    <img src={paytm} className="h-[50px]" alt="" />
+                                    <p>
+                                        Pay With Paytm
+                                    </p>
+                            </div>
                         </Tabs.Trigger>
 
                         <Tabs.Trigger className="TabsTrigger" value="tab2">
-                            Debit/Credit Card
+                            <div className="flex  w-full items-center gap-2">
+                                <img src={creditCard} className="w-[50px]" alt="" />
+                                <p>
+                                    Debit/Credit Card                                        
+                                </p>
+                            </div>
                         </Tabs.Trigger>
 
                         <Tabs.Trigger className="TabsTrigger" value="tab3">
-                            UPI
+                            <div className="flex w-full items-center gap-2">
+                                <img src={upi} className="w-[50px]" alt="" />
+                                <p>
+                                    UPI                                        
+                                </p>
+                            </div>
                         </Tabs.Trigger>
                         
                         <Tabs.Trigger className="TabsTrigger" value="tab4">
-                            Wallets
+                            <div className="flex  w-full items-center gap-2">
+                                <img src={wallet} className="w-[50px]" alt="" />
+                                <p>
+                                    Wallets                                       
+                                </p>
+                            </div>
                         </Tabs.Trigger>
 
                         <Tabs.Trigger className="TabsTrigger" value="tab5">
-                            Net Banking
+                            <div className="flex  w-full items-center gap-2">
+                                <img src={netBanking} className="w-[50px]" alt="" />
+                                <p>
+                                    Net Banking                                       
+                                </p>
+                            </div>
                         </Tabs.Trigger>
 
                         <Tabs.Trigger className="TabsTrigger" value="tab6">
@@ -106,19 +271,160 @@ const CheckoutPayment = () => {
                         </Tabs.List>
 
                         <Tabs.Content className="TabsContent" value="tab1">
-                        <p className="Text">
-                            Paytm Payment
-                        </p>
+                        <div className="px-2 bg-gray-300 ">
+                            The payment option will be added later, currently under development.
+                        </div>
                         </Tabs.Content>
 
                         <Tabs.Content className="TabsContent" value="tab2">
-                        <p className="Text">
-                            Change your password here. After saving, you'll be logged out.
-                        </p>    
+                        <div className="">
+                            <p>Enter Your Debit/Credit Card Details</p>
+                            {debitCardPayment}
+                        </div>
+                        </Tabs.Content>
+
+                        <Tabs.Content className="TabsContent" value="tab3">
+                        <div className="px-2 bg-gray-300 ">
+                            The payment option will be added later, currently under development.                            
+                        </div>
+                        </Tabs.Content>
+                        <Tabs.Content className="TabsContent" value="tab4">
+                        <div className="px-2 bg-gray-300 ">
+                            The payment option will be added later, currently under development.                            
+                        </div>
+                        </Tabs.Content>
+                        <Tabs.Content className="TabsContent" value="tab5">
+                        <div className="px-2 bg-gray-300 ">
+                            The payment option will be added later, currently under development.                            
+                        </div>
+                        </Tabs.Content>
+                        <Tabs.Content className="TabsContent" value="tab6">
+                        <div className="px-2 bg-gray-300 ">
+                            The payment option will be added later, currently under development.                            
+                        </div>
+                        </Tabs.Content>
+                        <Tabs.Content className="TabsContent" value="tab7">
+                        <div className="px-2 bg-gray-300 ">
+                            {checkbox}
+                        </div>
                         </Tabs.Content>
 
 
                     </Tabs.Root>
+                }
+                {isMobile && 
+                    <>                        
+                        <Accordion.Root
+                            className="AccordionRoot"
+                            type="single"
+                            defaultValue="item-1"
+                            collapsible
+                        >
+                            <Accordion.Item className="AccordionItem" value="item-1">
+                            <AccordionTrigger>
+                                <div className="flex items-center gap-2">
+                                    <img src={paytm} className="w-[50px]" alt="" />
+                                    <p>
+                                        Pay With Paytm
+                                    </p>
+                                </div>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <p className="bg-gray-300">
+                                    The payment option will be added later, currently under development.
+                                </p>
+                            </AccordionContent>
+                            </Accordion.Item>
+
+                            <Accordion.Item className="AccordionItem" value="item-2">
+                            <AccordionTrigger>
+                            <div className="flex items-center gap-2">
+                                <img src={upi} className="w-[50px]" alt="" />
+                                <p>
+                                    UPI                                        
+                                </p>
+                            </div>
+                            </AccordionTrigger>
+                            <Accordion.Content className="AccordionContent">
+                                <div className="AccordionContentText">
+                                The payment option will be added later, currently under development.
+                                </div>
+                            </Accordion.Content>
+                            </Accordion.Item>
+
+                            <Accordion.Item className="AccordionItem" value="item-3">
+                            <AccordionTrigger>
+                                <div className="flex items-center gap-2">
+                                    <img src={creditCard} className="w-[50px]" alt="" />
+                                    <p>
+                                        Debit/Credit Card                                        
+                                    </p>
+                                </div>
+                            
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div>
+                                    {debitCardPayment}
+                                </div>
+                            </AccordionContent>
+                            </Accordion.Item>
+
+                            
+                            <Accordion.Item className="AccordionItem" value="item-4">
+                            <AccordionTrigger>
+                                <div className="flex items-center gap-2">
+                                    <img src={wallet} className="w-[50px]" alt="" />
+                                    <p>
+                                        Wallets                                       
+                                    </p>
+                                </div>
+                            
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div>
+                                <p>Enter Your Debit/Credit Card Details </p>
+                                </div>
+                            </AccordionContent>
+                            </Accordion.Item>
+
+                            <Accordion.Item className="AccordionItem" value="item-5">
+                            <AccordionTrigger>
+                                <div className="flex items-center gap-2">
+                                    <img src={netBanking} className="w-[50px]" alt="" />
+                                    <p>
+                                        Net Banking                                       
+                                    </p>
+                                </div>
+                            
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div>
+                                <p>Enter Your Debit/Credit Card Details </p>
+                                </div>
+                            </AccordionContent>
+                            </Accordion.Item>
+
+                            <Accordion.Item className="AccordionItem" value="item-6">
+                            <AccordionTrigger>
+                                <div className="flex items-center gap-2">                                    
+                                    <p>
+                                        Cash On Delivery                                       
+                                    </p>
+                                </div>
+                            
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                {checkbox}
+                            </AccordionContent>
+                            </Accordion.Item>
+
+                            
+                                   
+
+
+                        </Accordion.Root>
+                    </>
+                }
                 </div>
             
                 <div className=' w-[100%] md2:w-[35%]'>
@@ -192,7 +498,10 @@ const CheckoutPayment = () => {
                         </div>
                         {!isMobile &&                 
                             <Link >
-                                <button className={` bg-teal-300 text-white w-[95%] font-semibold text-center p-2`}>
+                                <button
+                                    disabled={booleanCondition}
+                                    className={`${booleanCondition ? 'bg-teal-400':'bg-gray-300'} w-[95%] text-center text-white font-semibold p-2 rounded text-[0.8rem]`}
+                                >                             
                                     CHECKOUT SECURELY
                                 </button>
                             </Link>
@@ -216,7 +525,7 @@ const CheckoutPayment = () => {
             </div>
             
             {isMobile &&
-                <div className='fixed bottom-0 bg-white w-full flex flex-row justify-between p-2'>
+                <div className='fixed shadow-inner z-10 bottom-0 bg-white  w-full flex flex-row justify-between p-2'>
                     <div>
                         <div>
                             ₹3695            
@@ -227,9 +536,9 @@ const CheckoutPayment = () => {
                     </div>
                     <div>
                         <button
-                            
-                            className={`text-white font-semibold p-2 rounded text-[0.8rem]`}
-                        >                            
+                            disabled={booleanCondition}
+                            className={`${booleanCondition ? 'bg-teal-400':'bg-gray-300'}  text-white font-semibold p-2 rounded text-[0.8rem]`}
+                        >
                             CHECKOUT SECURELY
                         </button>
                     </div>
@@ -247,5 +556,32 @@ const CheckoutPayment = () => {
         </>
     )
 }
+
+const AccordionTrigger = React.forwardRef(
+    ({ children, className, ...props }, forwardedRef) => (
+      <Accordion.Header className="AccordionHeader">
+        <Accordion.Trigger
+          className={classNames("AccordionTrigger", className)}
+          {...props}
+          ref={forwardedRef}
+        >
+          {children}
+          <ChevronDownIcon className="AccordionChevron" aria-hidden />
+        </Accordion.Trigger>
+      </Accordion.Header>
+    )
+  );
+  
+  const AccordionContent = React.forwardRef(
+    ({ children, className, ...props }, forwardedRef) => (
+      <Accordion.Content
+        className={classNames("AccordionContent", className)}
+        {...props}
+        ref={forwardedRef}
+      >
+        <div className="AccordionContentText">{children}</div>
+      </Accordion.Content>
+    )
+  );
 
 export default CheckoutPayment;

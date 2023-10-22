@@ -1,11 +1,11 @@
 import { RiSecurePaymentLine } from 'react-icons/ri'
-import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { CiLocationOn } from 'react-icons/ci'
 import { MdPayment } from 'react-icons/md'
 import { BsCash } from 'react-icons/bs'
 import { TiTick } from 'react-icons/ti'
 import { PiTruckBold } from 'react-icons/pi'
 import TextField from "@mui/material/TextField";
+
 
 
 import { Label } from '@radix-ui/react-menubar'
@@ -101,10 +101,9 @@ const CheckoutCart = () => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
       };
     //#endregion --------------Form Validation -----------
-
+    
     let booleanCondition = firstName && lastName &&
-    email && phone && pinCode && city && state && address ? true : false;
-
+    email && phone && pinCode && city && state && address ? true : false;    
 
     const checkoutHeader1 = (
         <div className='w-full md2:w-[80%] md2:m-auto border'>
@@ -307,11 +306,27 @@ const CheckoutCart = () => {
                             You Saved ₹6702 On This Order
                         </div>
                         {!isMobile &&                 
-                            <Link >
-                                <button disabled={booleanCondition} className={`${booleanCondition ? 'bg-teal-400':'bg-gray-300'} bg-teal-300 text-white w-[95%] font-semibold text-center p-2`}>
-                                    CHECKOUT SECURELY
-                                </button>
-                            </Link>
+                            (
+                                <>
+                                    {booleanCondition ? (
+                                    <Link to='/checkout/payment'>
+                                        <button
+                                        className="bg-teal-400 text-white w-[95%] font-semibold text-center p-2"
+                                        >
+                                        CHECKOUT SECURELY
+                                        </button>
+                                    </Link>
+                                    ) : (
+                                    <button
+                                        className="cursor-pointer bg-gray-300 text-white w-[95%] font-semibold text-center p-2"
+                                        disabled
+                                    >
+                                        CHECKOUT SECURELY
+                                    </button>
+                                    )}
+
+                                </>
+                            )
                         }
                     </div>
 
@@ -332,7 +347,7 @@ const CheckoutCart = () => {
             </div>
             
             {isMobile &&
-                <div className='fixed bottom-0 bg-white w-full flex flex-row justify-between p-2'>
+                <div className='fixed shadow-inner z-10 bottom-0 bg-white  w-full flex flex-row justify-between p-2'>
                     <div>
                         <div>
                             ₹3695            
@@ -342,12 +357,25 @@ const CheckoutCart = () => {
                         </div>
                     </div>
                     <div>
-                        <button
-                            disabled={booleanCondition}
-                            className={`${booleanCondition ? 'bg-teal-400':'bg-gray-300'}  text-white font-semibold p-2 rounded text-[0.8rem]`}
-                        >                            
-                            CHECKOUT SECURELY
-                        </button>
+                        {booleanCondition ? (
+                            <Link to='/checkout/payment'>
+                                <button
+                                className={`${booleanCondition ? 'bg-teal-400':'bg-gray-300'}  text-white font-semibold p-2 rounded text-[0.8rem]`}
+                                >
+                                CHECKOUT SECURELY
+                                </button>
+                            </Link>
+                            ) : (
+                            <button
+                                className={`${booleanCondition ? 'bg-teal-400':'bg-gray-300'}  text-white font-semibold p-2 rounded text-[0.8rem]`}
+                                disabled
+                            >
+                                CHECKOUT SECURELY
+                            </button>
+                        )}
+
+
+
                     </div>
 
                 </div>

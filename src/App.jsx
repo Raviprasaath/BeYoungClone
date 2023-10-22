@@ -15,6 +15,7 @@ import UserAuthentication from "./Components/UserAuthentication/UserAuthenticati
 import CheckoutCart from "./Components/Checkout/CheckoutCart";
 import CheckoutShipping from "./Components/Checkout/CheckoutShipping";
 import CheckoutPayment from "./Components/Checkout/CheckoutPayment";
+import ComingSoonPage from "./Components/ComingSoonPage/ComingSoonPage";
 
 function App() { 
   const screenSize = useScreenSize();
@@ -81,6 +82,7 @@ function App() {
           <Route path="/checkout/cart" element={ <CheckoutCart /> } />
           <Route path="/checkout/shipping" element={ <CheckoutShipping /> } />
           <Route path="/checkout/payment" element={ <CheckoutPayment /> } />
+          <Route path="/coming-soon" element={ <ComingSoonPage /> } />
         </Routes>
         
         {location.pathname !== "/checkout" &&

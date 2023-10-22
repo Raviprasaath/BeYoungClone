@@ -377,13 +377,26 @@ const ProductPage = () => {
                         ADD TO CART
                     </p>
                 </div>
-                <div onClick={()=>handlerCheckout()} className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
-                <GrFormNextLink />
-                    <p >
-                        BUY NOW
-                    </p>
-                    
-                </div>
+                {productSizeSelection === "" ? 
+                (
+                    <div onClick={()=>handlerCheckout()}  className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
+                        <GrFormNextLink />
+                            <p>
+                                BUY NOW
+                            </p>                            
+                        </div>
+                ):(
+                
+                    <Link className="w-full" to='/checkout/cart'>
+                        <div onClick={()=>handlerCheckout()}  className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
+                        <GrFormNextLink />
+                            <p>
+                                BUY NOW
+                            </p>                            
+                        </div>
+                    </Link>
+                
+                )}
             </div>
         </>
     )
