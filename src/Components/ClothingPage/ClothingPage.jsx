@@ -45,7 +45,7 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   }, [])
 
   const handlerFavAdding = (event, idVal) => {
-    event.preventDefault()
+    event.preventDefault();
     const idCheck = mySet1.has(idVal);
     if (idCheck) {
       mySet1.delete(idVal);
