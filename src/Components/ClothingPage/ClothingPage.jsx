@@ -13,8 +13,6 @@ import "./ClothingPage.css";
 import { Link, useLocation } from "react-router-dom";
 import { useDataContext } from "../Fetching/DataContext";
 
-let mySet1 = new Set();
-let arr = [];
 
 
 const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
@@ -32,6 +30,7 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
 
   const [tokenVal, setTokenVal] = useState();
 
+  
 
   const existingProductIdFetchSplit = existingProductIdFetch?.map((item)=> {
     return item.products._id
@@ -72,8 +71,6 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
     }
   }
 
-  
-
 
 
 
@@ -98,15 +95,6 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
 
     if (dataFromLocal.username) {
       productAddingInFetch(idVal, 'PATCH', tokenVal);
-
-      const idCheck = mySet1.has(idVal);
-      if (idCheck) {
-        mySet1.delete(idVal);
-      } else {
-        mySet1.add(idVal);     
-      }
-      arr = Array.from(mySet1);
-
 
 
 
@@ -167,10 +155,12 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
                   className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
                   onClick={(event) => handlerFavAdding(event, item._id)}
                 >
-                  {existingProductIdFetchSplit?.includes(item._id) || activateHeartId?.includes(item._id)  ? (
+                  {
+                  existingProductIdFetchSplit?.includes(item._id) || 
+                  activateHeartId?.includes(item._id)  ? (
                       <AiFillHeart className="text-red-500" />
                       ) : (
-                        <AiOutlineHeart />
+                      <AiOutlineHeart />
                   )}
                 </div>
 
@@ -247,28 +237,3 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
 export default ClothingPage
 
 
-
-
-  // const handlerFavAdding = (event, idVal) => {
-  //   event.preventDefault();
-  //   setProductIdFavAdding(idVal);
-  //   const dataFromLocal = JSON.parse(localStorage.getItem('userDetails')) || [];
-  //   if (dataFromLocal.username) {
-  //     setTokenVal(dataFromLocal.token);
-  //     productAddingInFetch(productIdFavAdding, 'PATCH', tokenVal);
-  //     setActivateHeartId( ()=>arr )
-
-      // const idCheck = mySet1.has(idVal);
-      // if (idCheck) {
-      //   mySet1.delete(idVal);
-      // } else {
-      //   mySet1.add(idVal);     
-      // }
-      // arr = Array.from(mySet1);
-      // localStorage.setItem("favDress", JSON.stringify(arr));
-
-     
-  //   } else {
-  //     openDialog(); 
-  //   }
-  // };
