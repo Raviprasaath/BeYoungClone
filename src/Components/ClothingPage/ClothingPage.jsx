@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import * as Accordion from "@radix-ui/react-accordion";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
-import classNames from "classnames";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoIosOptions } from "react-icons/io";
 import { BiSortAlt2 } from "react-icons/bi";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Cross2Icon } from "@radix-ui/react-icons";
 import ClothingFilter from "./ClothingFilter";
 
 import { useScreenSize } from "../CommonFunctions/CommonFunctions";
 
 
+
 import "./ClothingPage.css";
 import { Link, useLocation } from "react-router-dom";
-
+import { useDataContext } from "../Fetching/DataContext";
 
 let mySet1 = new Set();
 let arr = [];
@@ -22,41 +19,112 @@ let arr = [];
 
 const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   const location = useLocation();
-  const [dataRender, setDataRender] = useState();
-
-  const [activateHeartId, setActivateHeartId] = useState([]);
-
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+  
+  const { isDialogOpen, openDialog, closeDialog, refreshNavbar } = useDataContext();
+  
+  const [dataRender, setDataRender] = useState();
+  const [activateHeartId, setActivateHeartId] = useState([]);
+  const [existingProductIdFetch, setExistingProductIdFetch] = useState();
 
-  console.log("dataRender", dataRender);
+  const [favReRender, setFavReRender] = useState(0);
+
+  const [tokenVal, setTokenVal] = useState();
+
+
+  const existingProductIdFetchSplit = existingProductIdFetch?.map((item)=> {
+    return item.products._id
+  });
+
+  // Fav adding 
+  const productAddingInFetch = async (idVal, method, token) => {
+    try {
+      let myHeaders = new Headers();
+      myHeaders.append("projectID", "vflsmb93q9oc");
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
+  
+      let raw = JSON.stringify({
+        "productId": `${idVal}`
+      });
+  
+      let requestOptions = {
+        method: `${method}`,
+        headers: myHeaders,
+        redirect: 'follow'
+      };
+
+      if (method === 'PATCH')  { 
+        requestOptions.body = raw 
+      }
+  
+      const response = await fetch(
+        "https://academics.newtonschool.co/api/v1/ecommerce/wishlist", requestOptions)
+      if (response.ok) {
+        const result = await response.json();
+        setExistingProductIdFetch(result.data.items);
+        
+        console.log("result", result);
+      }
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  
+
+
+
+
+
+
+  useEffect(()=> {
+    const localStorageDestructure = JSON.parse(localStorage.getItem('userDetails')) || [];
+    if (localStorageDestructure.username) {
+      setTokenVal(localStorageDestructure?.token);
+      const token = localStorageDestructure?.token
+  
+      productAddingInFetch("",'GET', token);
+    } else {
+      setExistingProductIdFetch([]);
+    }
+  }, [refreshNavbar])
+
+  const handlerFavAdding = (event, idVal) => {
+    event.preventDefault();
+    setActivateHeartId(idVal);
+    const dataFromLocal = JSON.parse(localStorage.getItem('userDetails')) || [];
+
+    if (dataFromLocal.username) {
+      productAddingInFetch(idVal, 'PATCH', tokenVal);
+
+      const idCheck = mySet1.has(idVal);
+      if (idCheck) {
+        mySet1.delete(idVal);
+      } else {
+        mySet1.add(idVal);     
+      }
+      arr = Array.from(mySet1);
+
+
+
+
+      
+    } else {
+      openDialog();
+    }
+
+    setFavReRender((prev)=> prev + 1);
+  }
 
   useEffect(() => {
     const dataFromHP3 = location?.state?.data;
     setDataRender(dataFromHP3);
-  }, [location.pathname]);
-
-  useEffect(()=> {
-    const localStore = JSON.parse(localStorage.getItem("favDress")) || [];
-    if (localStore.length !== 0) {
-      arr.push(localStore);
-    }
-    setActivateHeartId( ()=>arr[0] );
-  }, [])
-
-  const handlerFavAdding = (event, idVal) => {
-    event.preventDefault();
-    const idCheck = mySet1.has(idVal);
-    if (idCheck) {
-      mySet1.delete(idVal);
-    } else {
-      mySet1.add(idVal);     
-    }
-    arr = Array.from(mySet1);
-    localStorage.setItem("favDress", JSON.stringify(arr));
-    setActivateHeartId( ()=>arr )
-  };
+  }, [location.pathname, refreshNavbar, favReRender]);
   
+
+
   const contentBody = (
     <>
       <div className="flex flex-row justify-center flex-wrap gap-4 p-4">
@@ -94,17 +162,18 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
                     </span>
                   </p>
                 </div>
+
                 <div
                   className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
                   onClick={(event) => handlerFavAdding(event, item._id)}
                 >
-                  {
-                  activateHeartId?.includes(item._id)  ? (
-                    <AiFillHeart className="text-red-500" />
-                    ) : (
-                    <AiOutlineHeart />
+                  {existingProductIdFetchSplit?.includes(item._id) || activateHeartId?.includes(item._id)  ? (
+                      <AiFillHeart className="text-red-500" />
+                      ) : (
+                        <AiOutlineHeart />
                   )}
                 </div>
+
               </div>
             </Link>              
           ))
@@ -176,3 +245,30 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
 
 
 export default ClothingPage
+
+
+
+
+  // const handlerFavAdding = (event, idVal) => {
+  //   event.preventDefault();
+  //   setProductIdFavAdding(idVal);
+  //   const dataFromLocal = JSON.parse(localStorage.getItem('userDetails')) || [];
+  //   if (dataFromLocal.username) {
+  //     setTokenVal(dataFromLocal.token);
+  //     productAddingInFetch(productIdFavAdding, 'PATCH', tokenVal);
+  //     setActivateHeartId( ()=>arr )
+
+      // const idCheck = mySet1.has(idVal);
+      // if (idCheck) {
+      //   mySet1.delete(idVal);
+      // } else {
+      //   mySet1.add(idVal);     
+      // }
+      // arr = Array.from(mySet1);
+      // localStorage.setItem("favDress", JSON.stringify(arr));
+
+     
+  //   } else {
+  //     openDialog(); 
+  //   }
+  // };

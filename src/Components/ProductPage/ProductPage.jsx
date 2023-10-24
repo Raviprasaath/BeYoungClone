@@ -92,12 +92,10 @@ const ProductPage = () => {
     useEffect(() => {
         singleProductFetch();
 
-
-        // window.scrollTo({
-        //     top: 0,
-        //     behavior: "smooth",
-        //   });
-
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
     }, [reversedStrFinal]);
 
     useEffect(() => {
@@ -447,9 +445,7 @@ const ProductPage = () => {
                     )}
                   </div>
                 </div>
-              </Link>
-                
-                ))
+              </Link> ))
             ) : (
                 <p>Loading...</p>
             )}

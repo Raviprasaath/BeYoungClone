@@ -8,8 +8,6 @@ import React, { useState } from "react";
 const ClothingFilter = ( {filteredData, clothingData} ) => {
     const [price, setPrice] = useState("low");
 
-    console.log(filteredData);
-
     const colors = [
       {title:"BLACK" , className:"bg-black rounded-full w-[25px] h-[25px] m-1"},
       {title:"BROWN" , className:"bg-amber-700 rounded-full w-[25px] h-[25px] m-1" },
@@ -34,16 +32,19 @@ const ClothingFilter = ( {filteredData, clothingData} ) => {
     
     const receivedData = clothingData;
 
-    console.log("receivedData", receivedData);
     
     const colorElements = [];
     const addedColors = new Set();
+
+    const handlerColorPicker = (e, data) => {
+      console.log(data)
+    }
     
     receivedData?.forEach((data, index) => {
       const matchingColor = colors?.find((color) => color.title === data.color);
       if (matchingColor && !addedColors.has(matchingColor.title)) {
         colorElements.push(
-          <div key={index} title={matchingColor.title} className={matchingColor.className}></div>
+          <div onClick={(e)=>handlerColorPicker(e, matchingColor.title)} key={index} title={matchingColor.title} className={matchingColor.className}></div>
         );
         addedColors.add(matchingColor.title);
       }
@@ -75,7 +76,7 @@ const ClothingFilter = ( {filteredData, clothingData} ) => {
                     <AccordionContent>
                     <div className="flex flex-wrap">
                         
-                        {colorElements}
+                      {colorElements}
                         
                     </div>
                     </AccordionContent>

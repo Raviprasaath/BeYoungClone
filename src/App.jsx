@@ -26,8 +26,7 @@ function App() {
   const [sideNavbar, setSideNavbar] = useState(false);
   const [filterScreenOpen, setFilterScreenOpen] = useState(false);
   const [filteredData, setFilteredData] = useState();
-
-  console.log('filteredData', filteredData);
+  
 
   const handlerNavbarToggle = (value) => {
     setSideNavbar(value);

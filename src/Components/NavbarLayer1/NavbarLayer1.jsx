@@ -1,13 +1,28 @@
+import React from 'react';
 import { useScreenSize } from "../CommonFunctions/CommonFunctions"
 import { HiLocationMarker } from "react-icons/hi";
 import { useDataContext } from "../Fetching/DataContext";
+import { useEffect, useState } from "react";
 
 
 const NavbarLayer1 = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+  
+  const { isDialogOpen, openDialog, closeDialog, refreshNavbar } = useDataContext();
+  
+  const [loginToggler, setLoginToggler] = useState();
+  
+  const localStorageUserDetailsNavBar = () => {
+    let dataFromLocal = JSON.parse(localStorage.getItem('userDetails')) || [];
+    if (dataFromLocal) {
+      setLoginToggler(dataFromLocal);
+    }
+  };
 
-  const { isDialogOpen, openDialog, closeDialog } = useDataContext();
+  useEffect(()=> {
+    localStorageUserDetailsNavBar()
+  }, [refreshNavbar])
 
   return (
     <>
@@ -35,15 +50,20 @@ const NavbarLayer1 = () => {
             <button 
             onClick={openDialog}
               className="outline-none bg-transparent text-white sm4:text-[1rem]">
-                Login
+                {loginToggler?.username?`Hello ${loginToggler.username}`: 'Login'}
             </button>
-
-            |
-            <button 
-            onClick={openDialog}
-            className="outline-none bg-transparent text-white">
-              Sign Up
-            </button>
+            {loginToggler?.username?
+              ""
+             : 
+             <>
+              |            
+              <button 
+              onClick={openDialog}
+              className="outline-none bg-transparent text-white">
+                Sign Up
+              </button>
+              </>
+             }
           </div>
         </div>
       </div>
