@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoIosOptions } from "react-icons/io";
 import { BiSortAlt2 } from "react-icons/bi";
@@ -7,110 +7,175 @@ import ClothingFilter from "./ClothingFilter";
 
 import { useScreenSize } from "../CommonFunctions/CommonFunctions";
 
-
-
 import "./ClothingPage.css";
 import { Link, useLocation } from "react-router-dom";
 import { useDataContext } from "../Fetching/DataContext";
 
 
+let productsIdArray = [];
 
 const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   const location = useLocation();
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
-  
-  const { isDialogOpen, openDialog, closeDialog, refreshNavbar } = useDataContext();
-  
+
+
+  const { openDialog, refreshNavbar } = useDataContext();
+
   const [dataRender, setDataRender] = useState();
-  const [activateHeartId, setActivateHeartId] = useState([]);
-  const [existingProductIdFetch, setExistingProductIdFetch] = useState();
-
-  const [favReRender, setFavReRender] = useState(0);
-
+  const [productsFavHeartId, setProductsFavHeartId] = useState([]);
   const [tokenVal, setTokenVal] = useState();
 
-  
 
-  const existingProductIdFetchSplit = existingProductIdFetch?.map((item)=> {
-    return item.products._id
-  });
+  const [loginCheck, setLoginCheck] = useState(false);
+  let dataFromLocal = JSON.parse(localStorage.getItem("userDetails")) || [];
 
-  // Fav adding 
+
+  const productFirstInFetch = async (idVal, method, token) => {
+    try {
+      let myHeaders = new Headers();
+      myHeaders.append("projectID", "vflsmb93q9oc");
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
+
+      let raw = JSON.stringify({
+        productId: `${idVal}`,
+      });
+
+      let requestOptions = {
+        method: `${method}`,
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      if (method === "PATCH") {
+        requestOptions.body = raw;
+      }
+
+      const response = await fetch(
+        "https://academics.newtonschool.co/api/v1/ecommerce/wishlist",
+        requestOptions
+      );
+      if (response.ok) {
+        const result = await response.json();
+
+        let productsIdSet = new Set(productsIdArray); 
+
+        const favProductsIdExtract = result.data.items.map((item) => {
+          return item.products._id;
+        });
+
+        favProductsIdExtract.forEach((id) => {
+          productsIdSet.add(id);
+        });
+
+        productsIdArray = Array.from(productsIdSet);
+        setProductsFavHeartId(favProductsIdExtract);        
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   const productAddingInFetch = async (idVal, method, token) => {
     try {
       let myHeaders = new Headers();
       myHeaders.append("projectID", "vflsmb93q9oc");
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", `Bearer ${token}`);
-  
+
       let raw = JSON.stringify({
-        "productId": `${idVal}`
+        productId: `${idVal}`,
       });
-  
+
       let requestOptions = {
         method: `${method}`,
         headers: myHeaders,
-        redirect: 'follow'
+        redirect: "follow",
       };
 
-      if (method === 'PATCH')  { 
-        requestOptions.body = raw 
+      if (method === "PATCH") {
+        requestOptions.body = raw;
       }
-  
+
       const response = await fetch(
-        "https://academics.newtonschool.co/api/v1/ecommerce/wishlist", requestOptions)
+        "https://academics.newtonschool.co/api/v1/ecommerce/wishlist",
+        requestOptions
+      );
       if (response.ok) {
-        const result = await response.json();
-        setExistingProductIdFetch(result.data.items);
-        
-        console.log("result", result);
+        productFirstInFetch("", "GET", token)
       }
     } catch (error) {
-      console.log('error', error)
+      console.log("error", error);
     }
-  }
+  };
+  const productRemovingInFetch = async (idVal, method, token) => {
+    try {
+      let myHeaders = new Headers();
+      myHeaders.append("projectID", "vflsmb93q9oc");
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
 
+      let raw = JSON.stringify({
+        productId: `${idVal}`,
+      });
 
+      let requestOptions = {
+        method: `${method}`,
+        headers: myHeaders,
+        redirect: "follow",
+      };
 
+      if (method === "PATCH") {
+        requestOptions.body = raw;
+      }
 
-
-
-  useEffect(()=> {
-    const localStorageDestructure = JSON.parse(localStorage.getItem('userDetails')) || [];
-    if (localStorageDestructure.username) {
-      setTokenVal(localStorageDestructure?.token);
-      const token = localStorageDestructure?.token
-  
-      productAddingInFetch("",'GET', token);
-    } else {
-      setExistingProductIdFetch([]);
+      const response = await fetch(
+        `https://academics.newtonschool.co/api/v1/ecommerce/wishlist/${idVal}`,
+        requestOptions
+      );
+      if (response.ok) {
+        const updateLocalArray = productsIdArray.filter((item) => item !== idVal);
+        productsIdArray = updateLocalArray;
+        
+        productFirstInFetch("", "GET", token)
+      }
+    } catch (error) {
+      console.log("error", error);
     }
-  }, [refreshNavbar])
+  };
 
-  const handlerFavAdding = (event, idVal) => {
+
+
+  const handlerFavAdding = (event, item, idVal) => {
     event.preventDefault();
-    setActivateHeartId(idVal);
-    const dataFromLocal = JSON.parse(localStorage.getItem('userDetails')) || [];
-
-    if (dataFromLocal.username) {
-      productAddingInFetch(idVal, 'PATCH', tokenVal);
-
-
-
-      
+    if (loginCheck) {
+      const newIdArray = productsFavHeartId.includes(idVal) || productsIdArray.includes(idVal);
+      if (newIdArray) {
+        productRemovingInFetch(idVal, "DELETE", tokenVal);
+      } else {
+        productAddingInFetch(idVal, "PATCH", tokenVal);
+      }
     } else {
       openDialog();
     }
-
-    setFavReRender((prev)=> prev + 1);
-  }
+  };
 
   useEffect(() => {
     const dataFromHP3 = location?.state?.data;
     setDataRender(dataFromHP3);
-  }, [location.pathname, refreshNavbar, favReRender]);
-  
+    if (dataFromLocal.username) {
+      setLoginCheck(true);
+      setTokenVal(dataFromLocal?.token);
+      const token = dataFromLocal?.token;
+      productFirstInFetch("", "GET", token);
+      productsIdArray = [];
+
+    } else {
+      setLoginCheck(false);
+      setProductsFavHeartId([]);
+      productsIdArray = [];
+    }
+  }, [location.pathname, refreshNavbar ]);
 
 
   const contentBody = (
@@ -121,15 +186,19 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
         ) : dataRender.length === 0 ? (
           <p>No Data Found</p>
         ) : (
-          dataRender.map((item) => (          
-            <Link 
+          dataRender.map((item) => (
+            <Link
               key={item._id}
-              to={`${location.pathname}/${item._id}`}                    
-              state={{similarProducts : dataRender}}              
-            >                  
+              to={`${location.pathname}/${item._id}`}
+              state={{ similarProducts: dataRender }}
+            >
               <div className="relative max-w-[200px] flex flex-col justify-center items-center">
                 <div>
-                  <img className="max-w-[200px] rounded-md" src={item.displayImage} alt="" />
+                  <img
+                    className="max-w-[200px] rounded-md"
+                    src={item.displayImage}
+                    alt=""
+                  />
                 </div>
                 <div>
                   <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
@@ -143,7 +212,7 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
                       ₹{item.price}
                     </span>
                     <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                      ₹{item.price + (item.price * ( 50 / 100 ) )}
+                      ₹{item.price + item.price * (50 / 100)}
                     </span>
                     <span className="px-1 font-bold text-[0.8rem] text-green-500">
                       (50% Off)
@@ -153,22 +222,18 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
 
                 <div
                   className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-                  onClick={(event) => handlerFavAdding(event, item._id)}
+                  onClick={(event) => handlerFavAdding(event, item, item._id)}
                 >
-                  {
-                  existingProductIdFetchSplit?.includes(item._id) || 
-                  activateHeartId?.includes(item._id)  ? (
-                      <AiFillHeart className="text-red-500" />
-                      ) : (
-                      <AiOutlineHeart />
+                  {productsFavHeartId.includes(item._id) || productsIdArray.includes(item._id) ? (
+                    <AiFillHeart className="text-red-500" />
+                  ) : (
+                    <AiOutlineHeart />
                   )}
                 </div>
-
               </div>
-            </Link>              
+            </Link>
           ))
-        )
-        }
+        )}
       </div>
     </>
   );
@@ -180,7 +245,7 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
           <div className="sticky">
             <>
               <div className="flex">
-                <div>{<ClothingFilter clothingData={dataRender}/>}</div>
+                <div>{<ClothingFilter clothingData={dataRender} />}</div>
                 <div className="z-1">{contentBody}</div>
               </div>
             </>
@@ -188,7 +253,6 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
         )}
 
         {isMobile && <div className="z-1">{contentBody}</div>}
-
 
         {isMobile && (
           <>
@@ -233,7 +297,4 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   );
 };
 
-
-export default ClothingPage
-
-
+export default ClothingPage;

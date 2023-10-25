@@ -76,7 +76,7 @@ function App() {
                   onClick={()=>handlerOpenFilter(false)}
                 >
                 </div>
-              </div>
+            </div>
           </>
         }
         
