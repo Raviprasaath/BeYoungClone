@@ -70,10 +70,6 @@ export function DataProvider({ children }) {
     setRefresher((prev) => !prev);
   }
 
-
-
-  
-
   return (
     <DataContext.Provider value={{ data, loading, isDialogOpen, openDialog, closeDialog, refreshNavbar }}>
       {children}
@@ -84,21 +80,3 @@ export function DataProvider({ children }) {
 
 
 
-// let myHeaders = new Headers();
-// myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzMzOGM1YjQxYzZhOTNiYzc4NmQyOCIsImlhdCI6MTY5ODExNjMyOSwiZXhwIjoxNzI5NjUyMzI5fQ.-gF9tLhJFzxzXYpAf8WEjkTkpZVTCc34j9kjHCtvOP0");
-// myHeaders.append("projectId", "p7nvgrsg3fdf");
-
-// let formdata = new FormData();
-// formdata.append("profileImage", fileInput.files[0], "[PROXY]");
-
-// let requestOptions = {
-//   method: 'PATCH',
-//   headers: myHeaders,
-//   body: formdata,
-//   redirect: 'follow'
-// };
-
-// fetch("https://academics.newtonschool.co/api/v1/user/updateProfileImage", requestOptions)
-//   .then(response => response.text())
-//   .then(result => console.log(result))
-//   .catch(error => console.log('error', error));

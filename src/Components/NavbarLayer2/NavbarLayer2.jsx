@@ -12,14 +12,20 @@ import { Link, useLocation } from "react-router-dom";
 import { useDataContext } from "../Fetching/DataContext";
 
 const NavbarLayer2 = ({ handlerNavbarToggle }) => {
+  const { data, loading, refreshNavbar } = useDataContext();
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+  const location = useLocation();
+  
+  let dataFromLocal = JSON.parse(localStorage.getItem("userDetails")) || [];
 
-  const { data, loading } = useDataContext();
-
+  const [loginCheck, setLoginCheck] = useState(false);
+  const [tokenVal, setTokenVal] = useState();
 
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [searchBarResult, setSearchBarResult] = useState(false);
+
+  const [cartCount, setCartCount] = useState(0);
 
   const handlerSearchOpen = () => {
     setSearchBarOpen(!searchBarOpen);
@@ -27,6 +33,37 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const handlerSearchResult = () => {
     setSearchBarResult(!searchBarResult);
   }
+
+  const handlerCardGetting = async (tokenVal) => {
+    let myHeaders = new Headers();
+    myHeaders.append("projectID", "vflsmb93q9oc");
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${tokenVal}`);
+
+    let requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    const response = await fetch("https://academics.newtonschool.co/api/v1/ecommerce/cart/", requestOptions)
+    if (response.ok) {
+      const result = await response.json();
+      setCartCount(result.results);
+    }
+  }
+
+  useEffect(() => {
+    if (dataFromLocal.username) {
+        setLoginCheck(true);
+        handlerCardGetting(dataFromLocal?.token);
+        setTokenVal(dataFromLocal?.token);
+
+      } else {
+        setLoginCheck(false);
+      }
+}, [location.pathname, refreshNavbar, cartCount]);
+
 
 
   //#region ------------------------Men-----------------
@@ -890,7 +927,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                   <BsFillCartFill className="cursor-pointer"/>
                 </div>
                 <div className="absolute -top-[15px] text-[0.7rem] -right-[10px] bg-yellow-300 border rounded-full w-[18px] h-[18px] text-center">
-                  1
+                  {cartCount}
                 </div>
                   
                 </Link>

@@ -13,6 +13,7 @@ import { Label } from '@radix-ui/react-menubar'
 import { useScreenSize } from '../CommonFunctions/CommonFunctions'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { paymentSection } from './CheckoutCart'
 
 const CheckoutCart = () => {
     const screenSize = useScreenSize();
@@ -26,6 +27,7 @@ const CheckoutCart = () => {
     const [city, setCity] = useState(false);
     const [state, setState] = useState(false);
     const [address, setAddress] = useState(false);
+
 
 
     //#region --------------Form Validation -----------
@@ -236,113 +238,7 @@ const CheckoutCart = () => {
                     </div>
                 </div>
             
-                <div className=' w-[100%] md2:w-[35%]'>
-                    <div className='my-[30px] md2:my-[10px] p-2 bg-white'>
-                        <div className='flex items-center gap-2'>
-                            <div>
-                                <BsCash />
-                            </div>
-                            <div className='font-semibold'>
-                                Offers & Benefits
-                            </div>
-                        </div>
-                        <div>
-                            <div className="flex">
-                                <input className="my-2 px-2 border-solid border-2 border-stone-300 w-[80%]" type="text" placeholder="Enter code"/>
-                                <Label className="cursor-pointer my-2 w-[20%] text-white font-bold text-center bg-teal-400">Apply</Label>
-                            </div>
-                            <div className='border-2'></div>
-                            <div className='p-2 flex justify-around text-[0.8rem]'>
-                                <div>
-                                    Flat ₹100 Off OnOrders Above ₹999
-                                </div>
-                                <div className='h-fit bg-yellow-100 font-bold'>
-                                    BEYOUNG100
-                                </div>
-
-                            </div>
-                            <div className='border-2'></div>
-                            
-                        </div>
-
-
-                    </div>
-
-                    <div className='my-[2px] p-2 bg-white'>
-                        <div className='font-semibold'>Price Details (4 items)</div>
-                        <div className='border'></div>
-                        
-                        <div className='flex flex-col gap-1'>
-                            <div className='flex text-[0.9rem] justify-between'>
-                                <div>Total MRP (Inc.of Taxes)</div>
-                                <div>₹10397</div>
-                            </div>
-                            <div className='flex justify-between text-[0.9rem]'>
-                                <div>Beyoung Discount</div>
-                                <div>-₹6702</div>
-                            </div>
-                            <div className='flex justify-between text-[0.9rem]'>
-                                <div>Shipping</div>
-                                <div className='text-green-500'>Free</div>
-                            </div>
-                            <div className='py-2 flex justify-between text-[0.9rem]'>
-                                <div>Cart Total</div>
-                                <div className='font-bold'>₹3695</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className='my-[5px] flex flex-col justify-between p-2 bg-white'>
-                        <div className='flex justify-between'>
-                            <div className='font-semibold'>
-                                Total  Amount
-                            </div>
-                            <div className='font-bold text-[0.9rem]'>
-                                ₹3695
-                            </div>
-                        </div>
-
-                        <div className='my-3 bg-lime-600 font-semibold text-white text-center p-1 text-[0.8rem]'>
-                            You Saved ₹6702 On This Order
-                        </div>
-                        {!isMobile &&                 
-                            (
-                                <>
-                                    {booleanCondition ? (
-                                    <Link to='/checkout/payment'>
-                                        <button
-                                        className="bg-teal-400 text-white w-[95%] font-semibold text-center p-2"
-                                        >
-                                        CHECKOUT SECURELY
-                                        </button>
-                                    </Link>
-                                    ) : (
-                                    <button
-                                        className="cursor-pointer bg-gray-300 text-white w-[95%] font-semibold text-center p-2"
-                                        disabled
-                                    >
-                                        CHECKOUT SECURELY
-                                    </button>
-                                    )}
-
-                                </>
-                            )
-                        }
-                    </div>
-
-                    <div className='text-[0.8rem] flex justify-center items-center gap-2 text-gray-500'>
-                        <div>
-                            <PiTruckBold className='text-[1rem]'/>
-                        </div>
-                        <div>
-                            Free Delivery & Inclusive Of All Taxes
-                        </div>
-                    </div>
-
-                    <div className='h-[80px]'>
-
-                    </div>
-                </div>
+                {paymentSection}
 
             </div>
             
@@ -362,7 +258,7 @@ const CheckoutCart = () => {
                                 <button
                                 className={`${booleanCondition ? 'bg-teal-400':'bg-gray-300'}  text-white font-semibold p-2 rounded text-[0.8rem]`}
                                 >
-                                CHECKOUT SECURELY
+                                    CHECKOUT SECURELY
                                 </button>
                             </Link>
                             ) : (

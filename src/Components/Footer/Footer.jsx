@@ -63,14 +63,14 @@ const Footer = () => {
     </div>
     <div className="flex justify-center w-[70%]">
       <Accordion.Root
-        className="AccordionRoot"
+        className="AccordionRoot bg-black"
         type="single"
         defaultValue="item-1"
         collapsible
       >
         <div className="border m-4"></div>
-        <Accordion.Item className="AccordionItem" value="item-1">
-          <AccordionTrigger>WHY CHOOSE US?</AccordionTrigger>
+        <Accordion.Item className="AccordionItem bg-black" value="item-1">
+          <AccordionTrigger className="bg-black">WHY CHOOSE US?</AccordionTrigger>
           <AccordionContent>
             <div>Online Shopping Site</div>
             <div>
@@ -198,7 +198,7 @@ const Footer = () => {
   return (
     <>
       {isMobile && (
-        <Accordion.Root className="AccordionRoot" type="single" defaultValue="item-1" collapsible >
+        <Accordion.Root className="AccordionRoot bg-black" type="single" defaultValue="item-1" collapsible >
           <Accordion.Item className="AccordionItem" value="item-1">
             <AccordionTrigger className="bg-black justify-center gap-4" >
               ABOUT BEYOUNG

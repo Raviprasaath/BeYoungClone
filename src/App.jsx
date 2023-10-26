@@ -16,6 +16,7 @@ import CheckoutCart from "./Components/Checkout/CheckoutCart";
 import CheckoutShipping from "./Components/Checkout/CheckoutShipping";
 import CheckoutPayment from "./Components/Checkout/CheckoutPayment";
 import OutOfStock from "./Components/OutOfStock/OutOfStock";
+import { useDataContext } from "./Components/Fetching/DataContext";
 
 function App() { 
   const screenSize = useScreenSize();
@@ -39,6 +40,7 @@ function App() {
   const handlerFilterData = (value) => {
     setFilteredData(value)
   }
+
 
   return (
     <>

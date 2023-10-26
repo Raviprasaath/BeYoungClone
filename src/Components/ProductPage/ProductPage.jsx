@@ -40,6 +40,9 @@ const ProductPage = () => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [similarProduct, setSimilarProduct] = useState();
 
+    const [currentProductId, setCurrentProductId] = useState("");
+    const [productQuantity, setProductQuantity] = useState(1);
+
     const [productsFavHeartId, setProductsFavHeartId] = useState([]);
     const [tokenVal, setTokenVal] = useState();
     const [loginCheck, setLoginCheck] = useState(false);
@@ -49,9 +52,42 @@ const ProductPage = () => {
     const screenSize = useScreenSize();
     const isMobile = screenSize < 960;
 
-
     const location = useLocation();
     const str = location.pathname;
+
+    const gettingReviews = () => {
+
+    }
+
+    const addReview = (currentProductId) => {
+        'https://academics.newtonschool.co/api/v1/ecommerce/review/:productId'
+    }
+
+    const handlerAddToCart = async (currentProductId, quantity, tokenVal) => {
+        let myHeaders = new Headers();
+        myHeaders.append("projectID", "vflsmb93q9oc");
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", `Bearer ${tokenVal}`);
+
+        let raw = JSON.stringify({
+        "quantity": `${quantity}`
+        });
+
+        let requestOptions = {
+            method: 'PATCH',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/cart/${currentProductId}`, requestOptions)
+        if (response.ok) {
+            const result = await response.json();
+            refreshNavbar();
+        }
+    }
+    
+
 
     const handlerSizeSelector = (e) => {
         if (productSizeSelection === e.target.innerText) {
@@ -87,6 +123,7 @@ const ProductPage = () => {
       
           const result = await response.json();          
           setSingleProduct(result.data);
+          setCurrentProductId(result.data._id);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -95,10 +132,10 @@ const ProductPage = () => {
     useEffect(() => {
         singleProductFetch();
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
+        // window.scrollTo({
+        //     top: 0,
+        //     behavior: "smooth",
+        // });
     }, [reversedStrFinal]);
 
     useEffect(() => {
@@ -116,18 +153,20 @@ const ProductPage = () => {
             setProductsFavHeartId([]);
             productsIdArray = [];
           }
-    }, [location.pathname, refreshNavbar]);
+    }, [location.pathname, refreshNavbar ]);
     
     const handlerCheckout = () => {
         if(productSizeSelection === "") {
             handlerScrollToSizeChart();
         } else {
-            console.log("success");
+            handlerAddToCart(currentProductId, productQuantity, tokenVal);
         }
     }
 
     //#region ----------------------
-
+    const handlerQuantity = (e) => {
+        setProductQuantity(e.target.value);
+    }
 
     const handlerScrollToSizeChart = () => {
         const element = document.getElementById('sizeChart');
@@ -252,10 +291,13 @@ const ProductPage = () => {
         </div>
         </div>
     )
+    
+
+
     const quantity = (
         <div className="flex px-2">
             <Label htmlFor="qty">QTY: </Label>
-            <select className="mx-2 px-1 w-[70px] border-2" name="qty" id="qty">
+            <select onChange={(e)=>handlerQuantity(e)} className="mx-2 px-1 w-[70px] border-2" name="qty" id="qty">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -308,53 +350,67 @@ const ProductPage = () => {
     const ratingReview = (
         <div className="p-2 bg-gray-100">
             <h4 className={`my-2 ${isMobile?'text-[0.9rem]':'text-[1.3rem]'} font-medium`}>RATINGS & REVIEW</h4>
-            <div className="m-2 p-2 bg-white flex flex-col gap-2 md1:flex-row">
-                <div className="w-[120px] flex flex-col gap-2">
-                    <div className="flex">
-                        <AiFillStar className="text-yellow-400" />
-                        <AiFillStar className="text-yellow-400" />
-                        <AiFillStar className="text-yellow-400" />
-                        <AiFillStar className="text-yellow-400" />
-                        <AiOutlineStar className="text-yellow-400" />
+            <div className="m-2 p-2 flex flex-col gap-2 md1:flex-row">
+                <div className=" flex flex-col gap-2">
+                    <div className="flex justify-between">
+                        <div className="flex">
+                            <AiFillStar className="text-[1.4rem] text-black" />
+                            <AiFillStar className="text-[1.4rem] text-black" />
+                            <AiFillStar className="text-[1.4rem] text-black" />
+                            <AiFillStar className="text-[1.4rem] text-black" />
+                            <AiFillStar className="text-[1.4rem] text-gray-300" />
+                        </div>
+                        <p className={`text-gray-400 text-[0.9rem]`}>User Name</p>
                     </div>
-                    <p className={`text-gray-400 text-[0.9rem]`}>User Name</p>
-                </div>
-                <div className="flex">
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odio libero fugit delectus cumque deleniti distinctio enim ratione temporibus perspiciatis ea. Esse nobis quasi quaerat libero incidunt voluptate consectetur beatae nulla!</p>
-                </div>
-            </div>         
-            <div className="m-2 p-2 bg-white flex flex-col gap-2 md1:flex-row">
-                <div className="w-[120px]">
                     <div className="flex">
-                        <AiFillStar className="text-yellow-400" />
-                        <AiFillStar className="text-yellow-400" />
-                        <AiFillStar className="text-yellow-400" />
-                        <AiFillStar className="text-yellow-400" />
-                        <AiOutlineStar className="text-yellow-400" />
+                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odio libero fugit delectus cumque deleniti distinctio enim ratione temporibus perspiciatis ea. Esse nobis quasi quaerat libero incidunt voluptate consectetur beatae nulla!</p>
                     </div>
-                    <p className={`text-gray-400 text-[0.9rem]`}>User Name</p>
-                </div>
+                </div>                
+            </div>
+
+            <div className="border border-yellow-300"></div>
+            
+            <div className="m-2 p-2 flex flex-col gap-2 md1:flex-row">
+                <div className="">
+                    <div className="flex justify-between">
+                        <div className="flex">
+                            <AiFillStar className="text-[1.4rem] text-black" />
+                            <AiFillStar className="text-[1.4rem] text-black" />
+                            <AiFillStar className="text-[1.4rem] text-black" />
+                            <AiFillStar className="text-[1.4rem] text-black" />
+                            <AiFillStar className="text-[1.4rem] text-black" />
+                        </div>
+                        <p className={`text-gray-400 text-[0.9rem]`}>User Name</p>
+                    </div>
                 <div className="flex flex-col gap-2 md1:flex-row">
                     <div className="flex">
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum illum corporis libero pariatur illo! Corrupti aperiam, a expedita corporis rem molestiae ipsa accusantium temporibus itaque consectetur laudantium. Ea, aliquam voluptate?</p>
+                        <p>
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum illum corporis libero pariatur illo! Corrupti aperiam, a expedita corporis rem molestiae ipsa accusantium temporibus itaque consectetur laudantium. Ea, aliquam voluptate
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum illum corporis libero pariatur illo! Corrupti aperiam, a expedita corporis rem molestiae ipsa accusantium temporibus itaque consectetur laudantium. Ea, aliquam voluptate
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum illum corporis libero pariatur illo! Corrupti aperiam, a expedita corporis rem molestiae ipsa accusantium temporibus itaque consectetur laudantium. Ea, aliquam voluptate
+                            
+                        </p>
                     </div>
                     <button className="h-fit md1:m-auto w-[50px] text-center bg-teal-300 text-white px-2">Delete</button>
                 </div>                
-            </div>
-            <div className="m-2 p-2 bg-white flex flex-col gap-2 md1:flex-row ">
-                <div className="flex">
-                    <AiFillStar className="text-yellow-400" />
-                    <AiFillStar className="text-yellow-400" />
-                    <AiFillStar className="text-yellow-400" />
-                    <AiFillStar className="text-yellow-400" />
-                    <AiOutlineStar className="text-yellow-400" />
                 </div>
-                <div className="flex flex-col w-full gap-2 md1:flex-row ">
-                    <textarea className="w-[100%] border-2 border-solid border-gray-300" type="text" placeholder="Add a review" />
+            </div>
+            
+            <div className="border border-yellow-300"></div>
+
+            <div className="m-2 p-2 flex flex-col gap-2 ">
+                <div className="flex">
+                    <AiFillStar className="text-[1.5rem] text-black" />
+                    <AiFillStar className="text-[1.5rem] text-black" />
+                    <AiFillStar className="text-[1.5rem] text-black" />
+                    <AiFillStar className="text-[1.5rem] text-black" />
+                    <AiFillStar className="text-[1.5rem] text-black" />
+                </div>
+                <div className="flex flex-col w-full gap-2 md1:flex-row">
+                    <textarea className="w-[100%]  h-[100px] md1:h-[80px] border-2 border-solid border-gray-300" type="text" placeholder="Add a review" />
                     <button className="h-fit w-[50px] my-2 text-center bg-teal-300 text-white px-2">Add</button>
                 </div>
             </div>
-        
         </div>
     )
     const branding = (
@@ -388,7 +444,11 @@ const ProductPage = () => {
     const checkout = (
         <>
             <div className="flex">
-                <div onClick={()=>handlerCheckout()} className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 text-white py-2 rounded m-1 w-full bg-teal-400">
+                <div onClick={ 
+                        loginCheck ? 
+                        ()=>handlerCheckout() : ()=>openDialog() 
+                    
+                    } className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 text-white py-2 rounded m-1 w-full bg-teal-400">
                     <MdShoppingCartCheckout /> 
                     <p >
                         ADD TO CART
@@ -396,9 +456,12 @@ const ProductPage = () => {
                 </div>
                 {productSizeSelection === "" ? 
                 (
-                    <div onClick={()=>handlerCheckout()}  className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
+                    <div onClick={
+                        loginCheck ? 
+                        ()=>handlerCheckout() : ()=>openDialog() 
+                        }  className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
                         <GrFormNextLink />
-                            <p>
+                            <p >
                                 BUY NOW
                             </p>                            
                         </div>
