@@ -71,7 +71,7 @@ export function DataProvider({ children }) {
   }
 
   return (
-    <DataContext.Provider value={{ data, loading, isDialogOpen, openDialog, closeDialog, refreshNavbar }}>
+    <DataContext.Provider value={{ data, loading, isDialogOpen, openDialog, closeDialog, refresher, refreshNavbar }}>
       {children}
     </DataContext.Provider>
   );

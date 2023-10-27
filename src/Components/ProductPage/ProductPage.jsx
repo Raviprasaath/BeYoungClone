@@ -48,6 +48,7 @@ const ProductPage = () => {
     const [loginCheck, setLoginCheck] = useState(false);
     let dataFromLocal = JSON.parse(localStorage.getItem("userDetails")) || [];
 
+    const [cartAddTrack, setCartAddTrack] = useState(false);
 
     const screenSize = useScreenSize();
     const isMobile = screenSize < 960;
@@ -84,6 +85,7 @@ const ProductPage = () => {
         if (response.ok) {
             const result = await response.json();
             refreshNavbar();
+            setCartAddTrack(true);
         }
     }
     
@@ -140,7 +142,7 @@ const ProductPage = () => {
 
     useEffect(() => {
         const dataFromHP3 = location?.state?.similarProducts || location?.state?.data;
-        setSimilarProduct(dataFromHP3);
+        setSimilarProduct(dataFromHP3);        
         if (dataFromLocal.username) {
             setLoginCheck(true);
             setTokenVal(dataFromLocal?.token);
@@ -444,17 +446,30 @@ const ProductPage = () => {
     const checkout = (
         <>
             <div className="flex">
-                <div onClick={ 
-                        loginCheck ? 
-                        ()=>handlerCheckout() : ()=>openDialog() 
-                    
-                    } className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 text-white py-2 rounded m-1 w-full bg-teal-400">
+                {!cartAddTrack && 
+                <div 
+                        onClick={ 
+                            loginCheck ? 
+                            ()=>handlerCheckout() : ()=>openDialog()                     
+                        } 
+                        
+                        className={`${!cartAddTrack ?'cursor-pointer':'cursor-not-allowed	'}  flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 text-white py-2 rounded m-1 w-full bg-teal-400`}>
                     <MdShoppingCartCheckout /> 
                     <p >
-                        ADD TO CART
+                        {!cartAddTrack ? 'ADD TO CART':'PRODUCT ADDED'} 
                     </p>
                 </div>
-                {productSizeSelection === "" ? 
+                }
+                {cartAddTrack && 
+                    <div className={`${!cartAddTrack ?'cursor-pointer':'cursor-not-allowed	'}  flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 text-white py-2 rounded m-1 w-full bg-teal-400`}>
+                        <MdShoppingCartCheckout /> 
+                        <p >
+                            {!cartAddTrack ? 'ADD TO CART':'PRODUCT ADDED'} 
+                        </p>
+                    </div>
+                }
+                
+                {productSizeSelection  === ""? 
                 (
                     <div onClick={
                         loginCheck ? 
@@ -466,17 +481,28 @@ const ProductPage = () => {
                             </p>                            
                         </div>
                 ):(
-                
-                    <Link className="w-full" to='/checkout/cart'>
-                        <div onClick={()=>handlerCheckout()}  className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
-                        <GrFormNextLink />
-                            <p>
-                                BUY NOW
-                            </p>                            
-                        </div>
-                    </Link>
-                
+                     !cartAddTrack ? 
+                        (<Link className="w-full" to='/checkout/cart'>
+                            <div onClick={()=>handlerCheckout()}  className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
+                            <GrFormNextLink />
+                                <p>
+                                    BUY NOW
+                                </p>
+                            </div>
+                        </Link>) :
+                        (<Link className="w-full" to='/checkout/cart'>
+                            <div className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
+                            <GrFormNextLink />
+                                <p>
+                                    BUY NOW
+                                </p>
+                            </div>
+                        </Link>)
+                    
                 )}
+                
+
+
             </div>
         </>
     )
@@ -489,51 +515,103 @@ const ProductPage = () => {
 
     const sameProduct = (
     <>
-        {similarProduct ? (
-        similarProduct.map((item) => (                                
-            <Link key={item._id} 
+        {similarProduct && similarProduct[0].name ? (
+        similarProduct[0].name ? (
+            similarProduct.map((item) => (
+            <Link
+                key={item._id}
                 to={`${newLocation}${item._id}`}
-                state={{data : similarProduct}}
+                state={{ data: similarProduct }}
             >
-            <div className="relative max-w-[200px] flex flex-col justify-center items-center">
-              <div>
-                <img className="max-w-[200px] rounded-md" src={item.displayImage} alt="" />
-              </div>
-              <div>
-                <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-                  {item.name}
-                </p>
-                <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
-                  {item.subCategory}
-                </p>
-                <p className="flex flex-row justify-center items-center">
-                  <span className="px-1.5 font-bold text-[0.9rem]">
-                    ₹{item.price}
-                  </span>
-                  <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
-                    ₹{item.price + (item.price * ( 50 / 100 ) )}
-                  </span>
-                  <span className="px-1 font-bold text-[0.8rem] text-green-500">
-                    (50% Off)
-                  </span>
-                </p>
-              </div>
-              <div
-                className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
-                onClick={(event) => handlerFavAdding(event,item._id)}
-              >
-                {
-                productsFavHeartId.includes(item._id) || productsIdArray.includes(item._id)  ? (
-                  <AiFillHeart className="text-red-500" />
-                  ) : (
-                  <AiOutlineHeart />
-                )}
-              </div>
-            </div>
-          </Link> ))
+                <div className="relative max-w-[200px] flex flex-col justify-center items-center">
+                <div>
+                    <img
+                    className="max-w-[200px] rounded-md"
+                    src={item.displayImage}
+                    alt=""
+                    />
+                </div>
+                <div>
+                    <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                    {item.name}
+                    </p>
+                    <p className="text-[0.85rem] text-[gray] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                    {item.subCategory}
+                    </p>
+                    <p className="flex flex-row justify-center items-center">
+                    <span className="px-1.5 font-bold text-[0.9rem]">₹{item.price}</span>
+                    <span className="px-1 line-through text-[gray] font-bold text-[0.9rem]">
+                        ₹{item.price + item.price * (50 / 100)}
+                    </span>
+                    <span className="px-1 font-bold text-[0.8rem] text-green-500">(50% Off)</span>
+                    </p>
+                </div>
+                <div
+                    className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem]"
+                    onClick={(event) => handlerFavAdding(event, item._id)}
+                >
+                    {productsFavHeartId.includes(item._id) || productsIdArray.includes(item._id) ? (
+                    <AiFillHeart className="text-red-500" />
+                    ) : (
+                    <AiOutlineHeart />
+                    )}
+                </div>
+                </div>
+            </Link>
+            ))
         ) : (
             <p>Loading...</p>
+        )
+        ) : similarProduct && similarProduct[0]?.products?.name ? (
+            similarProduct?.map((item)=> (
+                <Link
+                    key={item.products._id}
+                    to={`/clothing/${item.products.name}/${item.products._id}`}
+                    state={{ data: similarProduct ? similarProduct : null }}
+                >
+                    <div className="relative max-w-[200px] flex flex-col justify-center items-center">
+                    <div>
+                        <img
+                        className="max-w-[200px] rounded-md"
+                        src={item.products.displayImage}
+                        alt=""
+                        />
+                    </div>
+                    <div>
+                        <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">
+                        {item.products.name}
+                        </p>
+                        
+                        <p className="flex flex-row justify-center items-center">
+                        <span className="px-1.5 font-bold text-[0.9rem]">
+                            ₹{item.products.price}
+                        </span>
+                        <span className="px-1 line-through text-[gray] font-bold text-[0.9rem] ">
+                            ₹{item.products.price + item.products.price * (50 / 100)}
+                        </span>
+                        <span className="px-1 font-bold text-[0.8rem] text-green-500">
+                            (50% Off)
+                        </span>
+                        </p>
+                    </div>
+    
+                    <div
+                        className="absolute top-[5px] right-[5px] border rounded-full bg-white p-1 text-[1.3rem] "
+                        onClick={(event) => handlerFavAdding(event, item, item.products._id)}
+                    >
+                        {productsFavHeartId.includes(item.products._id) || productsIdArray.includes(item.products._id) ? (
+                        <AiFillHeart className="text-red-500" />
+                        ) : (
+                        <AiOutlineHeart />
+                        )}
+                    </div>
+                    </div>
+                </Link>
+            ))
+        ) : (
+        <p>Loading...</p>
         )}
+
     </>
     )
     const handlerFavAdding = (event, idVal) => {
@@ -732,7 +810,7 @@ const ProductPage = () => {
         <div className="w-[82%] m-auto py-4">
             <div>Similar Product</div>
             <div className="flex gap-2 flex-wrap justify-center items-center">
-                {sameProduct}
+                {sameProduct ? sameProduct : "nothing"}
             </div>
         </div>
         </>

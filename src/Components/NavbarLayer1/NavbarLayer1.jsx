@@ -1,28 +1,30 @@
-import React from 'react';
-import { useScreenSize } from "../CommonFunctions/CommonFunctions"
+import React from "react";
+import { useScreenSize } from "../CommonFunctions/CommonFunctions";
 import { HiLocationMarker } from "react-icons/hi";
 import { useDataContext } from "../Fetching/DataContext";
 import { useEffect, useState } from "react";
 
+import { IoIosArrowForward } from 'react-icons/io'
+import { Link } from "react-router-dom";
 
 const NavbarLayer1 = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
-  
-  const { isDialogOpen, openDialog, closeDialog, refreshNavbar } = useDataContext();
-  
-  const [loginToggler, setLoginToggler] = useState();
-  
-  const localStorageUserDetailsNavBar = () => {
-    let dataFromLocal = JSON.parse(localStorage.getItem('userDetails')) || [];
-    if (dataFromLocal) {
-      setLoginToggler(dataFromLocal);
-    }
-  };
 
-  useEffect(()=> {
-    localStorageUserDetailsNavBar()
-  }, [refreshNavbar])
+  const { openDialog, refreshNavbar } = useDataContext();
+
+  const [loginCheck, setLoginCheck] = useState(false);
+  let dataFromLocal = JSON.parse(localStorage.getItem("userDetails")) || [];
+  const [tokenVal, setTokenVal] = useState();
+
+
+  useEffect(() => {    
+    if (dataFromLocal.username) {
+      setLoginCheck(true);
+      setTokenVal(dataFromLocal?.token);
+    } else {
+      setLoginCheck(false);    }
+  }, [location.pathname, refreshNavbar]);
 
   return (
     <>
@@ -45,25 +47,54 @@ const NavbarLayer1 = () => {
             <HiLocationMarker className="text-base" />
             Track order
           </div>
-          <div className="flex gap-2 py-2.5 sm4:flex sm4:justify-around ">
-          
-            <button 
-            onClick={openDialog}
-              className="outline-none bg-transparent text-white sm4:text-[1rem]">
-                {loginToggler?.username?`Hello ${loginToggler.username}`: 'Login'}
-            </button>
-            {loginToggler?.username?
-              ""
-             : 
-             <>
-              |            
-              <button 
+          {/* <div className="flex gap-2 py-2.5 sm4:flex sm4:justify-around ">
+            <button
               onClick={openDialog}
-              className="outline-none bg-transparent text-white">
-                Sign Up
-              </button>
+              className="outline-none bg-transparent text-white sm4:text-[1rem]"
+            >
+              {loginToggler?.username ? `Hello` : "Login"}
+            </button>
+            {loginToggler?.username ? (
+              ""
+            ) : (
+              <>
+                |
+                <button
+                  onClick={openDialog}
+                  className="outline-none bg-transparent text-white"
+                >
+                  Sign Up
+                </button>
               </>
-             }
+            )}
+          </div> */}
+          <div  className="flex text-[0.85rem] gap-2 py-2.5 sm4:flex sm4:justify-around ">
+            {!loginCheck ? 
+                (<div className="cursor-pointer"  onClick={()=>openDialog()}>
+                  LOGIN
+                </div>) : 
+                (
+                <Link to="/myaccount/profile">
+                  <div className="cursor-pointer" >
+                    MY ACCOUNT
+                  </div>
+                </Link>
+              )
+            }
+            <div>
+              |
+            </div>
+            {!loginCheck ? 
+              (<div className="cursor-pointer" onClick={()=>openDialog()} >
+                SIGNUP
+              </div>) :
+              (
+                <div className="cursor-pointer" onClick={()=>openDialog()}>
+                  LOGOUT
+                </div>
+
+              )
+            }
           </div>
         </div>
       </div>

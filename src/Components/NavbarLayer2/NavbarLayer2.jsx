@@ -12,7 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useDataContext } from "../Fetching/DataContext";
 
 const NavbarLayer2 = ({ handlerNavbarToggle }) => {
-  const { data, loading, refreshNavbar } = useDataContext();
+  const { data, loading, refreshNavbar, openDialog } = useDataContext();
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
   const location = useLocation();
@@ -26,6 +26,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const [searchBarResult, setSearchBarResult] = useState(false);
 
   const [cartCount, setCartCount] = useState(0);
+  const [wishListCount, setWishListCount] = useState(0);
 
   const handlerSearchOpen = () => {
     setSearchBarOpen(!searchBarOpen);
@@ -52,17 +53,37 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
       setCartCount(result.results);
     }
   }
+  const handlerWishListGetting = async (tokenVal) => {
+    let myHeaders = new Headers();
+    myHeaders.append("projectID", "vflsmb93q9oc");
+    myHeaders.append("Authorization", `Bearer ${tokenVal}`);
+
+    let requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    const response = await fetch("https://academics.newtonschool.co/api/v1/ecommerce/wishlist", requestOptions)
+    if (response.ok) {
+      const result = await response.json();
+      setWishListCount(result.results);
+    }
+  }
 
   useEffect(() => {
     if (dataFromLocal.username) {
         setLoginCheck(true);
         handlerCardGetting(dataFromLocal?.token);
+        handlerWishListGetting(dataFromLocal?.token);
         setTokenVal(dataFromLocal?.token);
 
       } else {
         setLoginCheck(false);
+        setCartCount(0);
+        setWishListCount(0);
       }
-}, [location.pathname, refreshNavbar, cartCount]);
+}, [location.pathname, refreshNavbar, cartCount, wishListCount]);
 
 
 
@@ -920,16 +941,25 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
               </div>
               <div className="flex absolute right-0 top-[20px] gap-4 text-[1.3rem]">
                 <AiOutlineSearch onClick={()=>handlerSearchOpen()} className="cursor-pointer" />
-                <AiFillHeart className="cursor-pointer"/>
-                <Link to="/checkout/cart">
-                  
-                <div>
-                  <BsFillCartFill className="cursor-pointer"/>
-                </div>
-                <div className="absolute -top-[15px] text-[0.7rem] -right-[10px] bg-yellow-300 border rounded-full w-[18px] h-[18px] text-center">
-                  {cartCount}
-                </div>
-                  
+                
+                
+                
+                <Link to={loginCheck ? "/myaccount/wishlist" : "/"}>
+                  <div>
+                    <AiFillHeart onClick={() => (!loginCheck ? openDialog() : null)} className="cursor-pointer"/>
+                  </div>
+                  <div className={`absolute -top-[15px] text-[0.7rem] right-[25px] bg-yellow-300 border rounded-full w-[18px] h-[18px] text-center`}>
+                    {wishListCount}
+                  </div>
+                </Link>
+                
+                <Link to={loginCheck ? "/checkout/cart" : "/"}>
+                  <div>
+                    <BsFillCartFill onClick={() => (!loginCheck ? openDialog() : null)} className="cursor-pointer" />
+                  </div>
+                  <div className="absolute -top-[15px] text-[0.7rem] -right-[10px] bg-yellow-300 border rounded-full w-[18px] h-[18px] text-center">
+                    {cartCount}
+                  </div>
                 </Link>
               </div>
 
@@ -986,15 +1016,25 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
 
             <div className="relative flex items-center gap-2.5 text-[1.2rem]">
               <AiOutlineSearch onClick={()=>handlerSearchOpen()} className="cursor-pointer" />
-              <AiFillHeart className="cursor-pointer"/>
-              <Link to="/checkout/cart">
+              
+              <Link to={loginCheck ? "/myaccount/wishlist" : "/"}>
                 <div>
-                  <BsFillCartFill className="cursor-pointer"/>
+                <AiFillHeart onClick={() => (!loginCheck ? openDialog() : null)} className="cursor-pointer"/>
                 </div>
-                <div className="absolute -top-[10px] text-[0.7rem] -right-[5px] bg-yellow-300 border rounded-full w-[15px] h-[15px] text-center">
-                  1
+                <div className="absolute -top-[10px] text-[0.7rem] right-[25px] bg-yellow-300 border rounded-full w-[15px] h-[15px] text-center">
+                  {wishListCount}
                 </div>
               </Link>
+
+              <Link to={loginCheck ? "/checkout/cart" : "/"}>
+                <div>
+                  <BsFillCartFill onClick={() => (!loginCheck ? openDialog() : null)} className="cursor-pointer" />
+                </div>
+                <div className="absolute -top-[10px] text-[0.7rem] -right-[5px] bg-yellow-300 border rounded-full w-[15px] h-[15px] text-center">
+                  {cartCount}
+                </div>
+              </Link>
+
             </div>
 
             

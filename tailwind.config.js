@@ -57,6 +57,7 @@ module.exports = {
         primaryColor2: '#EAD7BB',
         primaryColor3: '#9EDDFF',
         'gray-rgba': 'rgba(128, 128, 128, 0.4)',
+        'pink-rgba': 'rgba(245, 40, 145, 0.5)',
       },
       fontSize: {
         primarySize1: '24px',

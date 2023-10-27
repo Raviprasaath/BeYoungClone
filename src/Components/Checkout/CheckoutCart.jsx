@@ -27,6 +27,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 let paymentSection;
+let cartsData;
 const CheckoutCart = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
@@ -46,9 +47,9 @@ const CheckoutCart = () => {
   const [cartTotalPrice, setCartTotalPrice] = useState(0);
   const [offerApply, setOfferApply] = useState(false);
 
-  const [modalOpened, setModalOpened] = useState(false);
+  
 
-  console.log("location.pathname", location.pathname);
+  const [modalOpened, setModalOpened] = useState(false);
 
   const handlerCardGetting = async (tokenVal) => {
 
@@ -96,7 +97,6 @@ const CheckoutCart = () => {
     );
     if (response.ok) {
       const result = await response.json();
-      console.log(result);
       handlerCardGetting(tokenVal);
     }
   };
@@ -136,6 +136,13 @@ const CheckoutCart = () => {
   const handlerModalToggle = () => {
     setModalOpened(true);
   };
+  const handlerScroller = () => {
+    const element = document.getElementById('cart-data');
+    if (element) {            
+        const offset = element.getBoundingClientRect().top + window.scrollY - 50;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+  }
 
   useEffect(() => {
     if (dataFromLocal.username) {
@@ -144,10 +151,18 @@ const CheckoutCart = () => {
       setTokenVal(dataFromLocal?.token);
       setCartTotalPrice(0);
     } else {
-        setCartTotalPrice(0);
+      setCartTotalPrice(0);
       setLoginCheck(false);
     }
   }, [location.pathname, refreshNavbar]);
+  
+  const handlerCartDataAdd = () => {
+    cartsData = {
+      cartAmount: cartPrice,
+      cartTotal: cartTotalPrice,
+      offer: offerApply
+    }
+  }
 
   //#region ---------------snake bar --------------------
 
@@ -233,7 +248,7 @@ const CheckoutCart = () => {
       </div>
     </>
   );
-  console.log("check")
+
   paymentSection = (
     <div className=" w-[100%] md2:w-[35%]">
       {location.pathname.includes('/checkout/cart') &&
@@ -269,7 +284,7 @@ const CheckoutCart = () => {
       }
 
       <div className="my-[2px] p-2 bg-white">
-        <div className="font-semibold">Price Details</div>
+        <div id="cart-data" className="font-semibold">Price Details</div>
         <div className="border"></div>
 
         <div className="flex flex-col gap-1">
@@ -304,10 +319,9 @@ const CheckoutCart = () => {
         {!isMobile && (
             <>
             {booleanCondition ? (
-                <Link to={
-                  "/checkout/shipping"
-                  }>
+                <Link to='/checkout/shipping'>
                     <button
+                    onClick={()=>handlerCartDataAdd()}
                     className="bg-teal-400 text-white w-[95%] font-semibold text-center p-2"
                     >
                         CHECKOUT SECURELY
@@ -520,14 +534,14 @@ const CheckoutCart = () => {
       {isMobile && (
         <div className="fixed bottom-0 bg-white w-full flex flex-row justify-between p-2">
           <div>
-            <div>₹3695</div>
-            <div className="text-teal-400 text-[0.7rem] font-semibold">
+            <div>₹ {offerApply && cartPrice > 999 ? cartPrice - 100 : cartPrice}</div>
+            <div onClick={()=>handlerScroller()} className="text-teal-400 text-[0.7rem] font-semibold">
               View Details
             </div>
           </div>
           <div>
             <Link to="/checkout/shipping">
-              <button className="bg-teal-400 text-white font-semibold p-2 rounded text-[0.8rem]">
+              <button onClick={()=>handlerCartDataAdd()} className="bg-teal-400 text-white font-semibold p-2 rounded text-[0.8rem]">
                 CHECKOUT SECURELY
               </button>
             </Link>
@@ -549,5 +563,5 @@ const CheckoutCart = () => {
   );
 };
 
-export { paymentSection };
+export { paymentSection, cartsData };
 export default CheckoutCart

@@ -136,7 +136,7 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
       if (response.ok) {
         const updateLocalArray = productsIdArray.filter((item) => item !== idVal);
         productsIdArray = updateLocalArray;
-        
+        refreshNavbar();
         productFirstInFetch("", "GET", token)
       }
     } catch (error) {
@@ -155,6 +155,7 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
       } else {
         productAddingInFetch(idVal, "PATCH", tokenVal);
       }
+      refreshNavbar();
     } else {
       openDialog();
     }

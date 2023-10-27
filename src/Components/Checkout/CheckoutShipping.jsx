@@ -7,18 +7,14 @@ import { PiTruckBold } from 'react-icons/pi'
 import TextField from "@mui/material/TextField";
 
 
-
-import { Label } from '@radix-ui/react-menubar'
-
 import { useScreenSize } from '../CommonFunctions/CommonFunctions'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { paymentSection } from './CheckoutCart'
+import { cartsData } from './CheckoutCart'
 
-const CheckoutCart = () => {
+const CheckoutCartShipping = () => {
     const screenSize = useScreenSize();
     const isMobile = screenSize < 960;
-
     const [firstName, setFirstName] = useState(false);
     const [lastName, setLastName] = useState(false);
     const [email, setEmail] = useState(false);
@@ -28,7 +24,13 @@ const CheckoutCart = () => {
     const [state, setState] = useState(false);
     const [address, setAddress] = useState(false);
 
-
+    const handlerScroller = () => {
+        const element = document.getElementById('cart-data');
+        if (element) {            
+            const offset = element.getBoundingClientRect().top + window.scrollY - 50;
+            window.scrollTo({ top: offset, behavior: 'smooth' });
+        }
+      }
 
     //#region --------------Form Validation -----------
 
@@ -104,15 +106,19 @@ const CheckoutCart = () => {
       };
     //#endregion --------------Form Validation -----------
     
-    let booleanCondition = firstName && lastName &&
+    let booleanCondition = 
+    firstName && lastName &&
     email && phone && pinCode && city && state && address ? true : false;    
+    
 
     const checkoutHeader1 = (
         <div className='w-full md2:w-[80%] md2:m-auto border'>
             <div className="flex shadow-lg h-[50px]">
-                <div className={`font-bold w-1/2 bg-white flex items-center justify-center ${isMobile?"text-[0.8rem]":"text-[1rem]"}`}>
-                    BEYOUNG
-                </div>
+                <Link to="/" className={`font-bold w-1/2 bg-white flex items-center justify-center ${isMobile?"text-[0.8rem]":"text-[1rem]"}`}>
+                    <div className={`font-bold w-1/2 bg-white flex items-center justify-center ${isMobile?"text-[0.8rem]":"text-[1rem]"}`}>
+                        BEYOUNG
+                    </div>
+                </Link>
                 <div className="font-bold w-1/2 flex gap-2 items-center justify-center bg-gray-100">
                     <div>
                         <RiSecurePaymentLine />
@@ -157,6 +163,7 @@ const CheckoutCart = () => {
             </div>
         </>
     )
+
     const productsContainer = (
         <div className='flex justify-center '>
             <div className='bg-gray-100 w-full flex flex-col md2:w-[80%]  md2:flex-row'>
@@ -238,7 +245,113 @@ const CheckoutCart = () => {
                     </div>
                 </div>
             
-                {paymentSection}
+                <div className=' w-[100%] md2:w-[35%]'>
+                    {/* <div className='my-[30px] md2:my-[10px] p-2 bg-white'>
+                        <div className='flex items-center gap-2'>
+                            <div>
+                                <BsCash />
+                            </div>
+                            <div className='font-semibold'>
+                                Offers & Benefits
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex">
+                                <input className="my-2 px-2 border-solid border-2 border-stone-300 w-[80%]" type="text" placeholder="Enter code"/>
+                                <Label className="cursor-pointer my-2 w-[20%] text-white font-bold text-center bg-teal-400">Apply</Label>
+                            </div>
+                            <div className='border-2'></div>
+                            <div className='p-2 flex justify-around text-[0.8rem]'>
+                                <div>
+                                    Flat ₹100 Off OnOrders Above ₹999
+                                </div>
+                                <div className='h-fit bg-yellow-100 font-bold'>
+                                    BEYOUNG100
+                                </div>
+
+                            </div>
+                            <div className='border-2'></div>
+                            
+                        </div>
+
+
+                    </div> */}
+
+                    <div className='my-[9px] p-2 bg-white'>
+                        <div id="cart-data" className='font-semibold'>Price Details (4 items)</div>
+                        <div className='border'></div>
+                        
+                        <div className='flex flex-col gap-1'>
+                            <div className='flex text-[0.9rem] justify-between'>
+                                <div>Total MRP (Inc.of Taxes)</div>
+                                <div>₹ {cartsData?.cartTotal}</div>
+                            </div>
+                            <div className='flex justify-between text-[0.9rem]'>
+                                <div>Beyoung Discount</div>
+                                <div>- ₹ {cartsData?.cartTotal - cartsData?.cartAmount}</div>
+                            </div>
+                            <div className='flex justify-between text-[0.9rem]'>
+                                <div>Shipping</div>
+                                <div className='text-green-500'>Free</div>
+                            </div>
+                            <div className='py-2 flex justify-between text-[0.9rem]'>
+                                <div>Cart Total</div>
+                                <div className='font-bold'>₹ {cartsData?.cartAmount}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='my-[5px] flex flex-col justify-between p-2 bg-white'>
+                        <div className='flex justify-between'>
+                            <div className='font-semibold'>
+                                Total  Amount
+                            </div>
+                            <div className='font-bold text-[0.9rem]'>
+                                ₹ {cartsData?.offer? cartsData?.cartAmount-100:cartsData?.cartAmount }
+                            </div>
+                        </div>
+
+                        <div className='my-3 bg-lime-600 font-semibold text-white text-center p-1 text-[0.8rem]'>
+                            You Saved ₹ { cartsData?.offer? cartsData?.cartTotal - cartsData?.cartAmount + 100 : cartsData?.cartTotal - cartsData?.cartAmount   } On This Order
+                        </div>
+                        {!isMobile &&                 
+                            (
+                                <>
+                                    {booleanCondition ? (
+                                    <Link to='/checkout/payment'>
+                                        <button
+                                        className="bg-teal-400 text-white w-[95%] font-semibold text-center p-2"
+                                        >
+                                        CHECKOUT SECURELY
+                                        </button>
+                                    </Link>
+                                    ) : (
+                                    <button
+                                        className="cursor-pointer bg-gray-300 text-white w-[95%] font-semibold text-center p-2"
+                                        disabled
+                                    >
+                                        CHECKOUT SECURELY
+                                    </button>
+                                    )}
+
+                                </>
+                            )
+                        }
+                    </div>
+
+                    <div className='text-[0.8rem] flex justify-center items-center gap-2 text-gray-500'>
+                        <div>
+                            <PiTruckBold className='text-[1rem]'/>
+                        </div>
+                        <div>
+                            Free Delivery & Inclusive Of All Taxes
+                        </div>
+                    </div>
+
+                    <div className='h-[80px]'>
+
+                    </div>
+                </div>
 
             </div>
             
@@ -246,19 +359,19 @@ const CheckoutCart = () => {
                 <div className='fixed shadow-inner z-10 bottom-0 bg-white  w-full flex flex-row justify-between p-2'>
                     <div>
                         <div>
-                            ₹3695            
+                            ₹ {cartsData?.offer? cartsData?.cartAmount-100:cartsData?.cartAmount }          
                         </div>
-                        <div className='text-teal-400 text-[0.7rem] font-semibold'>
+                        <div onClick={()=>handlerScroller()} className='text-teal-400 text-[0.7rem] font-semibold'>
                             View Details
                         </div>
                     </div>
                     <div>
                         {booleanCondition ? (
                             <Link to='/checkout/payment'>
-                                <button
+                                <button                                
                                 className={`${booleanCondition ? 'bg-teal-400':'bg-gray-300'}  text-white font-semibold p-2 rounded text-[0.8rem]`}
                                 >
-                                    CHECKOUT SECURELY
+                                CHECKOUT SECURELY
                                 </button>
                             </Link>
                             ) : (
@@ -290,4 +403,4 @@ const CheckoutCart = () => {
 
 }
 
-export default CheckoutCart;
+export default CheckoutCartShipping;
