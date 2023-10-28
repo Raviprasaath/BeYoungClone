@@ -32,8 +32,8 @@ const Homepage = () => {
       <div className="mt-5 w-full grid place-items-center">
         <img className="w-[78.2%]" src={homePageSection7} alt="home-page-5" />
       </div>
-      <HomeCarouselSection5 />
-      <HomeCarouselSection6 />
+      {/* <HomeCarouselSection5 />
+      <HomeCarouselSection6 /> */}
       <div className="mt-5 w-full grid place-items-center">
         <img className="w-[78.2%]" src={homePageSection8} alt="home-page-5" />
       </div>

@@ -4,6 +4,7 @@ import image2 from "../../../assets/homepage-section3/image2.jpg";
 import "./HomeCarouselSection3.css";
 import { Link } from "react-router-dom";
 import { useDataContext } from "../../Fetching/DataContext";
+import { GridLoader } from 'react-spinners';
 
 const HomeCarouselSection3 = () => {
   const [cargoData, setCargoData] = useState([]);
@@ -11,14 +12,14 @@ const HomeCarouselSection3 = () => {
   const { data, loading } = useDataContext();
 
   function homeSection3Fetch1() {
-    const cargoJogger = data.data.filter(
+    const cargoJogger = data?.data?.filter(
       (item) => item.description.includes("cargo"))
       .filter((item) => item.gender === "Men");
       setCargoData(cargoJogger);
   }
 
   function homeSection3Fetch2() {
-    const result = data.data.filter(
+    const result = data?.data?.filter(
       (item) => item.gender === "Men");
       setAllData(result);
   }
@@ -34,7 +35,9 @@ const HomeCarouselSection3 = () => {
 
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center">
+      <GridLoader color="#36d6b1" loading margin={5} size={15} />
+    </div>;
   }
 
 

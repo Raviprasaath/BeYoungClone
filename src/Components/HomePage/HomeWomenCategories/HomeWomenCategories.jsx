@@ -19,6 +19,7 @@ import image8b from "../../../assets/categories-for-women/8b.jpg";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDataContext } from "../../Fetching/DataContext";
+import { GridLoader } from 'react-spinners';
 
 const HomeWomenCategories = () => {
   const screenSize = useScreenSize();
@@ -36,7 +37,7 @@ const HomeWomenCategories = () => {
 
   function fetchDataAndFilter(
     title, searchTerm, filterFunction, setDataFunction) {
-    const filteredData = data.data.filter((item) => {
+    const filteredData = data?.data?.filter((item) => {
       return item[title].includes(searchTerm) && filterFunction(item);
     });
     setDataFunction(filteredData);
@@ -57,7 +58,11 @@ const HomeWomenCategories = () => {
     }
   }, [data]);
   
-
+  if (loading) {
+    return <div className="flex justify-center items-center">
+      <GridLoader color="#36d6b1" loading margin={5} size={15} />
+    </div>;
+  }
 
   return (
     <>

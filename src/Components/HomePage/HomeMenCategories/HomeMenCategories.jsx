@@ -40,6 +40,7 @@ import { useScreenSize } from "../../CommonFunctions/CommonFunctions";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDataContext } from "../../Fetching/DataContext";
+import { GridLoader } from 'react-spinners';
 
 const HomeMenCategories = () => {
   const screenSize = useScreenSize();
@@ -68,7 +69,7 @@ const HomeMenCategories = () => {
 
   function fetchDataAndFilter(
     title, searchTerm, filterFunction, setDataFunction) {
-    const filteredData = data.data.filter((item) => {
+    const filteredData = data?.data?.filter((item) => {
       return item[title].includes(searchTerm) && filterFunction(item);
     });
     setDataFunction(filteredData);
@@ -100,6 +101,15 @@ const HomeMenCategories = () => {
     }
   }, [data]);
   
+  if (loading) {
+    return (
+      <>
+        <div className="flex justify-center my-4 items-center">
+          <GridLoader color="#36d6b1" loading margin={5} size={15} />
+        </div>
+      </>
+    ) 
+  }
 
   return (
     <>

@@ -7,7 +7,7 @@ import img from "../../assets/user-page.jpg"
 import './UserAuthentication.css'
 
 const UserAuthentication = () => {
-    const { isDialogOpen, openDialog, closeDialog, refreshNavbar  } = useDataContext();
+    const { isDialogOpen, openDialog, closeDialog, refreshNavbar, refresher  } = useDataContext();
     
     const handleFormClick = (e) => {
         e.stopPropagation();
@@ -87,10 +87,10 @@ const UserAuthentication = () => {
         }
     }
 
-
+    console.log('loginStatus', loginStatus);
     useEffect(()=> {
         localStorageUserDetails();
-    }, [])
+    }, [refresher])
 
 
     useEffect(()=> {
@@ -123,15 +123,28 @@ const UserAuthentication = () => {
         
         const response = await fetch(`https://academics.newtonschool.co/${url}`, requestOptions)
         const result = await response.json();
+        console.log("result", result);
         if (result.status === 'success') {
-            const userDetailsFromFetch  = {
-                username: result?.data.name,
-                emailId: result?.data.email,
-                id: result?.data._id,
-                token: result?.token,
+            if (url === "api/v1/user/signup") {
+                const userDetailsFromFetch  = {
+                    username: result?.data.user.name,
+                    emailId: result?.data.user.email,
+                    id: result?.data.user._id,
+                    token: result?.token,
+                }
+                setLoginStatus(true);
+                localStorage.setItem('userDetails', JSON.stringify(userDetailsFromFetch));
+            } else {
+                const userDetailsFromFetch  = {
+                    username: result?.data.name,
+                    emailId: result?.data.email,
+                    id: result?.data._id,
+                    token: result?.token,
+                }
+                setLoginStatus(true);
+                localStorage.setItem('userDetails', JSON.stringify(userDetailsFromFetch));
+
             }
-            setLoginStatus(true);
-            localStorage.setItem('userDetails', JSON.stringify(userDetailsFromFetch));
         } else {
             setLoginStatusError(result.message);
         }

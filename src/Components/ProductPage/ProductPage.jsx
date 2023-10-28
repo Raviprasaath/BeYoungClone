@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -35,6 +35,8 @@ let productsIdArray = [];
 const ProductPage = () => {
     const { openDialog, refreshNavbar } = useDataContext();
 
+    const navigate = useNavigate();
+
     const [singleProduct, setSingleProduct] = useState();
     const [productSizeSelection, setProductSizerSelection] = useState("");
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -42,6 +44,8 @@ const ProductPage = () => {
 
     const [currentProductId, setCurrentProductId] = useState("");
     const [productQuantity, setProductQuantity] = useState(1);
+
+    const [quantityOfCart, setQuantityOfCart] = useState(0);
 
     const [productsFavHeartId, setProductsFavHeartId] = useState([]);
     const [tokenVal, setTokenVal] = useState();
@@ -55,6 +59,25 @@ const ProductPage = () => {
 
     const location = useLocation();
     const str = location.pathname;
+
+
+
+
+
+    let strFinal = "";
+    for (let i=str.length-1; i>=0; i--) {
+        if (str.charAt(i) !== '/') {
+            strFinal += (str.charAt(i));
+        } else {
+            break;
+        }
+    }
+
+    const reversedStrFinal = strFinal.split('').reverse().join('');
+    
+    const oldLocation = location.pathname;
+    let newLocation = oldLocation.replace(reversedStrFinal, '');
+
 
     const gettingReviews = () => {
 
@@ -88,6 +111,41 @@ const ProductPage = () => {
             setCartAddTrack(true);
         }
     }
+    const handlerCardGetting = async (tokenVal) => {
+
+        let myHeaders = new Headers();
+        myHeaders.append("projectID", "vflsmb93q9oc");
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", `Bearer ${tokenVal}`);
+    
+        let requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+    
+        const response = await fetch(
+          "https://academics.newtonschool.co/api/v1/ecommerce/cart/",
+          requestOptions
+        );
+        if (response.ok) {
+          const result = await response.json();
+          const cartData = result.data.items;
+          const cartDataCheck = cartData.some((item)=> {
+            return item.product._id === reversedStrFinal
+          })
+          const cartDataQuantity = cartData.filter((item)=> {
+            if (item.product._id === reversedStrFinal) {
+                return item.quantity;
+            }
+          })
+
+          if (cartDataCheck) {
+            setCartAddTrack(true);
+            setQuantityOfCart(cartDataQuantity[0].quantity)
+          }
+        }
+    };
     
 
 
@@ -99,16 +157,7 @@ const ProductPage = () => {
         }
     }
 
-    let strFinal = "";
-    for (let i=str.length-1; i>=0; i--) {
-        if (str.charAt(i) !== '/') {
-            strFinal += (str.charAt(i));
-        } else {
-            break;
-        }
-    }
 
-    const reversedStrFinal = strFinal.split('').reverse().join('');
     
     async function singleProductFetch() {
         const productId = reversedStrFinal;
@@ -131,16 +180,18 @@ const ProductPage = () => {
         }
     }
       
+    // useEffect(() => {
+    //     singleProductFetch();
+
+    //     // window.scrollTo({
+    //     //     top: 0,
+    //     //     behavior: "smooth",
+    //     // });
+    // }, [reversedStrFinal]);
+
     useEffect(() => {
         singleProductFetch();
-
-        // window.scrollTo({
-        //     top: 0,
-        //     behavior: "smooth",
-        // });
-    }, [reversedStrFinal]);
-
-    useEffect(() => {
+        
         const dataFromHP3 = location?.state?.similarProducts || location?.state?.data;
         setSimilarProduct(dataFromHP3);        
         if (dataFromLocal.username) {
@@ -148,17 +199,23 @@ const ProductPage = () => {
             setTokenVal(dataFromLocal?.token);
             const token = dataFromLocal?.token;
             productFirstInFetch("", "GET", token);
+            handlerCardGetting(token);
             productsIdArray = [];
 
           } else {
             setLoginCheck(false);
             setProductsFavHeartId([]);
+            setCartAddTrack(false);
+
             productsIdArray = [];
           }
-    }, [location.pathname, refreshNavbar ]);
-    
+    }, [location.pathname, refreshNavbar, reversedStrFinal ]);
+
+
     const handlerCheckout = () => {
-        if(productSizeSelection === "") {
+        if(cartAddTrack && productSizeSelection === "" || productSizeSelection !== "" ) {
+            navigate('/checkout/cart');
+        } else if (productSizeSelection === "") {
             handlerScrollToSizeChart();
         } else {
             handlerAddToCart(currentProductId, productQuantity, tokenVal);
@@ -476,7 +533,7 @@ const ProductPage = () => {
                         ()=>handlerCheckout() : ()=>openDialog() 
                         }  className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
                         <GrFormNextLink />
-                            <p >
+                            <p id="1">
                                 BUY NOW
                             </p>                            
                         </div>
@@ -485,7 +542,7 @@ const ProductPage = () => {
                         (<Link className="w-full" to='/checkout/cart'>
                             <div onClick={()=>handlerCheckout()}  className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
                             <GrFormNextLink />
-                                <p>
+                                <p id="2">
                                     BUY NOW
                                 </p>
                             </div>
@@ -493,7 +550,7 @@ const ProductPage = () => {
                         (<Link className="w-full" to='/checkout/cart'>
                             <div className="cursor-pointer flex font-bold justify-center items-center gap-2 ${isMobile?'text-[0.8rem]':'text-[1rem]'} px-2 py-2 rounded m-1 w-full bg-yellow-300">
                             <GrFormNextLink />
-                                <p>
+                                <p id="3">
                                     BUY NOW
                                 </p>
                             </div>
@@ -507,8 +564,7 @@ const ProductPage = () => {
         </>
     )
 
-    const oldLocation = location.pathname;
-    let newLocation = oldLocation.replace(reversedStrFinal, '');
+
 
     
  //#endregion ----------------------

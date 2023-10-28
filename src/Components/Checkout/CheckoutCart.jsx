@@ -10,8 +10,8 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import emptyCart from "../../assets/EMPTY CARTORDER PAGE..png";
 
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
+import Button from "@mui/material/Button";
 import MuiAlert from "@mui/material/Alert";
 
 import { Label } from "@radix-ui/react-menubar";
@@ -26,8 +26,10 @@ import "./CheckoutCart.css";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
 let paymentSection;
 let cartsData;
+
 const CheckoutCart = () => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
@@ -163,6 +165,7 @@ const CheckoutCart = () => {
       offer: offerApply
     }
   }
+  
 
   //#region ---------------snake bar --------------------
 

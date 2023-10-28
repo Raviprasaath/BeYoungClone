@@ -8,8 +8,9 @@ import ClothingFilter from "./ClothingFilter";
 import { useScreenSize } from "../CommonFunctions/CommonFunctions";
 
 import "./ClothingPage.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDataContext } from "../Fetching/DataContext";
+import { GridLoader } from 'react-spinners';
 
 
 let productsIdArray = [];
@@ -19,6 +20,7 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
 
+  const navigate = useNavigate();
 
   const { openDialog, refreshNavbar } = useDataContext();
 
@@ -178,14 +180,16 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
     }
   }, [location.pathname, refreshNavbar ]);
 
-
+  const [imageLoaded, setImageLoaded] = useState(false);
   const contentBody = (
     <>
       <div className="flex flex-row justify-center flex-wrap gap-4 p-4">
         {!dataRender ? (
-          "Loading"
+          <div className="flex justify-center items-center">
+            <GridLoader color="#36d6b1" loading margin={5} size={15} />
+          </div>
         ) : dataRender.length === 0 ? (
-          <p>No Data Found</p>
+          navigate('/out-of-stock')
         ) : (
           dataRender.map((item) => (
             <Link
@@ -195,11 +199,15 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
             >
               <div className="relative max-w-[200px] flex flex-col justify-center items-center">
                 <div>
-                  <img
-                    className="max-w-[200px] rounded-md"
-                    src={item.displayImage}
-                    alt=""
+                  
+                <img
+                  className="max-w-[200px] rounded-md"
+                  src={item.displayImage}
+                  alt=""
+                  onLoad={() => setImageLoaded(true)}
                   />
+
+
                 </div>
                 <div>
                   <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">

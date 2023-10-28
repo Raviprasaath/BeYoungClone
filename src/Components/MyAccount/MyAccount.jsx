@@ -5,13 +5,21 @@ import { useScreenSize } from "../CommonFunctions/CommonFunctions";
 import React, { useEffect, useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDataContext } from "../Fetching/DataContext";
-
+import wishListEmpty from "../../assets/EMPTY-WISHLIST.jpg"
 import noCoupon from "../../assets/no-coupon.jpg"
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 import "./MyAccount.css"
 
 import { GrPrevious } from 'react-icons/gr'
 let productsIdArray = [];
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
 const MyAccount = () => {
     const screenSize = useScreenSize();
     const isMobile = screenSize < 960;
@@ -29,6 +37,7 @@ const MyAccount = () => {
 
     const [isProfilePicFetched, setIsProfilePicFetched] = useState(false);
     const [profilePic, setProfilePic] = useState();
+
 
     const [profileName, setProductName] = useState("");
     const [profileFirstLetter, setProfileFirstLetter] = useState("");
@@ -75,7 +84,14 @@ const MyAccount = () => {
         productsIdArray = [];
 
     }, [location.pathname, refreshNavbar, refresher]);
-
+    const handlerLogout = () => {
+        setLoginCheck(false);
+        refreshNavbar();
+        localStorage.removeItem('userDetails');
+        setTimeout(()=> {
+            navigate('/')
+        }, 500)
+    }
     const handlerMobileNumber = (e) => {
         if (e.target.value.length === 10) {
             setMobileNumber(e.target.value)
@@ -211,8 +227,22 @@ const MyAccount = () => {
 
     const handlerProfileNameMobUpdate = () => {
         gettingDetailsOutFromProfile(tokenVal, profileNameFromType,mobileNumber);
-        
+        handleClick();
     }
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClick = () => {
+      setOpen(true);
+    };
+
+
+    const handleClose = (reason) => {
+        if (reason === "clickaway") {
+          return;
+        }
+        setOpen(false);
+      };
 
     const gettingDetailsOutFromProfile = async (tokenVal, name, mobile) => {
         let myHeaders = new Headers();
@@ -235,8 +265,10 @@ const MyAccount = () => {
         const response = await fetch("https://academics.newtonschool.co/api/v1/user/updateme", requestOptions)
         if (response.ok) {
             const result = await response.json();
-            console.log(result.data);
-            setIsProfilePicFetched(true);
+            
+            if (result.data.user.profileImage) {
+                setIsProfilePicFetched(true);
+            }
             setProfilePicFetch(result.data.user.profileImage);
             setProductName(result.data.user.name);
         }
@@ -263,7 +295,9 @@ const MyAccount = () => {
             if (response.ok) {
                 const result = await response.json();
                 console.log("Image update result", result);
-                setIsProfilePicFetched(true);
+                if (result.data.user.profileImage) {
+                    setIsProfilePicFetched(true);
+                }
                 setProfilePicFetch(result.data.user.profileImage);
                 setProductName(result.data.user.name);
             }
@@ -308,6 +342,12 @@ const MyAccount = () => {
     };
 
     const wishListUi = (
+        wishList && wishList.length === 0 ? (
+            <>
+                <img src={wishListEmpty} alt="" />
+            </>
+        ) :
+        (wishList ?
         wishList?.map((item)=> (
             <Link
                 key={item.products._id}
@@ -352,7 +392,7 @@ const MyAccount = () => {
                 </div>
                 </div>
             </Link>
-        ))
+        )) : ("Loading"))
     )
 
     const addressFetch = () => {
@@ -442,7 +482,7 @@ const MyAccount = () => {
                 </Link>
                 <div className="border m-2"></div>
                 <div className="flex py-4 justify-center">
-                    <button className="bg-yellow-300 w-[95%] text-center py-2 rounded-lg">
+                    <button onClick={()=>handlerLogout()} className="bg-yellow-300 w-[95%] text-center py-2 rounded-lg">
                         LOGOUT
                     </button>
                 </div>
@@ -558,7 +598,26 @@ const MyAccount = () => {
                 }
 
             </>
-        ) }
+        )}
+        <Stack  sx={{ width: "100%" }}>
+            <button
+            className="text-black">
+                Add to Wishlist
+            </button>
+            <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}
+            >
+                <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                >
+                    Updated Successfully!
+                </Alert>
+            </Snackbar>
+        </Stack>
         </>
     )
 }

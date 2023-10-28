@@ -19,6 +19,7 @@ import img7 from "../../../assets/home-carousel-1/image-7.jpg";
 import { Link } from "react-router-dom";
 import { useDataContext } from "../../Fetching/DataContext";
 
+import { GridLoader } from 'react-spinners';
 
 
 const HomeCarouselSection4 = () => {
@@ -38,7 +39,7 @@ const HomeCarouselSection4 = () => {
 
   function fetchDataAndFilter(
     title, searchTerm, filterFunction, setDataFunction) {
-    const filteredData = data.data.filter((item) => {
+    const filteredData = data?.data?.filter((item) => {
       return item[title].includes(searchTerm) && filterFunction(item);
     });
     setDataFunction(filteredData);
@@ -57,6 +58,24 @@ const HomeCarouselSection4 = () => {
       }, 0);
     }
   }, [data]);
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex justify-center items-center my-2.5">
+          <div className="w-[76.2%] flex flex-col justify-center ">
+            {!isMobile ?
+            (<h2 className="text-[20px] font-bold py-3.5">BIG SAVING ZONE</h2>):
+            (<h2 className="font-bold py-3.5">BIG SAVING ZONE</h2>) 
+            }   
+            <div className="flex justify-center my-4 items-center">
+              <GridLoader color="#36d6b1" loading margin={5} size={15} />
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>

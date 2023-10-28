@@ -22,6 +22,7 @@ import MyAccount from "./Components/MyAccount/MyAccount";
 function App() { 
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
+  
 
   const location = useLocation();
   

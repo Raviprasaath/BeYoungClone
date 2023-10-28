@@ -28,6 +28,8 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const [cartCount, setCartCount] = useState(0);
   const [wishListCount, setWishListCount] = useState(0);
 
+  const [isHovered, setIsHovered] = useState(false);
+
   const handlerSearchOpen = () => {
     setSearchBarOpen(!searchBarOpen);
   }
