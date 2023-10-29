@@ -18,6 +18,10 @@ const UserAuthentication = () => {
     const [userName, setUserName] = useState("");
     const [userEmail, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+
     
     const [userNameError, setUserNameError] = useState(true);
     const [userEmailError, setEmailError] = useState(true);
@@ -134,7 +138,7 @@ const UserAuthentication = () => {
                 }
                 setLoginStatus(true);
                 localStorage.setItem('userDetails', JSON.stringify(userDetailsFromFetch));
-            } else {
+            } else if (url === 'api/v1/user/login') {
                 const userDetailsFromFetch  = {
                     username: result?.data.name,
                     emailId: result?.data.email,
@@ -144,6 +148,15 @@ const UserAuthentication = () => {
                 setLoginStatus(true);
                 localStorage.setItem('userDetails', JSON.stringify(userDetailsFromFetch));
 
+            } else if (url === "api/v1/user/updateMyPassword") {
+                const userDetailsFromFetch  = {
+                    username: result?.data.name,
+                    emailId: result?.data.email,
+                    id: result?.data._id,
+                    token: result?.token,
+                }
+                setLoginStatus(true);
+                localStorage.setItem('userDetails', JSON.stringify(userDetailsFromFetch));
             }
         } else {
             setLoginStatusError(result.message);

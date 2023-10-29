@@ -247,20 +247,15 @@ const NavbarLayer3 = (props) => {
             <Tabs.Content className="TabsContent" value="tab1">
               <div className="h-[100vh] overflow-auto">
                 <Accordion.Root className="AccordionRoot" type="single" defaultValue="item-1" collapsible>
-                  
                   <Accordion.Item className="AccordionItem" value="item-1">
                     <AccordionTrigger>NEW ARRIVALS</AccordionTrigger>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                      <Link to="/clothing/urban-shirt"
-                        state={{data: urban}}
-                      >
+                      <Link to="/clothing/urban-shirt" state={{data: urban}} >
                         Urban Shirts
                       </Link>
                     </AccordionContent>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                      <Link to="/clothing/oversized-t-shirt"
-                        state={{data: overSizedTShirt}}
-                      >
+                      <Link to="/clothing/oversized-t-shirt" state={{data: overSizedTShirt}} >
                         Oversize T-Shirts
                       </Link>
                     </AccordionContent>
@@ -270,16 +265,12 @@ const NavbarLayer3 = (props) => {
                       </Link>
                     </AccordionContent>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                      <Link to="clothing/knitted"
-                        state={{data: knitted}}
-                      >
+                      <Link to="clothing/knitted" state={{data: knitted}} >
                         Knitted Joggers
                       </Link>
                     </AccordionContent>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                      <Link to="clothing/view-all"
-                        state={{data: men}}
-                      >
+                      <Link to="clothing/view-all" state={{data: men}} >
                         View All
                       </Link>
                     </AccordionContent>
@@ -409,30 +400,22 @@ const NavbarLayer3 = (props) => {
                       </Link>
                     </AccordionContent>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                      <Link to="clothing/boxer"
-                        state={{data: boxer}}
-                      >
+                      <Link to="clothing/boxer" state={{data: boxer}} >
                         Boxer
                       </Link>
                     </AccordionContent>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                      <Link to="clothing/pyjamas"
-                        state={{data: pyjamas}}
-                      >
+                      <Link to="clothing/pyjamas" state={{data: pyjamas}} >
                         Pyjama
                       </Link>
                     </AccordionContent>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                      <Link to="clothing/shorts"
-                        state={{data: shorts}}
-                      >
+                      <Link to="clothing/shorts" state={{data: shorts}} >
                         Shorts
                       </Link>                    
                     </AccordionContent>
                     <AccordionContent onClick={() => handlerNavbarToggle(false)}>
-                      <Link to="clothing/cargoPant"
-                        state={{data: cargo}}
-                      >
+                      <Link to="clothing/cargoPant" state={{data: cargo}} >
                         Cargo Pants
                       </Link>
                     

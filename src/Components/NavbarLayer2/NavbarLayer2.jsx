@@ -25,17 +25,79 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [searchBarResult, setSearchBarResult] = useState(false);
 
+  const [searchResult, setSearchResult] = useState([]);
+
+
   const [cartCount, setCartCount] = useState(0);
   const [wishListCount, setWishListCount] = useState(0);
+  const [searchValueType, setSearchValueType] = useState("");
+  const [searchResultShowing, setSearchResultShowing] = useState(false);
+  
+
+  let timerId;
+  const handlerSearchBar = (e) => {
+    clearTimeout(timerId);
+    setSearchValueType(e.target.value);
+    timerId = setTimeout(()=> {
+      handlerSearchingResult(e.target.value);
+    }, 1000)
+  }
+
+  const handlerSearchResult = () => {
+    setSearchValueType("")
+  }
+  const [queryParamVal, setQueryParamVal] = useState('0');
+  const queryParamRandomCreation = () => {
+    let numberValue = Math.floor(Math.random()*1000);
+    setQueryParamVal(numberValue);
+  }
+  
+  const handlerSearchingResult = (value) => {
+    if (value.length !== 0) {
+      queryParamRandomCreation();
+
+      let filter1 = (data?.data || []).filter((item) => {
+        return item.subCategory && item.subCategory.includes(value);
+      });
+      let filter2 = (data?.data || []).filter((item) => {
+        return item.brand && item.brand.includes(value);
+      });
+      let filter3 = (data?.data || []).filter((item) => {
+        return item.name && item.name.includes(value);
+      });
+    
+      let filter4 = [];
+    
+      if (filter1.length === 0 && filter2.length === 0 && filter3.length === 0) {
+        filter4 = (data?.data || []).filter((item) => {
+          return item.description && item.description.includes(value);
+        });
+      }
+      const mergerArray = [];
+      [filter1, filter2, filter3].forEach((filter)=> {
+        filter.forEach((item)=> {
+          if(!mergerArray.some((mergedItem) => mergedItem._id === item._id)) {
+            mergerArray.push(item);
+          }
+        });
+      });
+      console.log(mergerArray)
+      if (mergerArray.length !== 0) {
+        setSearchResult(mergerArray);
+        setSearchResultShowing(false);
+      } else {
+        setSearchResultShowing(true);
+        setSearchResult(filter4);
+      }
+    }
+  }
 
   const [isHovered, setIsHovered] = useState(false);
 
   const handlerSearchOpen = () => {
     setSearchBarOpen(!searchBarOpen);
   }
-  const handlerSearchResult = () => {
-    setSearchBarResult(!searchBarResult);
-  }
+
 
   const handlerCardGetting = async (tokenVal) => {
     let myHeaders = new Headers();
@@ -85,6 +147,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
         setCartCount(0);
         setWishListCount(0);
       }
+      setSearchBarOpen(false);
 }, [location.pathname, refreshNavbar, cartCount, wishListCount]);
 
 
@@ -965,40 +1028,37 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
                 </Link>
               </div>
 
-
             {/* search bar */}
 
             {searchBarOpen && (
               <div className="absolute border-2 border-gray-300 right-[0px] top-[58px] bg-white">
-                <input className="p-1.5 w-[170px]" type="text" name="search" id="search" />
-                <label onClick={() => handlerSearchResult()} className="px-2.5 py-1 m-1 bg-black text-white">
-                  Search
-                </label>
+                <input onChange={(e)=>handlerSearchBar(e)} value={searchValueType} className="p-1.5 w-[170px]" type="text" name="search" id="search" />
+                <Link to={`/clothing/search-result${queryParamVal}`} state={{ data: searchResult }}>
+                  <label onClick={() => handlerSearchResult()} className="px-2.5 py-1 m-1 bg-black text-white">
+                    Search
+                  </label>
+                </Link>
               </div>
             )}
-
-            { searchBarOpen && searchBarResult && (
-              <div className="absolute right-[0px] top-[97px] bg-white w-[259.9px] h-[150px] overflow-auto">
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
+            
+            {searchBarOpen && (
+              <div className="absolute right-[0px] top-[97px] bg-white w-[259.9px] h-[150px] overflow-auto">              
+                  {searchResult?.map((item)=> (
+                    <Link key={item._id} to={`/clothing/search-result${queryParamVal}`} state={{ data: searchResult }}>
+                          <div className="px-2 text-[1.1rem]">
+                          {!searchResultShowing ? 
+                            // item.name : item.description
+                            item.name : item.name
+                          }
+                          </div>
+                        <div className="border"></div>
+                    </Link>
+                  ))}
+                  {searchResult.length == 0 &&
+                  <div className="px-2">No Result</div>
+                }
               </div>
             )}
-
-
             </div>
           </div>
         </>
@@ -1039,33 +1099,35 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
 
             </div>
 
-            
-            
-            
             {/* search bar */}
             { searchBarOpen && 
               <div className="absolute border-2 border-gray-300 right-[15px] top-[40px] bg-white">
-                <input className="p-1.5 w-[170px]" type="text" name="search" id="search" />
-                <label onClick={() => handlerSearchResult()} className="px-2.5 py-1 m-1 bg-black text-white">
-                  Search
-                </label>
+                <input onChange={(e)=>handlerSearchBar(e)} value={searchValueType} className="p-1.5 w-[170px]" type="text" name="search" id="search" />
+                <Link to={`/clothing/search-result${queryParamVal}`} state={{ data: searchResult }}>
+                  <label onClick={() => handlerSearchResult()} className="px-2.5 py-1 m-1 bg-black text-white">
+                    Search
+                  </label>
+                </Link>
               </div>
             }
 
-            {searchBarOpen && searchBarResult && 
+            {searchBarOpen && 
               <div className="absolute right-[15px] top-[79px] bg-white w-[259.9px] h-[150px] overflow-auto ">
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
-                <div className="px-2 text-[1.1rem]">ans</div>
-                <div className="border"></div>
+                {searchResult?.map((item)=> (
+                  <Link key={item._id} to={`/clothing/search-result${queryParamVal}`} state={{ data: searchResult }}>
+                    <div className="px-2 text-[1.1rem]">
+                      {!searchResultShowing ? 
+                        // item.name : item.description
+                        item.name : item.name
+                      }
+                    </div>
+                    <div className="border"></div>
+                  </Link>
+                ))}
+                {searchResult.length == 0 && 
+                  <div className="px-2">No Result</div>
+                }
+
               </div>
             }
 

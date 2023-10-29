@@ -36,7 +36,7 @@ const MyAccount = () => {
     const [wishList,setWishList] = useState();
 
     const [isProfilePicFetched, setIsProfilePicFetched] = useState(false);
-    const [profilePic, setProfilePic] = useState();
+    const [profilePic,                  ] = useState();
 
 
     const [profileName, setProductName] = useState("");

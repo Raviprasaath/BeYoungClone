@@ -22,7 +22,6 @@ import MyAccount from "./Components/MyAccount/MyAccount";
 function App() { 
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
-  
 
   const location = useLocation();
   
@@ -30,7 +29,6 @@ function App() {
   const [filterScreenOpen, setFilterScreenOpen] = useState(false);
   const [filteredData, setFilteredData] = useState();
   
-
   const handlerNavbarToggle = (value) => {
     setSideNavbar(value);
   };
@@ -42,8 +40,7 @@ function App() {
   const handlerFilterData = (value) => {
     setFilteredData(value)
   }
-
-
+  
   return (
     <>
       {location.pathname !== "/checkout" &&
@@ -93,7 +90,6 @@ function App() {
           <Route path="/checkout/payment" element={ <CheckoutPayment /> } />
           <Route path="/out-of-stock" element={ <OutOfStock /> } />
           <Route path="/myaccount/:followlink" element={ <MyAccount /> } />
-          
         </Routes>
         
         {location.pathname !== "/checkout" &&
