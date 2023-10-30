@@ -294,7 +294,6 @@ const MyAccount = () => {
             const response = await fetch("https://academics.newtonschool.co/api/v1/user/updateProfileImage", requestOptions);
             if (response.ok) {
                 const result = await response.json();
-                console.log("Image update result", result);
                 if (result.data.user.profileImage) {
                     setIsProfilePicFetched(true);
                 }
@@ -302,7 +301,7 @@ const MyAccount = () => {
                 setProductName(result.data.user.name);
             }
         } catch (error) {
-        console.error("Image update error", error);
+            console.error("Image update error", error);
         }
         
     };

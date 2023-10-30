@@ -76,7 +76,7 @@ function App() {
                   className=" z-1 w-full h-full backdrop-blur-sm bg-gray-rgba "
                   onClick={()=>handlerOpenFilter(false)}
                 >
-                </div>
+              </div>
             </div>
           </>
         }

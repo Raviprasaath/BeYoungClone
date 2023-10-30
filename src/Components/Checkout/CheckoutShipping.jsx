@@ -30,7 +30,7 @@ const CheckoutCartShipping = () => {
             const offset = element.getBoundingClientRect().top + window.scrollY - 50;
             window.scrollTo({ top: offset, behavior: 'smooth' });
         }
-      }
+    }
 
     //#region --------------Form Validation -----------
 

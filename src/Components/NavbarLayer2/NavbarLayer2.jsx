@@ -81,7 +81,7 @@ const NavbarLayer2 = ({ handlerNavbarToggle }) => {
           }
         });
       });
-      console.log(mergerArray)
+
       if (mergerArray.length !== 0) {
         setSearchResult(mergerArray);
         setSearchResultShowing(false);

@@ -91,7 +91,6 @@ const UserAuthentication = () => {
         }
     }
 
-    console.log('loginStatus', loginStatus);
     useEffect(()=> {
         localStorageUserDetails();
     }, [refresher])

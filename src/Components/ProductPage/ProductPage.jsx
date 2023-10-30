@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { TiTick } from 'react-icons/ti'
 
 import './ProductPage.css'
 
@@ -54,6 +55,10 @@ const ProductPage = () => {
 
     const [cartAddTrack, setCartAddTrack] = useState(false);
 
+    const [pinCodeValue, setPinCodeValue] = useState(11000);
+    const [pinCodeRangeCheck, setPinCodeRangeCheck] = useState(false);
+    const [pinCodeErrorShow, SetPinCodeErrorShow] = useState(false);
+
     const screenSize = useScreenSize();
     const isMobile = screenSize < 960;
 
@@ -61,6 +66,22 @@ const ProductPage = () => {
     const str = location.pathname;
 
 
+    const handlerPinCodeType = (e) => {
+        setPinCodeValue(e.target.value);
+        SetPinCodeErrorShow(false);
+    }
+    const handlerPinCodeCheck = () => {
+        if (pinCodeValue > 110000 && pinCodeValue < 880000 ) {
+            setPinCodeRangeCheck(true);
+        } else {
+            setPinCodeRangeCheck(false);
+        }
+        SetPinCodeErrorShow(true);
+    }
+    const handlerPinCodeAgainCheck = () => {
+        setPinCodeRangeCheck(false);
+        SetPinCodeErrorShow(false);
+    }
 
 
 
@@ -380,10 +401,40 @@ const ProductPage = () => {
     const delivery = (
         <div className="px-2">
                 <h4 className={`${isMobile?'text-[0.9rem]':'text-[1.3rem]'} font-medium`} >DELIVERY OPTIONS</h4>
+                
                 <div className="flex">
-                    <input className="my-2 px-2 border-solid border-2 border-stone-300 w-[70%]" type="text" placeholder="Enter Pincode"/>
-                    <Label className="cursor-pointer my-2 w-[20%] text-white font-bold text-center bg-teal-400">CHECK</Label>
+                    {!pinCodeRangeCheck && 
+                        <>
+                            <input onChange={(e)=>handlerPinCodeType(e)} className="my-2 px-2 border-solid border-2 border-stone-300 w-[70%]" type="number" placeholder="Enter Pincode"/>
+                            <Label onClick={()=>handlerPinCodeCheck()} className="cursor-pointer my-2 w-[20%] text-white font-bold text-center bg-teal-400">CHECK</Label>
+                        </>
+                    }
+                    {pinCodeRangeCheck && pinCodeErrorShow && 
+                        <div className="flex justify-between w-[80%] my-4 ">
+                            <div className="flex gap-2 items-center">
+                                <div>
+                                    Deliver to : {pinCodeValue} 
+                                </div>
+                                <div>
+                                    <TiTick className="bg-green-400 p-1 text-[1.5rem] rounded-full text-white" />
+                                </div>
+                            </div>
+                            <button className='cursor-pointer' onClick={()=>handlerPinCodeAgainCheck()} className="text-teal-400">
+                                Change
+                            </button>
+                        </div>
+
+                    }
                 </div>
+                {pinCodeValue.length === 0 && pinCodeErrorShow && 
+                    <p className="text-[0.8rem] text-red-500">Please enter valid Pincode</p>
+                }
+                {pinCodeValue.length !== 0 && !pinCodeRangeCheck && pinCodeErrorShow &&
+                    <p className="text-[0.8rem] text-red-400">Shipping not available at {pinCodeValue}</p>
+                }
+                
+            
+                
                 <div className="px-2">
                     <div className="flex items-center gap-2 py-2">
                         <GiCash className={`bg-teal-100 text-[1.5rem]`} /> 
