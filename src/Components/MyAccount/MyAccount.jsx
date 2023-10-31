@@ -89,77 +89,150 @@ const MyAccount = () => {
                     Back to Order Page
                 </button>
 
-                <div className="flex justify-center">
+                <div className="flex  justify-center">
                     {orderedDataFromLocal[clickedCartNumber-1].cartData !== 0 && (
-                        <div className="bg-gray-100 flex flex-col md2:w-[80%]  md2:flex-row">
-                        <div className="bg-gray-100 flex flex-col items-center  md2:w-[60%]">
-                            {!orderedDataFromLocal[clickedCartNumber-1].cartData
-                            ? "Loading"
-                            : orderedDataFromLocal[clickedCartNumber-1].cartData.map((item) => (
-                                <div
-                                    key={item._id}
-                                    className="my-2 bg-white shadow-lg w-[90%] flex flex-col"
-                                >
-                                    <div className="flex gap-2  p-3">
-                                    <div className="p-2">
-                                        <img
-                                        className="w-[220px] h-[200px]"
-                                        src={item.product.displayImage}
-                                        alt=""
-                                        />
-                                    </div>
-                                    <div className="w-full">
-                                        <p
-                                        className={`${
-                                            isMobile ? "text-[1rem]" : "text-[1.1rem]"
-                                        } w-[90%] font-bold px-2`}
+                        <>
+                            <div className="bg-gray-100 flex flex-col py-3 md2:w-[80%] md2:flex-row">
+                                <div className="bg-gray-100 flex flex-col items-center  md2:w-[60%]">
+                                    {!orderedDataFromLocal[clickedCartNumber-1].cartData
+                                    ? "Loading"
+                                    : orderedDataFromLocal[clickedCartNumber-1].cartData.map((item) => (
+                                        <div
+                                            key={item._id}
+                                            className="my-2 bg-white shadow-lg w-[90%] flex flex-col"
                                         >
-                                        {item.product.name}
-                                        </p>
-                                        {/* <p className={`${isMobile?'text-[0.9rem]':'text-[1rem]'} opacity-70 px-2`}>singleProduct?.subCategory</p> */}
-                                        <p className="p-2">
-                                        <span
-                                            className={`${
-                                            isMobile ? "text-[0.9rem]" : "text-[1rem]"
-                                            } font-bold`}
-                                        >
-                                            ₹ {item.product.price}
-                                        </span>
-                                        <span
-                                            className={`line-through ${
-                                            isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
-                                            } px-1 opacity-70`}
-                                        >
-                                            ₹{" "}
-                                            {item.product.price +
-                                            item.product.price * (50 / 100)}
-                                        </span>
-                                        <span
-                                            className={`px-1 ${
-                                            isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
-                                            } text-green-500 font-bold`}
-                                        >
-                                            (50% Off)
-                                        </span>
-                                        </p>
-                                        <div className="border "></div>
-                                        <div className="flex justify-around">
-                                        {/* <div>
-                                                Color: Cream
+                                            <div className="flex gap-2  p-3">
+                                            <div className="p-2">
+                                                <img
+                                                className="w-[220px] h-[200px]"
+                                                src={item.product.displayImage}
+                                                alt=""
+                                                />
                                             </div>
-                                            <div>
-                                                Size: 34
-                                            </div> */}
+                                            <div className="w-full">
+                                                <p
+                                                className={`${
+                                                    isMobile ? "text-[1rem]" : "text-[1.1rem]"
+                                                } w-[90%] font-bold px-2`}
+                                                >
+                                                {item.product.name}
+                                                </p>
+                                                {/* <p className={`${isMobile?'text-[0.9rem]':'text-[1rem]'} opacity-70 px-2`}>singleProduct?.subCategory</p> */}
+                                                <p className="p-2">
+                                                <span
+                                                    className={`${
+                                                    isMobile ? "text-[0.9rem]" : "text-[1rem]"
+                                                    } font-bold`}
+                                                >
+                                                    ₹ {item.product.price}
+                                                </span>
+                                                <span
+                                                    className={`line-through ${
+                                                    isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
+                                                    } px-1 opacity-70`}
+                                                >
+                                                    ₹{" "}
+                                                    {item.product.price +
+                                                    item.product.price * (50 / 100)}
+                                                </span>
+                                                <span
+                                                    className={`px-1 ${
+                                                    isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
+                                                    } text-green-500 font-bold`}
+                                                >
+                                                    (50% Off)
+                                                </span>
+                                                </p>
+                                                <div className="border "></div>
+                                                <div className="flex justify-around">
+                                                {/* <div>
+                                                        Color: Cream
+                                                    </div>
+                                                    <div>
+                                                        Size: 34
+                                                    </div> */}
+                                                </div>
+                                                <div className="border "></div>
+                                            </div>
+                                            </div>
+                                            <div className="px-4">Quantity: {item.quantity}</div>
+                                            <div className="border"></div>
                                         </div>
-                                        <div className="border "></div>
-                                    </div>
-                                    </div>
-                                    <div className="px-4">Quantity: {item.quantity}</div>
-                                    <div className="border"></div>
+                                        ))}
                                 </div>
-                                ))}
-                        </div>
-                        </div>
+                                <div className=" w-[100%] md2:w-[35%] bg-white mt-2 h-fit p-4">
+                                    <div className="text-[1.1rem] font-bold tracking-wider my-2">Your Order Details</div>
+                                    <div className="flex gap-4">
+                                        <div className="text-yellow-500 font-bold">
+                                            First Name: 
+                                        </div>
+                                        <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
+                                            {orderedDataFromLocal[clickedCartNumber-1].userData.firstName}
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="text-yellow-500 font-bold">
+                                            Last Name: 
+                                        </div>
+                                        <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
+                                            {orderedDataFromLocal[clickedCartNumber-1].userData.lastName}
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="text-yellow-500 font-bold">
+                                            Last Name: 
+                                        </div>
+                                        <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
+                                            {orderedDataFromLocal[clickedCartNumber-1].userData.email}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex gap-4">
+                                        <div className="text-yellow-500 font-bold">
+                                            Address: 
+                                        </div>
+                                        <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
+                                            {orderedDataFromLocal[clickedCartNumber-1].userData.address}
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="text-yellow-500 font-bold">
+                                            City: 
+                                        </div>
+                                        <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
+                                            {orderedDataFromLocal[clickedCartNumber-1].userData.city}
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="text-yellow-500 font-bold">
+                                            Pin Code: 
+                                        </div>
+                                        <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
+                                            {orderedDataFromLocal[clickedCartNumber-1].userData.pincode}
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="text-yellow-500 font-bold">
+                                            State: 
+                                        </div>
+                                        <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
+                                            {orderedDataFromLocal[clickedCartNumber-1].userData.state}
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="text-yellow-500 font-bold">
+                                            Phone: 
+                                        </div>
+                                        <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
+                                            {orderedDataFromLocal[clickedCartNumber-1].userData.phone}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            
+                        </>
                     )}
                     <div>
                         {orderedDataFromLocal[clickedCartNumber-1].cartData.length === 0 && (
@@ -740,7 +813,7 @@ const MyAccount = () => {
         <Stack  sx={{ width: "100%" }}>
             <button
             className="text-black">
-                Add to Wishlist
+                
             </button>
             <Snackbar
                 open={open}
