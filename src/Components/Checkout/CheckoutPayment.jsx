@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import orderImage from "../../assets/order-placed.png"
@@ -27,11 +27,12 @@ import cvv from "../../assets/cvv-icon.png";
 import { cartsData } from "./CheckoutCart";
 
 import { useScreenSize } from "../CommonFunctions/CommonFunctions";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import "./CheckoutPayment.css";
 
 const CheckoutPayment = () => {
+
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
   const [checked, setChecked] = useState(false);
@@ -41,6 +42,58 @@ const CheckoutPayment = () => {
   const [creditCardYear, setCreditCardYear] = useState(false);
   const [creditCardCvv, setCreditCardCvv] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
+  const [tokenVal, setTokenVal] = useState();
+
+  
+  let dataFromLocal = JSON.parse(localStorage.getItem("userDetails")) || [];
+
+  const storedData = localStorage.getItem('orderedProducts');
+  const parsedData = storedData ? JSON.parse(storedData) : [];
+  
+  const location = useLocation();
+  console.log(location.state.data);
+
+  const [cartData, setCartData] = useState(0);
+  const [cartPrice, setCartPrice] = useState(0);
+  const [cartTotalPrice, setCartTotalPrice] = useState(0);
+
+  console.log('cartData', cartData);
+  const [dataArray, setDataArray] = useState([]);
+
+  useEffect(()=> {
+    if (dataFromLocal.username) {
+      setTokenVal(dataFromLocal?.token);
+      handlerCardGetting(dataFromLocal?.token);
+      setCartTotalPrice(0);
+    }
+  
+  }, [])
+
+  const orderAdd = () => {
+    console.log('parsedData', parsedData);
+    localStorage.setItem('orderedProducts', JSON.stringify(dataArray));
+    cartClearing(tokenVal);
+  }
+
+  const cartClearing = async (tokenVal) => {
+    let myHeaders = new Headers();
+    myHeaders.append("projectID", "vflsmb93q9oc");
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${tokenVal}`);
+
+
+
+    let requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    const response = await fetch("https://academics.newtonschool.co/api/v1/ecommerce/cart/", requestOptions)
+    const result = await response.json();
+    console.log(result);
+  }
+
 
   const handlerScroller = () => {
     const element = document.getElementById("cart-data");
@@ -55,17 +108,12 @@ const CheckoutPayment = () => {
       creditCardName &&
       creditCardMonth &&
       creditCardYear &&
-      creditCardCvv) ||
-    checked
-      ? true
-      : false;
+      creditCardCvv) || checked ? true : false;
 
   const handlerModalToggle = () => {
       setModalOpened(true);
   };
-  const handlerModalClose = () => {
-      setModalOpened(false);
-  }
+
   const handlerCardNumber = (e) => {
     if (e.target.value.length === 16) {
       setCreditCardNumber(true);
@@ -139,18 +187,22 @@ const CheckoutPayment = () => {
       >
         <div className="absolute z-[2] left-[15%] lg:left-[17%] lg:right[14%] right-[18%] top-[48px] lg:top-[30px] border border-gray-400 lg:w-[600px] m-auto"></div>
         <div className="relative z-[3] my-4 flex justify-around w-full lg:w-[900px] lg:m-auto">
-          <div className="flex flex-col justify-center items-center">
-            <div>
-              <TiTick className="text-green-500 border-2 bg-white text-[2rem] rounded-full p-1" />
+          <Link to="/checkout/cart">
+            <div className="flex flex-col justify-center items-center">
+              <div>
+                <TiTick className="text-green-500 border-2 bg-white text-[2rem] rounded-full p-1" />
+              </div>
+              <div className="text-[0.9rem]">My Cart</div>
             </div>
-            <div className="text-[0.9rem]">My Cart</div>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <div>
-              <TiTick className="text-green-500 border-2 bg-white text-[2rem] rounded-full p-1" />
+          </Link>
+          <Link to="/checkout/shipping">
+            <div className="flex flex-col justify-center items-center">
+              <div>
+                <TiTick className="text-green-500 border-2 bg-white text-[2rem] rounded-full p-1" />
+              </div>
+              <div className="text-[0.9rem]">Address</div>
             </div>
-            <div className="text-[0.9rem]">Address</div>
-          </div>
+          </Link>
           <div className="flex flex-col  justify-center items-center">
             <div>
               <MdPayment className="border-2 bg-white text-[2rem] rounded-full p-1" />
@@ -211,11 +263,10 @@ const CheckoutPayment = () => {
     </div>
   );
   const dialogPortal = (
-    <Dialog.Portal>
-      <Dialog.Overlay onClick={()=>handlerModalClose()} className="DialogOverlay bg-gray-rgba" />
-      <Dialog.Content className="DialogContent z-">
+    <>
+      <div className="DialogContent z-[5]">
         <div className="py-2 font-bold uppercase font-mono text-center" >
-            Payment Successful & Order Placed
+            Order Placed
         </div>
         <div className="flex relative flex-col items-center">
             <img className="h-[300px]" src={orderImage} alt="" />
@@ -228,14 +279,8 @@ const CheckoutPayment = () => {
                 </button>
             </Link>
         </div>
-        
-        <Dialog.Close asChild onClick={()=>handlerModalClose()}>
-          <button  className="IconButton" aria-label="Close">
-            <Cross2Icon />
-          </button>
-        </Dialog.Close>
-      </Dialog.Content>
-    </Dialog.Portal>
+      </div>
+    </>
   );
   const checkbox = (
     <div className="flex bg-gray-300 w-[80%]">
@@ -482,35 +527,35 @@ const CheckoutPayment = () => {
 
         <div className=" w-[100%] md2:w-[35%]">
           {/* <div className='my-[30px] md2:my-[10px] p-2 bg-white'>
-                        <div className='flex items-center gap-2'>
-                            <div>
-                                <BsCash />
-                            </div>
-                            <div className='font-semibold'>
-                                Offers & Benefits
-                            </div>
-                        </div>
-                        <div>
-                            <div className="flex">
-                                <input className="my-2 px-2 border-solid border-2 border-stone-300 w-[80%]" type="text" placeholder="Enter code"/>
-                                <Label className="cursor-pointer my-2 w-[20%] text-white font-bold text-center bg-teal-400">Apply</Label>
-                            </div>
-                            <div className='border-2'></div>
-                            <div className='p-2 flex justify-around text-[0.8rem]'>
-                                <div>
-                                    Flat ₹100 Off OnOrders Above ₹999
-                                </div>
-                                <div className='h-fit bg-yellow-100 font-bold'>
-                                    BEYOUNG100
-                                </div>
+            <div className='flex items-center gap-2'>
+                <div>
+                    <BsCash />
+                </div>
+                <div className='font-semibold'>
+                    Offers & Benefits
+                </div>
+            </div>
+            <div>
+                <div className="flex">
+                    <input className="my-2 px-2 border-solid border-2 border-stone-300 w-[80%]" type="text" placeholder="Enter code"/>
+                    <Label className="cursor-pointer my-2 w-[20%] text-white font-bold text-center bg-teal-400">Apply</Label>
+                </div>
+                <div className='border-2'></div>
+                <div className='p-2 flex justify-around text-[0.8rem]'>
+                    <div>
+                        Flat ₹100 Off OnOrders Above ₹999
+                    </div>
+                    <div className='h-fit bg-yellow-100 font-bold'>
+                        BEYOUNG100
+                    </div>
 
-                            </div>
-                            <div className='border-2'></div>
-                            
-                        </div>
+                </div>
+                <div className='border-2'></div>
+                
+            </div>
 
 
-                    </div> */}
+        </div> */}
 
           <div className="my-[9px] p-2 bg-white">
             <div id="cart-data" className="font-semibold">
@@ -559,14 +604,17 @@ const CheckoutPayment = () => {
             {!isMobile && (
               <>
                 {booleanCondition ? (
-                  <Dialog.Root>
-                    <Dialog.Trigger asChild>
-                      <button onClick={() => handlerModalToggle()} className="bg-teal-400 text-white w-[95%] font-semibold text-center p-2">
+                  <>
+                      <button 
+                      onClick={
+                        () => 
+                        {handlerModalToggle(),
+                        orderAdd()}
+                        } className="bg-teal-400 text-white w-[95%] font-semibold text-center p-2">
                         CHECKOUT SECURELY
                       </button>
-                    </Dialog.Trigger>
-                    {dialogPortal}
-                  </Dialog.Root>
+                    {modalOpened && dialogPortal}
+                  </>
                 ) : (
                   <button
                     className="cursor-pointer bg-gray-300 text-white w-[95%] font-semibold text-center p-2"
@@ -608,16 +656,22 @@ const CheckoutPayment = () => {
           </div>
           <div>
             {booleanCondition ? (
-                <Dialog.Root>
-                <Dialog.Trigger asChild>
-                <button className={`${
+                <>
+                
+                <button
+                onClick={
+                  () => 
+                  {handlerModalToggle(),
+                  orderAdd()}}
+                 
+                 className={`${
                     booleanCondition ? "bg-teal-400" : "bg-gray-300"
                   }  text-white font-semibold p-2 rounded text-[0.8rem]`}>
                     CHECKOUT SECURELY
                 </button>
-                </Dialog.Trigger>
-                {dialogPortal}
-                </Dialog.Root>              
+                
+                {modalOpened && dialogPortal}
+                </>              
             ) : (
               <button
                 className={`${
@@ -633,6 +687,46 @@ const CheckoutPayment = () => {
       )}
     </div>
   );
+
+
+
+
+  const handlerCardGetting = async (tokenVal) => {
+
+    let myHeaders = new Headers();
+    myHeaders.append("projectID", "vflsmb93q9oc");
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${tokenVal}`);
+
+    let requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    const response = await fetch(
+      "https://academics.newtonschool.co/api/v1/ecommerce/cart/",
+      requestOptions
+    );
+    if (response.ok) {
+      const result = await response.json();
+      setCartData(result.data.items);
+      setCartPrice(result.data.totalPrice);
+      
+      if (Array.isArray(parsedData)) {
+        const newData = {
+          userData: location.state.data,
+          cartData: result.data.items,
+        };
+        setDataArray([...parsedData, newData]);
+      }
+      
+      result.data.items.map((item)=> {
+        setCartTotalPrice((prev) => prev + (item.product.price * 0.5 + item.product.price)*item.quantity)
+      })
+    }
+  };
+
 
   return (
     <>

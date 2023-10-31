@@ -24,6 +24,17 @@ const CheckoutCartShipping = () => {
     const [state, setState] = useState(false);
     const [address, setAddress] = useState(false);
 
+    const [firstNameValue, setFirstNameValue] = useState("");
+    const [lastNameValue, setLastNameValue] = useState("");
+    const [emailValue, setEmailValue] = useState("");
+    const [phoneValue, setPhoneValue] = useState("");
+    const [pinCodeValue, setPinCodeValue] = useState("");
+    const [cityValue, setCityValue] = useState("");
+    const [stateValue, setStateValue] = useState("");
+    const [addressValue, setAddressValue] = useState("");
+
+    const [dataMerging, setDataMerging] = useState({});
+    
     const handlerScroller = () => {
         const element = document.getElementById('cart-data');
         if (element) {            
@@ -32,20 +43,20 @@ const CheckoutCartShipping = () => {
         }
     }
 
-    //#region --------------Form Validation -----------
-
-    
+    //#region --------------Form Validation -----------    
     const handlerFirstName = (e) => {
-        if (e.target.value.length > 5) {
+        if (isTextFormat (e.target.value)) {
             setFirstName(true);
+            setFirstNameValue(e.target.value);
         } else {
             setFirstName(false);
         }
     }
 
     const handlerLastName = (e) => {
-        if (e.target.value.length > 5) {
+        if (isTextFormat (e.target.value)) {
             setLastName(true);
+            setLastNameValue(e.target.value);
         } else {
             setLastName(false);
         }
@@ -54,6 +65,7 @@ const CheckoutCartShipping = () => {
     const handlerEmail = (e) => {
         if ( isValidEmail(e.target.value) ) {
             setEmail(true);
+            setEmailValue(e.target.value);
         } else {
             setEmail(false);
         }
@@ -62,6 +74,7 @@ const CheckoutCartShipping = () => {
     const handlerPhoneNumber = (e) => {
         if (e.target.value.length === 10) {
             setPhone(true);
+            setPhoneValue(e.target.value);
         } else {
             setPhone(false);
         }
@@ -70,45 +83,67 @@ const CheckoutCartShipping = () => {
     const handlerPinCode = (e) => {
         if (e.target.value.length === 6) {
             setPinCode(true);
+            setPinCodeValue(e.target.value);
         } else {
             setPinCode(false);
         }
     }
 
     const handlerCity = (e) => {
-        if (e.target.value) {
+        if (isTextFormat (e.target.value)) {
             setCity(true);
+            setCityValue(e.target.value);
         } else {
             setCity(false);
         }
     }
     
     const handlerState = (e) => {
-        if (e.target.value) {
+        if (isTextFormat (e.target.value)) {
             setState(true);
+            setStateValue(e.target.value);
         } else {
             setState(false);
         }
     }
-        
+
     const handlerAddress = (e) => {
         if (e.target.value) {
             setAddress(true);
+            setAddressValue(e.target.value);
         } else {
             setAddress(false);
         }
+        setDataMerging ({
+            firstName: firstNameValue,
+            lastName: lastNameValue,
+            email: emailValue,
+            phone: phoneValue,
+            pincode: pinCodeValue,
+            city: cityValue,
+            state: stateValue,
+            address: e.target.value,
+        })
+       
     }
     
     
 
     const isValidEmail = (value) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-      };
+    };
+
+    const isTextFormat = (value) => {
+        return /^[a-zA-Z\-]+$/;
+    }
+
+
     //#endregion --------------Form Validation -----------
     
     let booleanCondition = 
     firstName && lastName &&
-    email && phone && pinCode && city && state && address ? true : false;    
+    email && phone && pinCode && city && state && address ? true : false;
+    
     
 
     const checkoutHeader1 = (
@@ -135,14 +170,16 @@ const CheckoutCartShipping = () => {
             <div className='py-4 my-4 relative z-[1] bg-gray-100 lg:w-[80%] m-auto'>
                 <div className='absolute z-[2] left-[15%] lg:left-[17%] lg:right[14%] right-[18%] top-[48px] lg:top-[30px] border border-gray-400 lg:w-[600px] m-auto'></div>            
                 <div className='relative z-[3] my-4 flex justify-around w-full lg:w-[900px] lg:m-auto'>
-                    <div className='flex flex-col justify-center items-center'>
-                        <div>
-                            <TiTick className='text-green-500 border-2 bg-white text-[2rem] rounded-full p-1'/>
+                    <Link to="/checkout/cart">
+                        <div className='flex flex-col justify-center items-center'>
+                            <div>
+                                <TiTick className='text-green-500 border-2 bg-white text-[2rem] rounded-full p-1'/>
+                            </div>
+                            <div className='text-[0.9rem]'>
+                                My Cart
+                            </div>
                         </div>
-                        <div className='text-[0.9rem]'>
-                            My Cart
-                        </div>
-                    </div>
+                    </Link>
                     <div className='flex flex-col justify-center items-center'>                    
                         <div>
                             <CiLocationOn  className='border-2 bg-white text-[2rem] rounded-full p-1'/>
@@ -318,7 +355,10 @@ const CheckoutCartShipping = () => {
                             (
                                 <>
                                     {booleanCondition ? (
-                                    <Link to='/checkout/payment'>
+                                    <Link 
+                                        to='/checkout/payment'
+                                        state= {{data: dataMerging}}
+                                    >
                                         <button
                                         className="bg-teal-400 text-white w-[95%] font-semibold text-center p-2"
                                         >
@@ -367,8 +407,11 @@ const CheckoutCartShipping = () => {
                     </div>
                     <div>
                         {booleanCondition ? (
-                            <Link to='/checkout/payment'>
-                                <button                                
+                            <Link 
+                                to='/checkout/payment'
+                                state= {{data: dataMerging}}
+                            >
+                                <button
                                 className={`${booleanCondition ? 'bg-teal-400':'bg-gray-300'}  text-white font-semibold p-2 rounded text-[0.8rem]`}
                                 >
                                 CHECKOUT SECURELY

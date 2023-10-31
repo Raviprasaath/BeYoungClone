@@ -201,14 +201,14 @@ const ProductPage = () => {
         }
     }
       
-    // useEffect(() => {
-    //     singleProductFetch();
-
-    //     // window.scrollTo({
-    //     //     top: 0,
-    //     //     behavior: "smooth",
-    //     // });
-    // }, [reversedStrFinal]);
+    useEffect(() => {
+        singleProductFetch();
+        setCartAddTrack(false);
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, [reversedStrFinal]);
 
     useEffect(() => {
         singleProductFetch();
