@@ -176,6 +176,7 @@ const UserAuthentication = () => {
     const handlerLogout = () => {
         setLoginStatus(false);
         localStorage.removeItem('userDetails');
+        localStorage.removeItem('orderedProducts');
     }
 
 

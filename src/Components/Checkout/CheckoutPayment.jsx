@@ -51,13 +51,12 @@ const CheckoutPayment = () => {
   const parsedData = storedData ? JSON.parse(storedData) : [];
   
   const location = useLocation();
-  console.log(location.state.data);
 
   const [cartData, setCartData] = useState(0);
   const [cartPrice, setCartPrice] = useState(0);
   const [cartTotalPrice, setCartTotalPrice] = useState(0);
 
-  console.log('cartData', cartData);
+
   const [dataArray, setDataArray] = useState([]);
 
   useEffect(()=> {
@@ -91,7 +90,6 @@ const CheckoutPayment = () => {
 
     const response = await fetch("https://academics.newtonschool.co/api/v1/ecommerce/cart/", requestOptions)
     const result = await response.json();
-    console.log(result);
   }
 
 

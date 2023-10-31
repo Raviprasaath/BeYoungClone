@@ -10,6 +10,7 @@ import noCoupon from "../../assets/no-coupon.jpg"
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import emptyCart from "../../assets/EMPTY CARTORDER PAGE..png";
 
 import "./MyAccount.css"
 
@@ -25,10 +26,12 @@ const MyAccount = () => {
     const isMobile = screenSize < 960;
     const location = useLocation();
     const navigate = useNavigate();
-
+    
+    let dataFromLocal = JSON.parse(localStorage.getItem("userDetails")) || [];
+    
     const [currentLocation, setCurrentLocation] = useState("profile");
     const [loginCheck, setLoginCheck] = useState(false);
-    let dataFromLocal = JSON.parse(localStorage.getItem("userDetails")) || [];
+    
     const { refreshNavbar, refresher } = useDataContext();
     const [tokenVal, setTokenVal] = useState();
 
@@ -38,8 +41,10 @@ const MyAccount = () => {
     const [isProfilePicFetched, setIsProfilePicFetched] = useState(false);
     const [profilePic,  setProfilePic] = useState();
 
+    const [profileName, setProfileDisplayName] = useState("");
 
-    const [profileName, setProductName] = useState("");
+    console.log('profileName', profileName);
+
     const [profileFirstLetter, setProfileFirstLetter] = useState("");
     const [profilePicFetch, setProfilePicFetch] = useState();
 
@@ -52,6 +57,128 @@ const MyAccount = () => {
     const [userNameError, setUserNameError] = useState(false);
     
     let booleanCondition = phoneError && userNameError
+
+    let orderedDataFromLocal = JSON.parse(localStorage.getItem('orderedProducts')) || [];
+    console.log('orderedDataFromLocal', orderedDataFromLocal);
+
+    const [orderPageSwap, setOrderPageSwap] = useState(false);
+    const [clickedCartNumber, setClickedCartNumber] = useState(0);
+    
+    const handlerOrderValue = (value) => {
+        setOrderPageSwap(true);
+        setClickedCartNumber(value.target.textContent.replace('Order ', ""));
+    }
+
+    const orderedProduct = (
+        !orderPageSwap ? (
+            <div className="m-2 flex flex-row gap-2 flex-wrap">
+                {orderedDataFromLocal.length !==0 && orderedDataFromLocal?.map((item, index)=> (
+                    <div onClick={(index)=>handlerOrderValue(index)} key={index} className="cursor-pointer w-[200px] h-[120px] text-[1.1rem] uppercase shadow-lg bg-gray-200 flex justify-center items-center">
+                        Order {index+1}
+                    </div>
+                ))}
+                {orderedDataFromLocal.length === 0 &&
+                    <div className="w-full flex justify-center items-center">
+                        <img src={emptyCart} alt="" />
+                    </div>
+                }
+            </div>
+        ) : (
+            <>
+                <button className="bg-yellow-300 px-4 py-[2px] rounded mt-2 mb-5" onClick={()=>setOrderPageSwap(false)}>
+                    Back to Order Page
+                </button>
+
+                <div className="flex justify-center">
+                    {orderedDataFromLocal[clickedCartNumber-1].cartData !== 0 && (
+                        <div className="bg-gray-100 flex flex-col md2:w-[80%]  md2:flex-row">
+                        <div className="bg-gray-100 flex flex-col items-center  md2:w-[60%]">
+                            {!orderedDataFromLocal[clickedCartNumber-1].cartData
+                            ? "Loading"
+                            : orderedDataFromLocal[clickedCartNumber-1].cartData.map((item) => (
+                                <div
+                                    key={item._id}
+                                    className="my-2 bg-white shadow-lg w-[90%] flex flex-col"
+                                >
+                                    <div className="flex gap-2  p-3">
+                                    <div className="p-2">
+                                        <img
+                                        className="w-[220px] h-[200px]"
+                                        src={item.product.displayImage}
+                                        alt=""
+                                        />
+                                    </div>
+                                    <div className="w-full">
+                                        <p
+                                        className={`${
+                                            isMobile ? "text-[1rem]" : "text-[1.1rem]"
+                                        } w-[90%] font-bold px-2`}
+                                        >
+                                        {item.product.name}
+                                        </p>
+                                        {/* <p className={`${isMobile?'text-[0.9rem]':'text-[1rem]'} opacity-70 px-2`}>singleProduct?.subCategory</p> */}
+                                        <p className="p-2">
+                                        <span
+                                            className={`${
+                                            isMobile ? "text-[0.9rem]" : "text-[1rem]"
+                                            } font-bold`}
+                                        >
+                                            ₹ {item.product.price}
+                                        </span>
+                                        <span
+                                            className={`line-through ${
+                                            isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
+                                            } px-1 opacity-70`}
+                                        >
+                                            ₹{" "}
+                                            {item.product.price +
+                                            item.product.price * (50 / 100)}
+                                        </span>
+                                        <span
+                                            className={`px-1 ${
+                                            isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
+                                            } text-green-500 font-bold`}
+                                        >
+                                            (50% Off)
+                                        </span>
+                                        </p>
+                                        <div className="border "></div>
+                                        <div className="flex justify-around">
+                                        {/* <div>
+                                                Color: Cream
+                                            </div>
+                                            <div>
+                                                Size: 34
+                                            </div> */}
+                                        </div>
+                                        <div className="border "></div>
+                                    </div>
+                                    </div>
+                                    <div className="px-4">Quantity: {item.quantity}</div>
+                                    <div className="border"></div>
+                                </div>
+                                ))}
+                        </div>
+                        </div>
+                    )}
+                    <div>
+                        {orderedDataFromLocal[clickedCartNumber-1].cartData.length === 0 && (
+                        <div className="w-full flex flex-col justify-center items-center">
+                            <div className="flex bg-red-300 justify-center">
+                            <img className="w-[80%]" src={emptyCart} alt="" />
+                            </div>
+                            <Link to="/">
+                            <button className="bg-yellow-400 px-4 py-2 my-1 rounded">
+                                Continue Shopping
+                            </button>
+                            </Link>
+                        </div>
+                        )}
+                    </div>
+                </div>
+            </>
+        )
+    )
 
     useEffect(() => {
         const token = dataFromLocal?.token;
@@ -84,6 +211,8 @@ const MyAccount = () => {
         productsIdArray = [];
 
     }, [location.pathname, refreshNavbar, refresher]);
+    
+    
     const handlerLogout = () => {
         setLoginCheck(false);
         refreshNavbar();
@@ -101,7 +230,7 @@ const MyAccount = () => {
         }
     }
     const userNameCheck = (e) => {
-        if (e.target.value.length > 4) {
+        if (e.target.value.length > 2) {
             setProfileNameFromType(e.target.value)
             setUserNameError(true);
         } else {
@@ -226,7 +355,7 @@ const MyAccount = () => {
     };
 
     const handlerProfileNameMobUpdate = () => {
-        gettingDetailsOutFromProfile(tokenVal, profileNameFromType,mobileNumber);
+        gettingDetailsOutFromProfile(tokenVal, profileNameFromType, mobileNumber);
         handleClick();
     }
 
@@ -245,32 +374,38 @@ const MyAccount = () => {
       };
 
     const gettingDetailsOutFromProfile = async (tokenVal, name, mobile) => {
+        console.log('profileNameFromType', name);
+
         let myHeaders = new Headers();
         myHeaders.append("projectID", "vflsmb93q9oc");
+        myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", `Bearer ${tokenVal}`);
 
-        let raw = JSON.stringify({
-            "name": {name},
-            "address": "",
-            "phone": {mobile}
-        });
+        let raw;
+        if (name) {
+            raw = JSON.stringify({
+                "name": name,
+                "address": "",
+                "phone": mobile
+            });
+        }
 
         let requestOptions = {
-        method: 'PATCH',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
+            method: 'PATCH',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
         };
 
         const response = await fetch("https://academics.newtonschool.co/api/v1/user/updateme", requestOptions)
         if (response.ok) {
             const result = await response.json();
-            
+            console.log('result', result);
             if (result.data.user.profileImage) {
                 setIsProfilePicFetched(true);
             }
             setProfilePicFetch(result.data.user.profileImage);
-            setProductName(result.data.user.name);
+            setProfileDisplayName(result.data.user.name);
         }
     }
 
@@ -299,7 +434,7 @@ const MyAccount = () => {
                     setIsProfilePicFetched(true);
                 }
                 setProfilePicFetch(result.data.user.profileImage);
-                setProductName(result.data.user.name);
+                setProfileDisplayName(result.data.user.name);
             }
         } catch (error) {
         console.error("Image update error", error);
@@ -490,11 +625,14 @@ const MyAccount = () => {
         </div>
     )
 
+
+
+
     const accountContent = (
         <div className="w-[80%]">
             {currentLocation === 'order'&&
                 <div>
-                    Order
+                    {orderedProduct}
                 </div>
             }
             {currentLocation === 'address'&&
