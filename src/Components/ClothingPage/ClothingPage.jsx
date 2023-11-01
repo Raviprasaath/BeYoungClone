@@ -15,7 +15,7 @@ import { GridLoader } from 'react-spinners';
 
 let productsIdArray = [];
 
-const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
+const ClothingPage = ({ handlerOpenFilter, handlerFilterData, filterSelectionFromClothingPage }) => {
   const location = useLocation();
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
@@ -27,6 +27,12 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   const [dataRender, setDataRender] = useState();
   const [productsFavHeartId, setProductsFavHeartId] = useState([]);
   const [tokenVal, setTokenVal] = useState();
+
+  const [typeOfFilter, setTypeOfFilter] = useState();
+
+  console.log('filterSelectionFromClothingPage', filterSelectionFromClothingPage);
+  
+  let fromFilterPage = filterSelectionFromClothingPage;
 
 
   const [loginCheck, setLoginCheck] = useState(false);
@@ -148,6 +154,8 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
 
 
 
+
+
   const handlerFavAdding = (event, item, idVal) => {
     event.preventDefault();
     if (loginCheck) {
@@ -178,6 +186,16 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
       setProductsFavHeartId([]);
       productsIdArray = [];
     }
+
+    if ( fromFilterPage === 'S' || fromFilterPage === 'M' ||  fromFilterPage === 'L' ||  fromFilterPage === 'XL' ||  fromFilterPage === 'XXL' ) {
+      setTypeOfFilter('size');
+    } else if (fromFilterPage === 'Low to High' || fromFilterPage === 'High to Low') {
+      setTypeOfFilter('price');
+    } else {
+      setTypeOfFilter('color');
+    }
+
+
   }, [location.pathname, refreshNavbar ]);
 
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -199,15 +217,12 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
             >
               <div className="relative max-w-[200px] flex flex-col justify-center items-center">
                 <div>
-                  
-                <img
-                  className="max-w-[200px] rounded-md"
-                  src={item.displayImage}
-                  alt=""
-                  onLoad={() => setImageLoaded(true)}
+                  <img
+                    className="max-w-[200px] rounded-md"
+                    src={item.displayImage}
+                    alt=""
+                    onLoad={() => setImageLoaded(true)}
                   />
-
-
                 </div>
                 <div>
                   <p className="text-[0.9rem] whitespace-nowrap max-w-[200px] text-ellipsis overflow-hidden">

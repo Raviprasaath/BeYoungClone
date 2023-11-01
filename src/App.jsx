@@ -40,6 +40,13 @@ function App() {
   const handlerFilterData = (value) => {
     setFilteredData(value)
   }
+
+  const [filterSelectionFromClothingPage, setFilterSelectionFromClothingPage] = useState('');
+
+  const handlerFilterSelectionFromClothingPge = (value) => {
+    console.log("test ",value);
+    setFilterSelectionFromClothingPage(value);
+  }
   
   return (
     <>
@@ -70,7 +77,7 @@ function App() {
           <>
             <div className="fixed top-0 z-50 flex flex-row w-[100%] h-full">
                 <div className=" z-1 max-w-[270px] h-full bg-white">
-                  {<ClothingFilter filteredData={filteredData} />}
+                  {<ClothingFilter filteredData={filteredData} handlerFilterSelectionFromClothingPge={handlerFilterSelectionFromClothingPge} />}
                 </div>
                 <div
                   className=" z-1 w-full h-full backdrop-blur-sm bg-gray-rgba "
@@ -83,7 +90,7 @@ function App() {
         
         <Routes>
           <Route path="/" element={ <Homepage /> } />
-          <Route path="/clothing/:name" element={ <ClothingPage handlerOpenFilter={handlerOpenFilter} handlerFilterData={handlerFilterData} /> } />
+          <Route path="/clothing/:name" element={ <ClothingPage handlerOpenFilter={handlerOpenFilter} handlerFilterData={handlerFilterData} filterSelectionFromClothingPage={filterSelectionFromClothingPage} /> } />
           <Route path="/clothing/:name/:productName" element={ <ProductPage /> } />
           <Route path="/checkout/cart" element={ <CheckoutCart /> } />
           <Route path="/checkout/shipping" element={ <CheckoutShipping /> } />

@@ -2,63 +2,86 @@
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 
-const ClothingFilter = ( {filteredData, clothingData} ) => {
+// clothingData - Lap view Data
+// filteredData - Mobile view Data
+  const ClothingFilter = ({ handlerFilterSelectionFromClothingPge, filteredData, clothingData }) => {
+
     const [price, setPrice] = useState("low");
-
-    const colors = [
-      {title:"BLACK" , className:"bg-black rounded-full w-[25px] h-[25px] m-1"},
-      {title:"BROWN" , className:"bg-amber-700 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"WHITE" , className:"bg-white border-2 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"GREY" , className:"bg-gray-500	rounded-full w-[25px] h-[25px] m-1" },
-      {title:"CREAM" , className:"bg-amber-100 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"ORANGE" , className:"bg-orange-500 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"BLUE" , className:"bg-blue-500 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"GREEN" , className:"bg-green-500 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"RED" , className:"bg-red-500 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"LAVENDER" , className:"bg-indigo-200 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"PINK" , className:"bg-pink-600 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"KHAKI" , className:"bg-yellow-700 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"PURPLE" , className:"bg-purple-600 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"YELLOW " , className:"bg-yellow-500 rounded-full w-[25px] h-[25px] m-1"},
-      {title:"MAROON " , className:"bg-amber-900 rounded-full w-[25px] h-[25px] m-1"},
-      {title:"BEIGE" , className:"bg-rose-100 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"OLIVE" , className:"bg-lime-600 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"CHARCOAL" , className:"bg-zinc-500 rounded-full w-[25px] h-[25px] m-1" },
-      {title:"SILVER" , className:"bg-zinc-300 rounded-full w-[25px] h-[25px] m-1" },
-    ]
-    
     const receivedData = clothingData;
-
     
+    const location = useLocation(); 
+
+
     const colorElements = [];
     const addedColors = new Set();
 
-    const handlerColorPicker = (e, data) => {
-      console.log(data)
+    const [selectedFilterCategory, setSelectedFilterCategory] = useState('');
+
+    const handlerFilterPicker = (e, data) => {
+      console.log('data', data)
+      setSelectedFilterCategory(data);
+      handlerFilterSelectionFromClothingPge(data);
     }
+
+    // useEffect(()=> {
+    //   setSelectedFilterCategory('');
+    // }, [location.pathname])
+
+    const colors = [
+
+      {title:"BLACK", className:`${selectedFilterCategory === 'BLACK' ? 'border-2 border-green-500' : "" } bg-black cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"BROWN" , className:`${selectedFilterCategory === 'BROWN' ? 'border-2 border-black' : "" } bg-amber-700 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"WHITE" , className:`${selectedFilterCategory === 'WHITE' ? 'border-2 border-black' : "" } bg-white border-2 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"GREY" , className:`${selectedFilterCategory === 'GREY' ? 'border-2 border-black' : "" } bg-gray-500 cursor-pointer	rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"CREAM" , className:`${selectedFilterCategory === 'CREAM' ? 'border-2 border-black' : "" } bg-amber-100 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"ORANGE" , className:`${selectedFilterCategory === 'ORANGE' ? 'border-2 border-black' : "" } bg-orange-500 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"BLUE" , className:`${selectedFilterCategory === 'BLUE' ? 'border-2 border-black' : "" } bg-blue-500 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"GREEN" , className:`${selectedFilterCategory === 'GREEN' ? 'border-2 border-black' : "" } bg-green-500 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"RED" , className:`${selectedFilterCategory === 'RED' ? 'border-2 border-black' : "" } bg-red-500 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"LAVENDER" , className:`${selectedFilterCategory === 'LAVENDER' ? 'border-2 border-black' : "" } bg-indigo-200 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"PINK" , className:`${selectedFilterCategory === 'PINK' ? 'border-2 border-black' : "" } bg-pink-600 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"KHAKI" , className:`${selectedFilterCategory === 'KHAKI' ? 'border-2 border-black' : "" } bg-yellow-700 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"PURPLE" , className:`${selectedFilterCategory === 'PURPLE' ? 'border-2 border-black' : "" } bg-purple-600 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"YELLOW " , className:`${selectedFilterCategory === 'YELLOW' ? 'border-2 border-black' : "" } bg-yellow-500 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"MAROON " , className:`${selectedFilterCategory === 'MAROON' ? 'border-2 border-black' : "" } bg-amber-900 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"BEIGE" , className:`${selectedFilterCategory === 'BEIGE' ? 'border-2 border-black' : "" } bg-rose-100 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"OLIVE" , className:`${selectedFilterCategory === 'OLIVE' ? 'border-2 border-black' : "" } bg-lime-600 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"CHARCOAL" , className:`${selectedFilterCategory === 'CHARCOAL' ? 'border-2 border-black' : "" } bg-zinc-500 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+      {title:"SILVER" , className:`${selectedFilterCategory === 'SILVER' ? 'border-2 border-black' : "" } bg-zinc-300 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
+    ]
     
-    receivedData?.forEach((data, index) => {
+    let dataGot = filteredData || receivedData;
+
+    dataGot?.forEach((data, index) => {
       const matchingColor = colors?.find((color) => color.title === data.color);
       if (matchingColor && !addedColors.has(matchingColor.title)) {
         colorElements.push(
-          <div onClick={(e)=>handlerColorPicker(e, matchingColor.title)} key={index} title={matchingColor.title} className={matchingColor.className}></div>
+          <div onClick={(e) => handlerFilterPicker(e, matchingColor.title)} key={index} title={matchingColor.title} className={matchingColor.className}></div>
         );
         addedColors.add(matchingColor.title);
       }
     });
+
+    let sizeArray = [];
+
+    dataGot?.forEach((data) => {
+      sizeArray.push(data.size);
+    })
     
-    filteredData?.forEach((data, index) => {
-      const matchingColor = colors?.find((color) => color.title === data.color);
-      if (matchingColor && !addedColors.has(matchingColor.title)) {
-        colorElements.push(
-          <div key={index} title={matchingColor.title} className={matchingColor.className}></div>
-        );
-        addedColors.add(matchingColor.title);
-      }
+    const uniqueValues = new Set();
+
+    sizeArray.forEach((arr) => {
+      arr.forEach((value) => {
+        uniqueValues.add(value);
+      });
     });
+
+    const mergedArray = [...uniqueValues];
+    
 
 
     return (
@@ -84,11 +107,9 @@ const ClothingFilter = ( {filteredData, clothingData} ) => {
                 <Accordion.Item className="AccordionItem" value="item-2">
                     <AccordionTrigger>SIZE</AccordionTrigger>
                     <AccordionContent>
-                    <div>S</div>
-                    <div>M</div>
-                    <div>L</div>
-                    <div>XL</div>
-                    <div>XXL</div>
+                      {mergedArray.map((item)=> (
+                        <div key={item} className={`${selectedFilterCategory===item ?'text-teal-400':''} cursor-pointer`} onClick={(e)=>handlerFilterPicker(e, item)}>{item}</div>
+                      ))}
                     </AccordionContent>
                 </Accordion.Item>
                 {/* <Accordion.Item className="AccordionItem" value="item-3">
@@ -107,22 +128,29 @@ const ClothingFilter = ( {filteredData, clothingData} ) => {
                         onChange={() => setPrice(price === "low" ? "" : "low")}
                         checked={price === "low"}
                         name="low"
+                        
+                        
                         />
-                        <label htmlFor="low" className="text-[1rem] px-3">
-                        Price: Low to High
-                        </label>
+                        <button
+                        onClick={()=>handlerFilterPicker("", 'Low to High')}
+                        htmlFor="low" className={`text-[1rem] cursor-pointer px-3 ${selectedFilterCategory==='Low to High'?'text-teal-400':''}`}>
+                          Price: Low to High
+                        </button>
                     </div>
                     <div>
                         <input
-                        type="checkbox"
-                        id="high"
-                        onChange={() => setPrice(price === "high" ? "" : "high")}
-                        checked={price === "high"}
-                        name="high"
+                          type="checkbox"
+                          id="high"
+                          onChange={() => setPrice(price === "high" ? "" : "high")}
+                          checked={price === "high"}
+                          name="high"
+                          
                         />
-                        <label htmlFor="high" className="text-[1rem] px-3">
+                        <button
+                        onClick={()=>handlerFilterPicker("", 'High to Low')}
+                        htmlFor="high" className={`text-[1rem] cursor-pointer px-3 ${selectedFilterCategory==='High to Low'?'text-teal-400':''}`}>
                         Price: High to Low
-                        </label>
+                        </button>
                     </div>
                     </AccordionContent>
                 </Accordion.Item>

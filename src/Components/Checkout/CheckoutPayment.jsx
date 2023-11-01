@@ -69,7 +69,6 @@ const CheckoutPayment = () => {
   }, [])
 
   const orderAdd = () => {
-    console.log('parsedData', parsedData);
     localStorage.setItem('orderedProducts', JSON.stringify(dataArray));
     cartClearing(tokenVal);
   }

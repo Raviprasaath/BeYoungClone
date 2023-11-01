@@ -126,7 +126,7 @@ const UserAuthentication = () => {
         
         const response = await fetch(`https://academics.newtonschool.co/${url}`, requestOptions)
         const result = await response.json();
-        console.log("result", result);
+        
         if (result.status === 'success') {
             if (url === "api/v1/user/signup") {
                 const userDetailsFromFetch  = {

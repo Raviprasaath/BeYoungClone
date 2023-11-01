@@ -43,7 +43,6 @@ const MyAccount = () => {
 
     const [profileName, setProfileDisplayName] = useState("");
 
-    console.log('profileName', profileName);
 
     const [profileFirstLetter, setProfileFirstLetter] = useState("");
     const [profilePicFetch, setProfilePicFetch] = useState();
@@ -59,8 +58,7 @@ const MyAccount = () => {
     let booleanCondition = phoneError && userNameError
 
     let orderedDataFromLocal = JSON.parse(localStorage.getItem('orderedProducts')) || [];
-    console.log('orderedDataFromLocal', orderedDataFromLocal);
-
+   
     const [orderPageSwap, setOrderPageSwap] = useState(false);
     const [clickedCartNumber, setClickedCartNumber] = useState(0);
     
@@ -447,7 +445,6 @@ const MyAccount = () => {
       };
 
     const gettingDetailsOutFromProfile = async (tokenVal, name, mobile) => {
-        console.log('profileNameFromType', name);
 
         let myHeaders = new Headers();
         myHeaders.append("projectID", "vflsmb93q9oc");
@@ -502,7 +499,7 @@ const MyAccount = () => {
             const response = await fetch("https://academics.newtonschool.co/api/v1/user/updateProfileImage", requestOptions);
             if (response.ok) {
                 const result = await response.json();
-                console.log("Image update result", result);
+                
                 if (result.data.user.profileImage) {
                     setIsProfilePicFetched(true);
                 }
