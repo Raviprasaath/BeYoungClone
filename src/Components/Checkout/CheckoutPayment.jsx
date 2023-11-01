@@ -65,7 +65,10 @@ const CheckoutPayment = () => {
       handlerCardGetting(dataFromLocal?.token);
       setCartTotalPrice(0);
     }
-  
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [])
 
   const orderAdd = () => {

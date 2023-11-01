@@ -352,6 +352,7 @@ const ProductPage = () => {
             </div>
         </div>
     )
+
     const sizeSelection = (
         <div id="sizeChart" className="px-2">
         <h4 className={`${isMobile?'text-[0.9rem]':'text-[1.2rem]'} font-medium px-2`}>SIZE</h4>
@@ -360,21 +361,31 @@ const ProductPage = () => {
         }
         
         <div className={`py-2 flex items-center gap-2.5 ${isMobile?'justify-center':""}`} >
-            <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "S" ? 'border-teal-400' : ''}`}>
-                S
-            </div>
-            <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "M" ? 'border-teal-400':""}`}>
-                M
-            </div>
-            <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "L" ? 'border-teal-400' : ''}`}>
-                L
-            </div>
-            <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "XL" ? 'border-teal-400' : ''}`}>
-                XL
-            </div>
-            <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "XXL" ? 'border-teal-400' : ''}`}>
-                XXL
-            </div>
+            {singleProduct?.size.includes('S') &&
+                <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "S" ? 'border-teal-400' : ''}`}>
+                    S
+                </div>            
+            }
+            {singleProduct?.size.includes('M') &&
+                <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "M" ? 'border-teal-400':""}`}>
+                    M
+                </div>
+            }
+            {singleProduct?.size.includes('L') &&
+                <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "L" ? 'border-teal-400' : ''}`}>
+                    L
+                </div>
+            }
+            {singleProduct?.size.includes('XL') &&
+                <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "XL" ? 'border-teal-400' : ''}`}>
+                    XL
+                </div>
+            }
+            {singleProduct?.size.includes('XXL') &&
+                <div onClick={(event)=>handlerSizeSelector(event)} className={`cursor-pointer ${isMobile?'text-[0.75rem]':'text-[1rem]'} rounded-full border-2 w-[50px] pt-[10.5px] h-[50px] text-center ${productSizeSelection === "XXL" ? 'border-teal-400' : ''}`}>
+                    XXL
+                </div>
+            }
         </div>
         </div>
     )

@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 
 import { useScreenSize } from '../CommonFunctions/CommonFunctions'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { cartsData } from './CheckoutCart'
 
 const CheckoutCartShipping = () => {
@@ -34,6 +34,13 @@ const CheckoutCartShipping = () => {
     const [addressValue, setAddressValue] = useState("");
 
     const [dataMerging, setDataMerging] = useState({});
+
+    useEffect(()=> {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, [])
     
     const handlerScroller = () => {
         const element = document.getElementById('cart-data');

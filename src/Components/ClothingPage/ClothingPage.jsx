@@ -28,9 +28,6 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   const [productsFavHeartId, setProductsFavHeartId] = useState([]);
   const [tokenVal, setTokenVal] = useState();
 
-  const [typeOfFilter, setTypeOfFilter] = useState('');
-  
-
 
   const [loginCheck, setLoginCheck] = useState(false);
   let dataFromLocal = JSON.parse(localStorage.getItem("userDetails")) || [];
@@ -170,15 +167,11 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   useEffect(() => {
     if (!filterTypeSelection) {
       setDataRender(dataFromHP3);
-      setTypeOfFilter('');      
-    } else if ( filterTypeSelection === 'S' || filterTypeSelection === 'M' ||  filterTypeSelection === 'L' ||  filterTypeSelection === 'XL' ||  filterTypeSelection === 'XXL' ) {
-      setTypeOfFilter('size');
+    } else if ( filterTypeSelection === 'S' || filterTypeSelection === 'M' ||  filterTypeSelection === 'L' ||  filterTypeSelection === 'XL' ||  filterTypeSelection === 'XXL' ) {      
       handlerFilteredContent(filterTypeSelection, 'size');
     } else if (filterTypeSelection === 'Low to High' || filterTypeSelection === 'High to Low') {
-      setTypeOfFilter('price');
       handlerFilteredContent(filterTypeSelection, 'price');
     } else {
-      setTypeOfFilter('color');
       handlerFilteredContent(filterTypeSelection, 'color');
     }
 
@@ -194,6 +187,11 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
       setProductsFavHeartId([]);
       productsIdArray = [];
     }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
 
 
   }, [location.pathname, refreshNavbar ]);

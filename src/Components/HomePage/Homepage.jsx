@@ -13,8 +13,15 @@ import HomeCarouselSection6 from "./HomeCarouselSection6/HomeCarouselSection6";
 
 import HomeMenCategories from "./HomeMenCategories/HomeMenCategories";
 import HomeWomenCategories from "./HomeWomenCategories/HomeWomenCategories";
+import { useEffect } from "react";
 
 const Homepage = () => {
+  useEffect(()=> {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [])
   return (
     <>
       <div className="relative z-0">

@@ -10,18 +10,18 @@ import { useDataContext } from "../Fetching/DataContext";
 // clothingData - Lap view Data
 // filteredData - Mobile view Data
   const ClothingFilter = ({ filteredData, clothingData }) => {
-
     const { handlerTypeOfFilterChoose } = useDataContext();
 
     const [price, setPrice] = useState("low");
-  
+    const [selectedFilterCategory, setSelectedFilterCategory] = useState('');
+
     const colorElements = [];
     const addedColors = new Set();
 
-    const [selectedFilterCategory, setSelectedFilterCategory] = useState('');
+    let dataGot = filteredData || clothingData;
+    
 
     const handlerFilterPicker = (data) => {
-      console.log('data', data)
       setSelectedFilterCategory(data===selectedFilterCategory?'':data);
       handlerTypeOfFilterChoose(data===selectedFilterCategory?'':data);
     }
@@ -50,32 +50,37 @@ import { useDataContext } from "../Fetching/DataContext";
       {title:"SILVER" , className:`${selectedFilterCategory === 'SILVER' ? 'border-2 border-black' : "" } bg-zinc-300 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
     ]
     
-    let dataGot = filteredData || clothingData;
-
-    dataGot?.forEach((data, index) => {
-      const matchingColor = colors?.find((color) => color.title === data.color);
-      if (matchingColor && !addedColors.has(matchingColor.title)) {
-        colorElements.push(
-          <div onClick={() => handlerFilterPicker(matchingColor.title)} key={index} title={matchingColor.title} className={matchingColor.className}></div>
-        );
-        addedColors.add(matchingColor.title);
-      }
-    });
-
-    let sizeArray = [];
-
-    dataGot?.forEach((data) => {
-      sizeArray.push(data.size);
-    })
     
-    const uniqueValues = new Set();
 
-    sizeArray.forEach((arr) => {
-      arr.forEach((value) => {
-        uniqueValues.add(value);
+
+      dataGot?.forEach((data, index) => {
+        const matchingColor = colors?.find((color) => color.title === data.color);
+        if (matchingColor && !addedColors.has(matchingColor.title)) {
+          colorElements.push(
+            <div onClick={() => handlerFilterPicker(matchingColor.title)} key={index} title={matchingColor.title} className={matchingColor.className}></div>
+          );
+          addedColors.add(matchingColor.title);
+        }
       });
-    });
 
+    
+  
+      let sizeArray = [];
+  
+      dataGot?.forEach((data) => {
+        sizeArray.push(data.size);
+      })
+      
+      const uniqueValues = new Set();
+  
+      sizeArray.forEach((arr) => {
+        arr.forEach((value) => {
+          uniqueValues.add(value);
+        });
+      });
+  
+
+    
     const mergedArray = [...uniqueValues];
     
 
@@ -145,7 +150,7 @@ import { useDataContext } from "../Fetching/DataContext";
                         <button
                         onClick={()=>handlerFilterPicker('High to Low')}
                         htmlFor="high" className={`text-[1rem] cursor-pointer px-3 ${selectedFilterCategory==='High to Low'?'text-teal-400':''}`}>
-                        Price: High to Low
+                          Price: High to Low
                         </button>
                     </div>
                     </AccordionContent>

@@ -281,6 +281,12 @@ const MyAccount = () => {
         setProductsFavHeartId([]);
         productsIdArray = [];
 
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+
     }, [location.pathname, refreshNavbar, refresher]);
     
     

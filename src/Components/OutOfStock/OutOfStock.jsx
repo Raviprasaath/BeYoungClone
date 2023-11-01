@@ -1,9 +1,16 @@
 
+import { useEffect } from 'react'
 import image from '../../assets/outofstock.jpg'
 
 import './OutOfStock.css'
 
 const ComingSoonPage = () => {
+    useEffect(()=> {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, [])
     return (
         <>
         <div className='relative image-container'>

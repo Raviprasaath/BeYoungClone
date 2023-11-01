@@ -156,6 +156,10 @@ const CheckoutCart = () => {
       setCartTotalPrice(0);
       setLoginCheck(false);
     }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [location.pathname, refreshNavbar]);
   
   const handlerCartDataAdd = () => {
