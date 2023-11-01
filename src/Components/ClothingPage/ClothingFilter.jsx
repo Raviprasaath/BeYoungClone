@@ -4,33 +4,29 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useDataContext } from "../Fetching/DataContext";
 
 
 // clothingData - Lap view Data
 // filteredData - Mobile view Data
-  const ClothingFilter = ({ handlerFilterSelectionFromClothingPge, filteredData, clothingData }) => {
+  const ClothingFilter = ({ filteredData, clothingData }) => {
+
+    const { handlerTypeOfFilterChoose } = useDataContext();
 
     const [price, setPrice] = useState("low");
-    const receivedData = clothingData;
-    
-    const location = useLocation(); 
-
-
+  
     const colorElements = [];
     const addedColors = new Set();
 
     const [selectedFilterCategory, setSelectedFilterCategory] = useState('');
 
-    const handlerFilterPicker = (e, data) => {
+    const handlerFilterPicker = (data) => {
       console.log('data', data)
-      setSelectedFilterCategory(data);
-      handlerFilterSelectionFromClothingPge(data);
+      setSelectedFilterCategory(data===selectedFilterCategory?'':data);
+      handlerTypeOfFilterChoose(data===selectedFilterCategory?'':data);
     }
-
-    // useEffect(()=> {
-    //   setSelectedFilterCategory('');
-    // }, [location.pathname])
-
+  
+    
     const colors = [
 
       {title:"BLACK", className:`${selectedFilterCategory === 'BLACK' ? 'border-2 border-green-500' : "" } bg-black cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
@@ -54,13 +50,13 @@ import { useLocation } from "react-router-dom";
       {title:"SILVER" , className:`${selectedFilterCategory === 'SILVER' ? 'border-2 border-black' : "" } bg-zinc-300 cursor-pointer rounded-full w-[25px] h-[25px] m-1`} ,
     ]
     
-    let dataGot = filteredData || receivedData;
+    let dataGot = filteredData || clothingData;
 
     dataGot?.forEach((data, index) => {
       const matchingColor = colors?.find((color) => color.title === data.color);
       if (matchingColor && !addedColors.has(matchingColor.title)) {
         colorElements.push(
-          <div onClick={(e) => handlerFilterPicker(e, matchingColor.title)} key={index} title={matchingColor.title} className={matchingColor.className}></div>
+          <div onClick={() => handlerFilterPicker(matchingColor.title)} key={index} title={matchingColor.title} className={matchingColor.className}></div>
         );
         addedColors.add(matchingColor.title);
       }
@@ -108,7 +104,7 @@ import { useLocation } from "react-router-dom";
                     <AccordionTrigger>SIZE</AccordionTrigger>
                     <AccordionContent>
                       {mergedArray.map((item)=> (
-                        <div key={item} className={`${selectedFilterCategory===item ?'text-teal-400':''} cursor-pointer`} onClick={(e)=>handlerFilterPicker(e, item)}>{item}</div>
+                        <div key={item} className={`${selectedFilterCategory===item ?'text-teal-400':''} cursor-pointer`} onClick={()=>handlerFilterPicker(item)}>{item}</div>
                       ))}
                     </AccordionContent>
                 </Accordion.Item>
@@ -132,7 +128,7 @@ import { useLocation } from "react-router-dom";
                         
                         />
                         <button
-                        onClick={()=>handlerFilterPicker("", 'Low to High')}
+                        onClick={()=>handlerFilterPicker('Low to High')}
                         htmlFor="low" className={`text-[1rem] cursor-pointer px-3 ${selectedFilterCategory==='Low to High'?'text-teal-400':''}`}>
                           Price: Low to High
                         </button>
@@ -147,7 +143,7 @@ import { useLocation } from "react-router-dom";
                           
                         />
                         <button
-                        onClick={()=>handlerFilterPicker("", 'High to Low')}
+                        onClick={()=>handlerFilterPicker('High to Low')}
                         htmlFor="high" className={`text-[1rem] cursor-pointer px-3 ${selectedFilterCategory==='High to Low'?'text-teal-400':''}`}>
                         Price: High to Low
                         </button>
@@ -156,6 +152,8 @@ import { useLocation } from "react-router-dom";
                 </Accordion.Item>
                 </Accordion.Root>
             </div>
+           
+
         </>
     )
 }

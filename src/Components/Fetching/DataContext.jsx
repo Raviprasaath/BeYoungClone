@@ -70,8 +70,17 @@ export function DataProvider({ children }) {
     setRefresher((prev) => !prev);
   }
 
+
+  const [filterTypeSelection, setFilterTypeSelection] = useState();
+
+  const handlerTypeOfFilterChoose = (value) => {
+    setFilterTypeSelection(value)
+  }
+
+
   return (
-    <DataContext.Provider value={{ data, loading, isDialogOpen, openDialog, closeDialog, refresher, refreshNavbar }}>
+    <DataContext.Provider value={{ data, loading, isDialogOpen, openDialog, closeDialog, refresher, refreshNavbar
+      , handlerTypeOfFilterChoose, filterTypeSelection }}>
       {children}
     </DataContext.Provider>
   );

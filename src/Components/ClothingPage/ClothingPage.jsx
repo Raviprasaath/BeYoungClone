@@ -15,24 +15,21 @@ import { GridLoader } from 'react-spinners';
 
 let productsIdArray = [];
 
-const ClothingPage = ({ handlerOpenFilter, handlerFilterData, filterSelectionFromClothingPage }) => {
+const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
   const location = useLocation();
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
 
   const navigate = useNavigate();
 
-  const { openDialog, refreshNavbar } = useDataContext();
+  const { openDialog, refreshNavbar, filterTypeSelection } = useDataContext();
 
   const [dataRender, setDataRender] = useState();
   const [productsFavHeartId, setProductsFavHeartId] = useState([]);
   const [tokenVal, setTokenVal] = useState();
 
-  const [typeOfFilter, setTypeOfFilter] = useState();
-
-  console.log('filterSelectionFromClothingPage', filterSelectionFromClothingPage);
+  const [typeOfFilter, setTypeOfFilter] = useState('');
   
-  let fromFilterPage = filterSelectionFromClothingPage;
 
 
   const [loginCheck, setLoginCheck] = useState(false);
@@ -153,9 +150,6 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData, filterSelectionFro
   };
 
 
-
-
-
   const handlerFavAdding = (event, item, idVal) => {
     event.preventDefault();
     if (loginCheck) {
@@ -171,9 +165,23 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData, filterSelectionFro
     }
   };
 
+  let dataFromHP3 = location?.state?.data;
+
   useEffect(() => {
-    const dataFromHP3 = location?.state?.data;
-    setDataRender(dataFromHP3);
+    if (!filterTypeSelection) {
+      setDataRender(dataFromHP3);
+      setTypeOfFilter('');      
+    } else if ( filterTypeSelection === 'S' || filterTypeSelection === 'M' ||  filterTypeSelection === 'L' ||  filterTypeSelection === 'XL' ||  filterTypeSelection === 'XXL' ) {
+      setTypeOfFilter('size');
+      handlerFilteredContent(filterTypeSelection, 'size');
+    } else if (filterTypeSelection === 'Low to High' || filterTypeSelection === 'High to Low') {
+      setTypeOfFilter('price');
+      handlerFilteredContent(filterTypeSelection, 'price');
+    } else {
+      setTypeOfFilter('color');
+      handlerFilteredContent(filterTypeSelection, 'color');
+    }
+
     if (dataFromLocal.username) {
       setLoginCheck(true);
       setTokenVal(dataFromLocal?.token);
@@ -187,16 +195,32 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData, filterSelectionFro
       productsIdArray = [];
     }
 
-    if ( fromFilterPage === 'S' || fromFilterPage === 'M' ||  fromFilterPage === 'L' ||  fromFilterPage === 'XL' ||  fromFilterPage === 'XXL' ) {
-      setTypeOfFilter('size');
-    } else if (fromFilterPage === 'Low to High' || fromFilterPage === 'High to Low') {
-      setTypeOfFilter('price');
-    } else {
-      setTypeOfFilter('color');
-    }
-
 
   }, [location.pathname, refreshNavbar ]);
+
+
+  const handlerFilteredContent = (filterGetting, typeOfFilter) => {
+    if (typeOfFilter === 'size') {
+      let sortedData = dataFromHP3?.filter((item)=> {
+        return item.size.includes(filterGetting);
+      })
+      setDataRender(sortedData);
+    } else if (typeOfFilter === 'price') {
+      let sortedData;
+      if (filterGetting === 'Low to High') {
+        sortedData = dataFromHP3.sort(function(a, b){return a.price - b.price});
+      } else {
+        sortedData = dataFromHP3.sort(function(a, b){return b.price - a.price});
+      }
+      setDataRender(sortedData);
+    } else if (typeOfFilter === 'color') {
+      let sortedData = dataFromHP3?.filter((item)=> {
+        return item.color === filterGetting
+      })
+      setDataRender(sortedData);
+    }
+  }
+
 
   const [imageLoaded, setImageLoaded] = useState(false);
   const contentBody = (
