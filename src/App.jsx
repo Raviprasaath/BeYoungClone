@@ -52,6 +52,7 @@ function App() {
           <UserAuthentication className="z-50" />
         </div>
       }
+      
       <div className="z-10">
       {location.pathname !== "/checkout/cart" && 
       location.pathname !== "/checkout/shipping" &&
