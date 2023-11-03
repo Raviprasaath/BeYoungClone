@@ -188,10 +188,6 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
       productsIdArray = [];
     }
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
 
 
   }, [location.pathname, refreshNavbar ]);
