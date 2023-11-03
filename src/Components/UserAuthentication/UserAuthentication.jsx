@@ -5,15 +5,19 @@ import { AiOutlineClose } from 'react-icons/ai'
  
 import img from "../../assets/user-page.jpg"
 import './UserAuthentication.css'
+import { useNavigate } from "react-router-dom";
 
-const UserAuthentication = () => {
+const UserAuthentication = ( {singing} ) => {
     const { isDialogOpen, openDialog, closeDialog, refreshNavbar, refresher  } = useDataContext();
     
     const handleFormClick = (e) => {
         e.stopPropagation();
     };
+
     
-    const [signingToggle, setSigningToggle] = useState(false);
+    const [signingToggle, setSigningToggle] = useState(true);
+
+    const navigate = useNavigate();
     
     const [userName, setUserName] = useState("");
     const [userEmail, setEmail] = useState("");
@@ -29,8 +33,14 @@ const UserAuthentication = () => {
 
     const [loginStatusError, setLoginStatusError] = useState(true);
 
+    useEffect(()=> {
+        setSigningToggle(singing);
+    }, [openDialog])
+
+
     const handlerToggleSigning = () => {
         setSigningToggle(!signingToggle);
+        
         setEmail("");
         setUserName("");
         setPassword("");
@@ -38,7 +48,7 @@ const UserAuthentication = () => {
         setEmailError(true);
         setPasswordError(true);
     }
-
+    
 
     let allStatus = signingToggle && !userNameError && !userEmailError && !passwordError ||
     !signingToggle && !userEmailError && !passwordError
@@ -93,10 +103,12 @@ const UserAuthentication = () => {
 
     useEffect(()=> {
         localStorageUserDetails();
+        
     }, [refresher])
-
-
+    
+    
     useEffect(()=> {
+        
         setEmail("");
         setUserName("");
         setPassword("");
@@ -136,6 +148,8 @@ const UserAuthentication = () => {
                     token: result?.token,
                 }
                 setLoginStatus(true);
+                navigate('/myaccount/profile');
+                closeDialog();
                 localStorage.setItem('userDetails', JSON.stringify(userDetailsFromFetch));
             } else if (url === 'api/v1/user/login') {
                 const userDetailsFromFetch  = {
@@ -146,7 +160,8 @@ const UserAuthentication = () => {
                 }
                 setLoginStatus(true);
                 localStorage.setItem('userDetails', JSON.stringify(userDetailsFromFetch));
-
+                navigate('/myaccount/profile');
+                closeDialog();
             } else if (url === "api/v1/user/updateMyPassword") {
                 const userDetailsFromFetch  = {
                     username: result?.data.name,
@@ -195,7 +210,7 @@ const UserAuthentication = () => {
                         <div className="pt-2">
                             {!loginStatus &&
                                 <div className="flex justify-center items-center gap-1 flex-col">
-                                    {signingToggle && 
+                                    {(signingToggle) && 
                                         <>
                                             <input value={userName} onChange={(e)=>handlerUserName(e)} type="text" placeholder="User Name" className="outline outline-[1px] w-[50%] outline-gray-300 px-2 py-1" />
                                             {userNameError && 
@@ -211,7 +226,7 @@ const UserAuthentication = () => {
                                         <p className="text-[0.7rem] text-red-500">Password should minimum 8 characters</p>
                                     }
                                     <div className="flex flex-col justify-center items-center gap-2 py-2">
-                                        <button onClick={allStatus ? ()=>handlerSigning() : "null"} className={`${allStatus?'bg-violet-300' : 'bg-gray-300'} ${allStatus ? 'hover:bg-violet-500':''} text-white font-bold px-3 py-1 rounded `}>
+                                        <button onClick={allStatus ? ()=>handlerSigning() : null} className={`${allStatus?'bg-violet-300' : 'bg-gray-300'} ${allStatus ? 'hover:bg-violet-500':''} text-white font-bold px-3 py-1 rounded `}>
                                             {signingToggle ? 'Sign up' : 'Log In'} 
                                         </button>
                                         <div
@@ -226,27 +241,7 @@ const UserAuthentication = () => {
                                     </div>
                                 </div>
                             }
-                            {loginStatus && 
-                                <div className="flex justify-center items-center gap-1 flex-col">
-                                    <input value={userEmail} onChange={(e)=>handlerEmail(e)} type="email" placeholder="Current Password" className="outline outline-[1px] w-[50%] outline-gray-300 px-2 py-1" />
-                                    {userEmailError && 
-                                        <p className="text-[0.7rem] text-red-500">Please Enter Correct Password</p>
-                                    }
-                                    <input value={password} onChange={(e)=>handlerPassword(e)} type="password" placeholder="New Password" className="outline outline-[1px] w-[50%] outline-gray-300 px-2 py-1" />                                
-                                    {passwordError &&
-                                        <p className="text-[0.7rem] text-red-500">Password should minimum 8 characters</p>
-                                    }
-                                    <div className="flex flex-col justify-center items-center gap-2 py-2">
-                                        <button onClick={()=>handlerUpdatePassword()} className={`bg-violet-300 hover:bg-violet-500 text-white font-bold px-3 py-1 rounded text-center w-[140px] `}>
-                                            Update Password 
-                                        </button>
-                                        <button onClick={()=>handlerLogout()} className={`bg-violet-300 hover:bg-violet-500 text-white font-bold px-3 py-1 rounded text-center w-[140px] `}>
-                                            Log Out 
-                                        </button>
-                                        
-                                    </div>
-                                </div>
-                            }
+                            
                         </div>
                         <div onClick={closeDialog} className="absolute top-2 right-2">
                             <AiOutlineClose className="text-[1.5rem] bg-yellow-300 rounded-full p-1"/>
@@ -259,3 +254,27 @@ const UserAuthentication = () => {
 };
 
 export default UserAuthentication;
+
+
+{/* {loginStatus && 
+                                
+    // <div className="flex justify-center items-center gap-1 flex-col">
+    //     <input value={userEmail} onChange={(e)=>handlerEmail(e)} type="email" placeholder="Current Password" className="outline outline-[1px] w-[50%] outline-gray-300 px-2 py-1" />
+    //     {userEmailError && 
+    //         <p className="text-[0.7rem] text-red-500">Please Enter Correct Password</p>
+    //     }
+    //     <input value={password} onChange={(e)=>handlerPassword(e)} type="password" placeholder="New Password" className="outline outline-[1px] w-[50%] outline-gray-300 px-2 py-1" />                                
+    //     {passwordError &&
+    //         <p className="text-[0.7rem] text-red-500">Password should minimum 8 characters</p>
+    //     }
+    //     <div className="flex flex-col justify-center items-center gap-2 py-2">
+    //         <button onClick={()=>handlerUpdatePassword()} className={`bg-violet-300 hover:bg-violet-500 text-white font-bold px-3 py-1 rounded text-center w-[140px] `}>
+    //             Update Password 
+    //         </button>
+    //         <button onClick={()=>handlerLogout()} className={`bg-violet-300 hover:bg-violet-500 text-white font-bold px-3 py-1 rounded text-center w-[140px] `}>
+    //             Log Out 
+    //         </button>
+            
+    //     </div>
+    // </div>
+} */}

@@ -11,7 +11,7 @@ import { AiFillCloseCircle } from 'react-icons/ai'
 import { IoIosArrowForward } from 'react-icons/io'
 import { Link } from "react-router-dom";
 
-const NavbarLayer1 = () => {
+const NavbarLayer1 = ({ handlerSigningToggle }) => {
   const screenSize = useScreenSize();
   const isMobile = screenSize < 960;
 
@@ -22,6 +22,11 @@ const NavbarLayer1 = () => {
   const [tokenVal, setTokenVal] = useState();
 
   const [popupOpen, setPopupOpen] = useState(false);
+
+  const handlerLocalStoreClean = () => {
+    localStorage.removeItem('userDetails');
+    refreshNavbar();
+  }
 
 
   useEffect(() => {    
@@ -65,7 +70,7 @@ const NavbarLayer1 = () => {
               }
           <div  className="flex text-[0.85rem] gap-2 py-2.5 sm4:flex sm4:justify-around ">
             {!loginCheck ? 
-                (<div className="cursor-pointer"  onClick={()=>openDialog()}>
+                (<div className="cursor-pointer"  onClick={()=>{openDialog(), handlerSigningToggle(false)}}>
                   LOGIN
                 </div>) : 
                 (
@@ -80,11 +85,11 @@ const NavbarLayer1 = () => {
               |
             </div>
             {!loginCheck ? 
-              (<div className="cursor-pointer" onClick={()=>openDialog()} >
+              (<div className="cursor-pointer" onClick={()=>{openDialog(), handlerSigningToggle(true)}} >
                 SIGNUP
               </div>) :
               (
-                <div className="cursor-pointer" onClick={()=>openDialog()}>
+                <div className="cursor-pointer" onClick={()=>handlerLocalStoreClean()}>
                   LOGOUT
                 </div>
 

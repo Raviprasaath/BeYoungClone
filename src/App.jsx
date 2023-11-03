@@ -30,7 +30,9 @@ function App() {
   const [sideNavbar, setSideNavbar] = useState(false);
   const [filterScreenOpen, setFilterScreenOpen] = useState(false);
   const [filteredData, setFilteredData] = useState();
-  
+  const [singingToggle, setSingingToggle] = useState(false);
+
+
   const handlerNavbarToggle = (value) => {
     setSideNavbar(value);
   };
@@ -44,12 +46,17 @@ function App() {
   }
 
 
+  const handlerSigningToggle = (value) => {
+    setSingingToggle(value);
+  }
+
+
 
   return (
     <>
       {location.pathname !== "/checkout" &&
         <div className="z-50">
-          <UserAuthentication className="z-50" />
+          <UserAuthentication singing={singingToggle} className="z-50" />
         </div>
       }
       
@@ -59,7 +66,7 @@ function App() {
       location.pathname !== "/checkout/payment" &&
 
       <>
-        <NavbarLayer1 />
+        <NavbarLayer1 handlerSigningToggle={ handlerSigningToggle } />
         <div className="sticky -top-0.5 left-0 z-20">
           <NavbarLayer2 handlerNavbarToggle={handlerNavbarToggle} />
         </div>
