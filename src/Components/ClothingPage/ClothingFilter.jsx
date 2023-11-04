@@ -77,7 +77,7 @@ const ClothingFilter = ({ filteredData, clothingData, handlerFilterData }) => {
         uniqueValues.add(value);
       });
     });
-  }, [filteredData, selectedFilterCategory, refresher, handlerFilterData])
+  }, [filteredData, selectedFilterCategory, refresher])
   
 
 
