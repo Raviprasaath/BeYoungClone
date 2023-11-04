@@ -22,7 +22,7 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
 
   const navigate = useNavigate();
 
-  const { openDialog, refreshNavbar, filterTypeSelection } = useDataContext();
+  const { openDialog, refreshNavbar, filterTypeSelection, handlerTypeOfFilterChoose } = useDataContext();
 
   const [dataRender, setDataRender] = useState();
   const [productsFavHeartId, setProductsFavHeartId] = useState([]);
@@ -280,6 +280,8 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
     </>
   );
 
+  console.log('dataRender', dataRender)
+
   return (
     <>
       <div className="flex relative">
@@ -301,8 +303,9 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
             <div className="fixed flex flex-row bottom-0 w-full justify-around bg-white py-2">
               <div
                 onClick={() => {
-                  handlerOpenFilter(true);
                   handlerFilterData(dataRender);
+                  handlerOpenFilter(true);
+                  
                 }}
                 className="flex justify-center items-center gap-2 w-1/2 cursor-pointer"
               >
@@ -323,8 +326,8 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
                       <Dialog.Description className="DialogDescription">
                         <div className="text-center">
                           <p className="font-bold">SORT BY </p>
-                          <p className="cursor-pointer">PRICE LOW TO HIGH</p>
-                          <p className="cursor-pointer">PRICE HIGH TO LOW</p>
+                          <p className="cursor-pointer" onClick={()=>handlerTypeOfFilterChoose('Low to High')} >PRICE LOW TO HIGH</p>
+                          <p className="cursor-pointer" onClick={()=>handlerTypeOfFilterChoose('High to Low')} >PRICE HIGH TO LOW</p>
                         </div>
                       </Dialog.Description>
                     </Dialog.Content>
