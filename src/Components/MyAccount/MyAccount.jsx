@@ -61,20 +61,48 @@ const MyAccount = () => {
    
     const [orderPageSwap, setOrderPageSwap] = useState(false);
     const [clickedCartNumber, setClickedCartNumber] = useState(0);
+    const [selectedOrderedProduct, setSelectedOrderedProduct] = useState();
     
     const handlerOrderValue = (value) => {
         setOrderPageSwap(true);
+        console.log('value', value);
+        setSelectedOrderedProduct(value);
         setClickedCartNumber(value.target.textContent.replace('Order ', ""));
     }
 
+    let counter = 0
     const orderedProduct = (
         !orderPageSwap ? (
             <div className="m-2 flex flex-row gap-2 flex-wrap">
-                {orderedDataFromLocal.length !==0 && orderedDataFromLocal?.map((item, index)=> (
+                {orderedDataFromLocal.length !== 0 && orderedDataFromLocal?.map((item, index) => {
+                    if (item && tokenVal) {
+                        const itemToken = item.token ? item.token.slice(0, 92) : '';
+                        const tokenValSlice = tokenVal.slice(0, 92);
+                        {console.log('itemToken', itemToken === tokenValSlice)}
+                        if (itemToken === tokenValSlice) {
+                            counter++;
+                            return (
+                                <div
+                                    onClick={() => handlerOrderValue(item)}
+                                    key={index}
+                                    className="cursor-pointer w-[200px] h-[120px] text-[1.1rem] uppercase shadow-lg bg-gray-200 flex justify-center items-center"
+                                >
+                                    Order {counter}
+                                </div>
+                            );
+                        }
+                    }
+                    return null;
+                })}
+
+                {/* {orderedDataFromLocal.length !==0 && orderedDataFromLocal?.map((item, index)=> (
                     <div onClick={(index)=>handlerOrderValue(index)} key={index} className="cursor-pointer w-[200px] h-[120px] text-[1.1rem] uppercase shadow-lg bg-gray-200 flex justify-center items-center">
                         Order {index+1}
                     </div>
-                ))}
+                ))} */}
+
+
+                
                 {orderedDataFromLocal.length === 0 &&
                     <div className="w-full flex justify-center items-center">
                         <img src={emptyCart} alt="" />
@@ -88,13 +116,13 @@ const MyAccount = () => {
                 </button>
 
                 <div className="flex  justify-center">
-                    {orderedDataFromLocal[clickedCartNumber-1].cartData !== 0 && (
+                    {selectedOrderedProduct.cartData !== 0 && (
                         <>
                             <div className="bg-gray-100 flex flex-col py-3 md2:w-[80%] md2:flex-row">
                                 <div className="bg-gray-100 flex flex-col items-center  md2:w-[60%]">
-                                    {!orderedDataFromLocal[clickedCartNumber-1].cartData
+                                    {!selectedOrderedProduct.cartData
                                     ? "Loading"
-                                    : orderedDataFromLocal[clickedCartNumber-1].cartData.map((item) => (
+                                    : selectedOrderedProduct.cartData?.map((item) => (
                                         <div
                                             key={item._id}
                                             className="my-2 bg-white shadow-lg w-[90%] flex flex-col"
@@ -156,7 +184,9 @@ const MyAccount = () => {
                                             <div className="px-4">Quantity: {item.quantity}</div>
                                             <div className="border"></div>
                                         </div>
-                                        ))}
+                                    ))}
+
+                                    
                                 </div>
                                 <div className=" w-[100%] md2:w-[35%] bg-white mt-2 h-fit p-4">
                                     <div className="text-[1.1rem] font-bold tracking-wider my-2">Your Order Details</div>
@@ -165,7 +195,7 @@ const MyAccount = () => {
                                             First Name: 
                                         </div>
                                         <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
-                                            {orderedDataFromLocal[clickedCartNumber-1].userData.firstName}
+                                            {selectedOrderedProduct.userData.firstName}
                                         </div>
                                     </div>
                                     <div className="flex gap-4">
@@ -173,7 +203,7 @@ const MyAccount = () => {
                                             Last Name: 
                                         </div>
                                         <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
-                                            {orderedDataFromLocal[clickedCartNumber-1].userData.lastName}
+                                            {selectedOrderedProduct.userData.lastName}
                                         </div>
                                     </div>
                                     <div className="flex gap-4">
@@ -181,7 +211,7 @@ const MyAccount = () => {
                                             Last Name: 
                                         </div>
                                         <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
-                                            {orderedDataFromLocal[clickedCartNumber-1].userData.email}
+                                            {selectedOrderedProduct.userData.email}
                                         </div>
                                     </div>
                                     
@@ -190,7 +220,7 @@ const MyAccount = () => {
                                             Address: 
                                         </div>
                                         <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
-                                            {orderedDataFromLocal[clickedCartNumber-1].userData.address}
+                                            {selectedOrderedProduct.userData.address}
                                         </div>
                                     </div>
                                     <div className="flex gap-4">
@@ -198,7 +228,7 @@ const MyAccount = () => {
                                             City: 
                                         </div>
                                         <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
-                                            {orderedDataFromLocal[clickedCartNumber-1].userData.city}
+                                            {selectedOrderedProduct.userData.city}
                                         </div>
                                     </div>
                                     <div className="flex gap-4">
@@ -206,7 +236,7 @@ const MyAccount = () => {
                                             Pin Code: 
                                         </div>
                                         <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
-                                            {orderedDataFromLocal[clickedCartNumber-1].userData.pincode}
+                                            {selectedOrderedProduct.userData.pincode}
                                         </div>
                                     </div>
                                     <div className="flex gap-4">
@@ -214,7 +244,7 @@ const MyAccount = () => {
                                             State: 
                                         </div>
                                         <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
-                                            {orderedDataFromLocal[clickedCartNumber-1].userData.state}
+                                            {selectedOrderedProduct.userData.state}
                                         </div>
                                     </div>
                                     <div className="flex gap-4">
@@ -222,7 +252,7 @@ const MyAccount = () => {
                                             Phone: 
                                         </div>
                                         <div className="whitespace-no-wrap w-[150px] overflow-hidden overflow-ellipsis">
-                                            {orderedDataFromLocal[clickedCartNumber-1].userData.phone}
+                                            {selectedOrderedProduct.userData.phone}
                                         </div>
                                     </div>
 
@@ -233,7 +263,7 @@ const MyAccount = () => {
                         </>
                     )}
                     <div>
-                        {orderedDataFromLocal[clickedCartNumber-1].cartData.length === 0 && (
+                        {selectedOrderedProduct.cartData?.length === 0 && (
                         <div className="w-full flex flex-col justify-center items-center">
                             <div className="flex bg-red-300 justify-center">
                             <img className="w-[80%]" src={emptyCart} alt="" />
@@ -482,6 +512,7 @@ const MyAccount = () => {
             }
             setProfilePicFetch(result.data.user.profileImage);
             setProfileDisplayName(result.data.user.name);
+            setMobileNumber(result.data.user.phone);
         }
     }
 
@@ -635,7 +666,7 @@ const MyAccount = () => {
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         if (selectedFile) {
-        setProfilePic(selectedFile);
+            setProfilePic(selectedFile);
         }
     }
 
@@ -747,6 +778,7 @@ const MyAccount = () => {
                         <p className="text-[0.85rem] my-2 text-green-500">Changing Email is prohibited</p>
                         {/* <div className="text-[0.8rem]">Birth Date</div>
                         <input className="input-border" type="date" placeholder="mm/dd/yyyy" name="" id="" /> */}
+                        
                         <div className="text-[0.8rem]">Phone Number</div>
                         <input onChange={(e)=>handlerMobileNumber(e)} className="input-border" type="number" placeholder={mobileNumber === "" ? "Phone Number" : mobileNumber}  maxLength="10" name="" id="" />
                         {!phoneError && 
