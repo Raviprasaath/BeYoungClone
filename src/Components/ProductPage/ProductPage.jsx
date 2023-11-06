@@ -1,7 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { TiTick } from 'react-icons/ti'
+
 
 import './ProductPage.css'
 
@@ -12,9 +13,11 @@ import img4a from "../../assets/product-discription/4.jpg"
 
 import { GiPriceTag, GiCash } from "react-icons/gi"
 import { FaShippingFast } from "react-icons/fa"
-import { AiOutlineHeart, AiFillHeart, AiFillStar, AiOutlineStar } from "react-icons/ai"
+import { AiFillCloseCircle, AiOutlineHeart, AiFillHeart, AiFillStar, AiOutlineStar } from "react-icons/ai"
 import { MdShoppingCartCheckout } from "react-icons/md"
 import { GrFormNextLink } from "react-icons/gr"
+import { BsFillPencilFill } from "react-icons/bs"
+import { MdDownloadDone } from "react-icons/md"
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -58,6 +61,22 @@ const ProductPage = () => {
     const [pinCodeValue, setPinCodeValue] = useState(11000);
     const [pinCodeRangeCheck, setPinCodeRangeCheck] = useState(false);
     const [pinCodeErrorShow, SetPinCodeErrorShow] = useState(false);
+
+    const [userReviewWriteUpOpen, setUserReviewWriteUpOpen] = useState(false);
+
+    const [starPosition, setStarPosition] = useState(0);
+    const [starEditLock, setStarEditLock] = useState(true);
+    
+    const handlerStarCount = (value) => {
+        setStarPosition(value);
+    }
+    const handlerStarMinus = (value) => {
+        setStarPosition(value);
+        
+    }
+    const handlerStarAdd = (value) => {
+        setStarPosition(value);
+    }
 
     const screenSize = useScreenSize();
     const isMobile = screenSize < 960;
@@ -230,6 +249,9 @@ const ProductPage = () => {
 
             productsIdArray = [];
           }
+          setStarEditLock(true);
+          setStarPosition(0);
+
     }, [location.pathname, refreshNavbar, reversedStrFinal ]);
 
 
@@ -475,6 +497,14 @@ const ProductPage = () => {
             </div>
         </div>
     )
+
+    
+
+
+
+
+
+
     const ratingReview = (
         <div className="p-2 bg-gray-100">
             <h4 className={`my-2 ${isMobile?'text-[0.9rem]':'text-[1.3rem]'} font-medium`}>RATINGS & REVIEW</h4>
@@ -519,26 +549,74 @@ const ProductPage = () => {
                             
                         </p>
                     </div>
-                    <button className="h-fit md1:m-auto w-[50px] text-center bg-teal-300 text-white px-2">Delete</button>
+                    <button className="h-fit md1:m-auto w-[50px] text-center bg-teal-400 hover:bg-teal-300 text-white px-2">Delete</button>
                 </div>                
                 </div>
             </div>
             
             <div className="border border-yellow-300"></div>
 
-            <div className="m-2 p-2 flex flex-col gap-2 ">
-                <div className="flex">
-                    <AiFillStar className="text-[1.5rem] text-black" />
-                    <AiFillStar className="text-[1.5rem] text-black" />
-                    <AiFillStar className="text-[1.5rem] text-black" />
-                    <AiFillStar className="text-[1.5rem] text-black" />
-                    <AiFillStar className="text-[1.5rem] text-black" />
-                </div>
-                <div className="flex flex-col w-full gap-2 md1:flex-row">
-                    <textarea className="w-[100%]  h-[100px] md1:h-[80px] border-2 border-solid border-gray-300" type="text" placeholder="Add a review" />
-                    <button className="h-fit w-[50px] my-2 text-center bg-teal-300 text-white px-2">Add</button>
-                </div>
-            </div>
+            {userReviewWriteUpOpen ? 
+                (
+                    <div className="m-2 my-5 p-2 flex flex-col gap-2 ">
+                        <div className="flex justify-between">
+                            <div className="flex gap-5">
+                                <div className="flex">
+                                    {!starEditLock ?
+                                        (
+                                        <>
+                                            <AiFillStar onMouseEnter={()=>handlerStarCount(1)} onMouseLeave={()=>handlerStarMinus(1)} onClick={()=>handlerStarAdd(1)} className={`text-[1.5rem]  ${starPosition >= 1 ? 'text-black': 'text-gray-300'} cursor-pointer `} />
+                                            <AiFillStar onMouseEnter={()=>handlerStarCount(2)} onMouseLeave={()=>handlerStarMinus(2)} onClick={()=>handlerStarAdd(2)} className={`text-[1.5rem]  ${starPosition >= 2 ? 'text-black': 'text-gray-300'} cursor-pointer `} />
+                                            <AiFillStar onMouseEnter={()=>handlerStarCount(3)} onMouseLeave={()=>handlerStarMinus(3)} onClick={()=>handlerStarAdd(3)} className={`text-[1.5rem]  ${starPosition >= 3 ? 'text-black': 'text-gray-300'} cursor-pointer `} />
+                                            <AiFillStar onMouseEnter={()=>handlerStarCount(4)} onMouseLeave={()=>handlerStarMinus(4)} onClick={()=>handlerStarAdd(4)} className={`text-[1.5rem]  ${starPosition >= 4 ? 'text-black': 'text-gray-300'} cursor-pointer `} />
+                                            <AiFillStar onMouseEnter={()=>handlerStarCount(5)} onMouseLeave={()=>handlerStarMinus(5)} onClick={()=>handlerStarAdd(5)} className={`text-[1.5rem]  ${starPosition >= 5 ? 'text-black': 'text-gray-300'} cursor-pointer `} />
+                                        </>
+                                        ) : 
+                                        (
+                                        <>
+                                            <AiFillStar className={`text-[1.5rem]  ${starPosition >= 1 ? 'text-black': 'text-gray-300'} `} />
+                                            <AiFillStar className={`text-[1.5rem]  ${starPosition >= 2 ? 'text-black': 'text-gray-300'} `} />
+                                            <AiFillStar className={`text-[1.5rem]  ${starPosition >= 3 ? 'text-black': 'text-gray-300'} `} />
+                                            <AiFillStar className={`text-[1.5rem]  ${starPosition >= 4 ? 'text-black': 'text-gray-300'} `} />
+                                            <AiFillStar className={`text-[1.5rem]  ${starPosition >= 5 ? 'text-black': 'text-gray-300'} `} />
+                                        </>
+                                        )
+                                    
+                                    }
+                                </div>
+                                <div className="flex items-center">
+                                    {starEditLock ? 
+                                        (
+                                            <BsFillPencilFill className="cursor-pointer" onClick={()=>setStarEditLock(false)} />
+                                            ) : (
+                                            <MdDownloadDone className="cursor-pointer text-[1.25rem]" onClick={()=>setStarEditLock(true)} />
+                                        )
+                                    }
+                                </div>
+                            </div>
+                            <div>
+                                <AiFillCloseCircle 
+                                    onClick={()=>setUserReviewWriteUpOpen(false)}
+                                    className="cursor-pointer hover:text-gray-400 text-[1.7rem]"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex flex-col w-full gap-2 md1:flex-row">
+                            <textarea className="w-[100%]  h-[100px] md1:h-[80px] border-2 border-solid border-gray-300" type="text" placeholder="Add a review" />
+                            <button className="h-fit w-[50px] my-2 text-center bg-teal-400 hover:bg-teal-300 text-white px-2">Add</button>
+                        </div>
+                    </div>
+                ):(
+                    <div className="m-2 p-2 flex flex-col gap-2">
+                        <button 
+                            onClick={()=>setUserReviewWriteUpOpen(true)}
+                            className="h-fit w-[200px] rounded-lg my-2 py-2 text-center bg-teal-400 hover:bg-teal-300 text-white px-2">
+                                Add Your Review Here
+                            </button>
+                    </div>
+                )
+            }
+
         </div>
     )
     const branding = (
