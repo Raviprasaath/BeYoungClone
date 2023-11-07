@@ -67,18 +67,31 @@ const MyAccount = () => {
         setOrderPageSwap(true);
         console.log('value', value);
         setSelectedOrderedProduct(value);
-        setClickedCartNumber(value.target.textContent.replace('Order ', ""));
+        // setClickedCartNumber(value.target.textContent.replace('Order ', ""));
     }
+
+
+
+    const [cartEmptyIndicator, setCartEmptyIndicator] = useState(true);
+
+    useEffect(()=> {
+
+        for (let i=0; i<orderedDataFromLocal.length; i++) {
+            if (orderedDataFromLocal?.token?.slice(0, 92) === tokenVal?.slice(0, 92)) {
+                setCartEmptyIndicator(true);
+                break;
+            } 
+        }
+    }, [])
 
     let counter = 0
     const orderedProduct = (
         !orderPageSwap ? (
             <div className="m-2 flex flex-row gap-2 flex-wrap">
-                {orderedDataFromLocal.length !== 0 && orderedDataFromLocal?.map((item, index) => {
+                {cartEmptyIndicator && orderedDataFromLocal.length !== 0 && orderedDataFromLocal?.map((item, index) => {
                     if (item && tokenVal) {
                         const itemToken = item.token ? item.token.slice(0, 92) : '';
                         const tokenValSlice = tokenVal.slice(0, 92);
-                        {console.log('itemToken', itemToken === tokenValSlice)}
                         if (itemToken === tokenValSlice) {
                             counter++;
                             return (
@@ -103,7 +116,7 @@ const MyAccount = () => {
 
 
                 
-                {orderedDataFromLocal.length === 0 &&
+                {!cartEmptyIndicator &&
                     <div className="w-full flex justify-center items-center">
                         <img src={emptyCart} alt="" />
                     </div>
@@ -780,7 +793,7 @@ const MyAccount = () => {
                         <input className="input-border" type="date" placeholder="mm/dd/yyyy" name="" id="" /> */}
                         
                         <div className="text-[0.8rem]">Phone Number</div>
-                        <input onChange={(e)=>handlerMobileNumber(e)} className="input-border" type="number" placeholder={mobileNumber === "" ? "Phone Number" : mobileNumber}  maxLength="10" name="" id="" />
+                        <input onChange={(e)=>handlerMobileNumber(e)} className="input-border" type="number" placeholder={mobileNumber?.length!==0 ? "Phone Number" : mobileNumber}  maxLength="10" name="" id="" />
                         {!phoneError && 
                             <p className="text-[0.85rem] my-2 text-red-500">Please Enter Valid Phone Number</p>
                         }
