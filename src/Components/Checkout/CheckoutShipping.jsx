@@ -5,12 +5,14 @@ import { BsCash } from 'react-icons/bs'
 import { TiTick } from 'react-icons/ti'
 import { PiTruckBold } from 'react-icons/pi'
 import TextField from "@mui/material/TextField";
-
+import Switch from '@mui/material/Switch';
 
 import { useScreenSize } from '../CommonFunctions/CommonFunctions'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { cartsData } from './CheckoutCart'
+import Tooltip from '@mui/material/Tooltip';
+
 
 const CheckoutCartShipping = () => {
     const screenSize = useScreenSize();
@@ -35,6 +37,11 @@ const CheckoutCartShipping = () => {
 
     const [dataMerging, setDataMerging] = useState({});
 
+    const [togglerSwitch, setTogglerSwitch] = useState();
+    const handlerSwitchControl = () => {
+        setTogglerSwitch(!togglerSwitch);
+      };
+
     useEffect(()=> {
         window.scrollTo({
             top: 0,
@@ -49,6 +56,8 @@ const CheckoutCartShipping = () => {
             window.scrollTo({ top: offset, behavior: 'smooth' });
         }
     }
+
+
 
     //#region --------------Form Validation -----------    
     const handlerFirstName = (e) => {
@@ -91,6 +100,7 @@ const CheckoutCartShipping = () => {
         if (e.target.value.length === 6) {
             setPinCode(true);
             setPinCodeValue(e.target.value);
+            pinCodeFetching(e.target.value);
         } else {
             setPinCode(false);
         }
@@ -144,6 +154,24 @@ const CheckoutCartShipping = () => {
         return /^[a-zA-Z\-]+$/;
     }
 
+    const [pinCodeCity, setPinCodeCity] = useState("")
+    const [pinCodeState, setPinCodeState] = useState("")
+    const [pinCodeNotMatch, setPinCodeNotMatch] = useState(false);
+
+    const pinCodeFetching = async(value) => {
+        const response = await fetch(`https://api.postalpincode.in/pincode/${value}`);
+        const result = await response.json();
+        console.log("address ",result);
+        if (result[0].Status === "Success") {
+            setPinCodeCity(result[0].PostOffice[0].District);
+            setPinCodeState(result[0].PostOffice[0].State);
+            setPinCodeNotMatch(true);
+        } else {
+            setPinCodeCity("");
+            setPinCodeState("");
+            setPinCodeNotMatch(false);
+        }
+    }
 
     //#endregion --------------Form Validation -----------
     
@@ -213,9 +241,21 @@ const CheckoutCartShipping = () => {
             <div className='bg-gray-100 w-full flex flex-col md2:w-[80%]  md2:flex-row'>
                 <div className='bg-gray-100 p-2 flex flex-col items-center w-full md2:w-[60%]'>
                     <div className='bg-white w-full'>
-                        <div className=' bg-white px-2 font-semibold'>
-                            Delivery Address
+                        <div className='flex items-center'>
+                            <div className=' bg-white px-2 font-semibold'>
+                                Delivery Address
+                            </div>
+                            <div className='flex items-center text-[0.8rem]'>
+                                (Use Registered Address)
+                                <Tooltip title="User Address Not Found">
+                                    <div>
+                                        <Switch disabled defaultChecked onChange={() => handlerSwitchControl()} />                                    
+                                    </div>
+                                </Tooltip>
+                            </div>
+
                         </div>
+
                         <div className='m-2 '>
                             <div className=' flex p-2 gap-2 w-full justify-between '>
                                 <TextField
@@ -251,31 +291,41 @@ const CheckoutCartShipping = () => {
                                     className='w-1/2'
                                     onChange={(e)=>handlerPhoneNumber(e)}
                                 />
-                                <TextField                                    
-                                    label="Pin Code"
-                                    type="number"
-                                    error={pinCode ? false : true}
-                                    className='w-1/2'
-                                    onChange={(e)=>handlerPinCode(e)}
-                                />
+                                <div className="w-1/2">
+                                    <TextField                                    
+                                        label="Pin Code"
+                                        type="number"
+                                        error={pinCode ? false : true}
+                                        className='w-full'
+                                        onChange={(e)=>handlerPinCode(e)}
+                                    />
+                                    {!pinCodeNotMatch &&
+                                        <div className="text-[0.9rem] text-red-500">
+                                            Please Enter Valid Pin Code
+                                        </div>
+                                    }
+                                </div>
                             </div>
-                            <div className='flex p-2 gap-2 w-full justify-between'>
-                                <TextField                                    
+                        
+                            <div className=' flex p-2 gap-2 w-full justify-between'>
+                                <TextField                          
                                     label="City / District"
                                     type="input"
                                     error={city ? false : true}
                                     className='w-1/2'
+                                    value={pinCodeCity}
                                     onChange={(e)=>handlerCity(e)}
                                 />
-                                <TextField                                    
-                                    label="State"
-                                    type="input"
-                                    error={state ? false : true}
-                                    className='w-1/2'
-                                    onChange={(e)=>handlerState(e)}
-
-                                />
-                            </div>
+                            
+                            <TextField                                    
+                                label="State"
+                                type="input"
+                                error={state ? false : true}
+                                className='w-1/2'
+                                value={pinCodeState}
+                                onChange={(e)=>handlerState(e)}
+                            />
+                        </div>
                             <div className='flex p-2 gap-2 w-full justify-between'>
                                 <TextField
                                     label="Address (House No, Street, Area)"

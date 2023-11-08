@@ -11,6 +11,7 @@ import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import emptyCart from "../../assets/EMPTY CARTORDER PAGE..png";
+import TextField from "@mui/material/TextField";
 
 import "./MyAccount.css"
 
@@ -63,6 +64,34 @@ const MyAccount = () => {
     const [clickedCartNumber, setClickedCartNumber] = useState(0);
     const [selectedOrderedProduct, setSelectedOrderedProduct] = useState();
     
+
+
+    // form 
+
+    const [firstName, setFirstName] = useState(false);
+    const [lastName, setLastName] = useState(false);
+    const [email, setEmail] = useState(false);
+    const [phone, setPhone] = useState(false);
+    const [pinCode, setPinCode] = useState(false);
+    const [city, setCity] = useState(false);
+    const [state, setState] = useState(false);
+    const [address, setAddress] = useState(false);
+
+    const [firstNameValue, setFirstNameValue] = useState("");
+    const [lastNameValue, setLastNameValue] = useState("");
+    const [emailValue, setEmailValue] = useState("");
+    const [phoneValue, setPhoneValue] = useState("");
+    const [pinCodeValue, setPinCodeValue] = useState("");
+    const [cityValue, setCityValue] = useState("");
+    const [stateValue, setStateValue] = useState("");
+    const [addressValue, setAddressValue] = useState("");
+
+    const [dataMerging, setDataMerging] = useState({});
+
+    const [pinCodeNotMatch, setPinCodeNotMatch] = useState(false);
+
+
+
     const handlerOrderValue = (value) => {
         setOrderPageSwap(true);
         console.log('value', value);
@@ -485,6 +514,202 @@ const MyAccount = () => {
       setOpen(true);
     };
 
+    const [pinCodeCity, setPinCodeCity] = useState("")
+    const [pinCodeState, setPinCodeState] = useState("")
+    
+    const pinCodeFetching = async(value) => {
+        const response = await fetch(`https://api.postalpincode.in/pincode/${value}`);
+        const result = await response.json();
+        console.log("address ",result);
+        if (result[0].Status === "Success") {
+            setPinCodeCity(result[0].PostOffice[0].District);
+            setPinCodeState(result[0].PostOffice[0].State);
+            setPinCodeNotMatch(true);
+        } else {
+            setPinCodeCity("");
+            setPinCodeState("");
+            setPinCodeNotMatch(false);
+        }
+    }
+
+    const handlerFirstName = (e) => {
+        if (isTextFormat (e.target.value)) {
+            setFirstName(true);
+            setFirstNameValue(e.target.value);
+        } else {
+            setFirstName(false);
+        }
+    }
+
+    const handlerLastName = (e) => {
+        if (isTextFormat (e.target.value)) {
+            setLastName(true);
+            setLastNameValue(e.target.value);
+        } else {
+            setLastName(false);
+        }
+    }
+
+    const handlerEmail = (e) => {
+        if ( isValidEmail(e.target.value) ) {
+            setEmail(true);
+            setEmailValue(e.target.value);
+        } else {
+            setEmail(false);
+        }
+    }
+    
+    const handlerPhoneNumber = (e) => {
+        if (e.target.value.length === 10) {
+            setPhone(true);
+            setPhoneValue(e.target.value);
+        } else {
+            setPhone(false);
+        }
+    }
+    
+    const handlerPinCode = (e) => {
+        if (e.target.value.length === 6) {
+            setPinCode(true);
+            setPinCodeValue(e.target.value);
+            pinCodeFetching(e.target.value);
+        } else {
+            setPinCode(false);
+        }
+    }
+
+    const handlerCity = (e) => {
+        if (isTextFormat (e.target.value)) {
+            setCity(true);
+            setCityValue(e.target.value);
+        } else {
+            setCity(false);
+        }
+    }
+    
+    const handlerState = (e) => {
+        if (isTextFormat (e.target.value)) {
+            setState(true);
+            setStateValue(e.target.value);
+        } else {
+            setState(false);
+        }
+    }
+
+    const handlerAddress = (e) => {
+        if (e.target.value) {
+            setAddress(true);
+            setAddressValue(e.target.value);
+        } else {
+            setAddress(false);
+        }
+        setDataMerging ({
+            firstName: firstNameValue,
+            lastName: lastNameValue,
+            email: emailValue,
+            phone: phoneValue,
+            pincode: pinCodeValue,
+            city: cityValue,
+            state: stateValue,
+            address: e.target.value,
+        })
+       
+    }
+    
+    
+
+    const isValidEmail = (value) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    };
+
+    const isTextFormat = (value) => {
+        return /^[a-zA-Z\-]+$/;
+    }
+
+
+    const addressField = (
+        <div className='m-2 w-[50%]'>
+            <h1 className="mx-2 font-semibold">Save Your Address</h1>
+            <div className=' flex p-2 gap-2 w-full justify-between '>
+                <TextField
+                    label="First Name"
+                    type="input"
+                    error={firstName ? false : true}
+                    className=" w-1/2 border-solid"
+                    onChange={(e)=>handlerFirstName(e)}
+                    />
+                <TextField                                    
+                    label="Last Name"
+                    type="input"
+                    error={lastName ? false : true}                                    
+                    className=' w-1/2'
+                    onChange={(e)=>handlerLastName(e)}
+                    />
+            </div>
+            <div className='flex p-2 gap-2 w-full justify-between'>
+                <TextField
+                    label="Email"
+                    type="input"                                    
+                    error={email ? false : true}
+                    className='w-full'
+                    onChange={(e)=>handlerEmail(e)}
+                />
+            </div>
+            <div className='flex p-2 gap-2 w-full justify-between'>
+                <TextField
+                    label="Phone Number"
+                    type="number"
+                    error={phone ? false : true}
+                    className='w-1/2'
+                    onChange={(e) => handlerPhoneNumber(e)}
+                />
+                <div className="w-1/2">
+                    <TextField                                    
+                        label="Pin Code"
+                        type="number"
+                        error={pinCode ? false : true}
+                        className='w-full'
+                        onChange={(e)=>handlerPinCode(e)}
+                    />
+                    {!pinCodeNotMatch &&
+                        <div className="text-[0.9rem] text-red-500">
+                            Please Enter Valid Pin Code
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className=' flex p-2 gap-2 w-full justify-between'>
+                
+                    <TextField                          
+                        label="City / District"
+                        type="input"
+                        error={city ? false : true}
+                        className='w-1/2'
+                        value={pinCodeCity}
+                        onChange={(e)=>handlerCity(e)}
+                    />
+                
+                <TextField                                    
+                    label="State"
+                    type="input"
+                    error={state ? false : true}
+                    className='w-1/2'
+                    value={pinCodeState}
+                    onChange={(e)=>handlerState(e)}
+                />
+            </div>
+            <div className='flex p-2 gap-2 w-full justify-between'>
+                <TextField
+                    label="Address (House No, Street, Area)"
+                    type="input"
+                    error={address ? false : true}
+                    className='w-full'  
+                    onChange={(e)=>handlerAddress(e)}
+                />
+            </div>
+        </div>
+    )
+
 
     const handleClose = (reason) => {
         if (reason === "clickaway") {
@@ -658,7 +883,7 @@ const MyAccount = () => {
 
         var raw = JSON.stringify({
         "name": "raviprasaath",
-        "address": "asd",
+        "address": "",
         "phone": "1234567890"
         });
 
@@ -757,7 +982,7 @@ const MyAccount = () => {
             }
             {currentLocation === 'address'&&
                 <div>
-                    Address
+                    {addressField}
                 </div>
             }
             {currentLocation === 'profile'&&
