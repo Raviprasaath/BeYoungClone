@@ -36,17 +36,122 @@ const CheckoutCartShipping = () => {
     const [addressValue, setAddressValue] = useState("");
 
     const [dataMerging, setDataMerging] = useState({});
-
-    const [togglerSwitch, setTogglerSwitch] = useState();
+    const userCompleteDataGetting = JSON.parse(localStorage.getItem('userCompleteData'));
+    const [userDataLocalCheck, setUserDataLocalCheck] = useState(false);
+    const [togglerSwitch, setTogglerSwitch] = useState(false);
+    
+    
     const handlerSwitchControl = () => {
         setTogglerSwitch(!togglerSwitch);
-      };
+        if (!togglerSwitch) {
+            setBooleanCondition(false);
+            setFirstName(false);
+            setLastName(false);
+            setPhone(false);
+            setPinCode(false);
+            setCity(false);
+            setState(false);
+            setAddress(false);
+            setFirstNameValue("");
+            setLastNameValue("");
+            setPhoneValue("");
+            setPinCodeValue("");
+            setCityValue("");
+            setStateValue("");
+            setAddressValue("");
+
+            setDataMerging ({
+                firstName: "",
+                lastName: "",
+                email: "",
+                phone: "",
+                pincode: "",
+                city: "",
+                state: "",
+                address: "",
+            })
+        } else {
+            setBooleanCondition(true);
+            setFirstNameValue(userCompleteDataGetting?.data.user.name.slice(0, userCompleteDataGetting?.data.user.name.indexOf(' ')));
+            setLastNameValue(userCompleteDataGetting?.data.user.name.slice(userCompleteDataGetting?.data.user.name.indexOf(' ')));
+            setEmailValue(userCompleteDataGetting?.data.user.email);
+            setPhoneValue(userCompleteDataGetting?.data.user.phone);
+            setPinCodeValue(userCompleteDataGetting?.data.user.address[0]?.zipCode);
+            setCityValue(userCompleteDataGetting?.data.user.address[0]?.city);
+            setStateValue(userCompleteDataGetting?.data.user.address[0]?.state);
+            setAddressValue(userCompleteDataGetting?.data.user.address[0]?.street);
+
+            setFirstName(true);
+            setLastName(true);
+            setEmail(true);
+            setPhone(true);
+            setPinCode(true);
+            setCity(true);
+            setState(true);
+            setAddress(true);
+        }
+        if(!userDataLocalCheck) {
+            setTogglerSwitch(false);
+        }
+    };
+
+
+    const [booleanCondition, setBooleanCondition] = useState(false);    
+
+    // let booleanCondition = 
+    // firstName && lastName && email && phone && pinCode && address ? true : false;
+    
+
+
 
     useEffect(()=> {
         window.scrollTo({
             top: 0,
             behavior: "smooth",
         });
+        const localValues = JSON.parse(localStorage.getItem('userDetails'));
+        setEmailValue(localValues.emailId);
+        if ( userCompleteDataGetting?.data?.user?.address[0]?.zipCode ) {
+            setUserDataLocalCheck(true);
+            setBooleanCondition(true);
+            setFirstNameValue(userCompleteDataGetting?.data.user.name.slice(0, userCompleteDataGetting?.data.user.name.indexOf(' ')));
+            setLastNameValue(userCompleteDataGetting?.data.user.name.slice(userCompleteDataGetting?.data.user.name.indexOf(' ')));
+            setEmailValue(localValues.emailId);
+            setPhoneValue(userCompleteDataGetting?.data.user.phone);
+            setPinCodeValue(userCompleteDataGetting?.data.user.address[0]?.zipCode);
+            setCityValue(userCompleteDataGetting?.data.user.address[0]?.city);
+            setStateValue(userCompleteDataGetting?.data.user.address[0]?.state);
+            setAddressValue(userCompleteDataGetting?.data.user.address[0]?.street);
+
+            setDataMerging ({
+                firstName: userCompleteDataGetting?.data.user.name.slice(0, userCompleteDataGetting?.data.user.name.indexOf(' ')),
+                lastName: userCompleteDataGetting?.data.user.name.slice(userCompleteDataGetting?.data.user.name.indexOf(' ')),
+                email: localValues.emailId,
+                phone: userCompleteDataGetting?.data.user.phone,
+                pincode: userCompleteDataGetting?.data.user.address[0]?.zipCode,
+                city: userCompleteDataGetting?.data.user.address[0]?.city,
+                state: userCompleteDataGetting?.data.user.address[0]?.state,
+                address: userCompleteDataGetting?.data.user.address[0]?.street,
+            })
+
+            setFirstName(true);
+            setLastName(true);
+            setEmail(true);
+            setPhone(true);
+            setPinCode(true);
+            setCity(true);
+            setState(true);
+            setAddress(true);
+
+
+
+        } else {
+            setUserDataLocalCheck(false);
+            setTogglerSwitch(true)
+        }
+
+        
+
     }, [])
     
     const handlerScroller = () => {
@@ -79,27 +184,27 @@ const CheckoutCartShipping = () => {
     }
 
     const handlerEmail = (e) => {
+        setEmailValue(e.target.value);
         if ( isValidEmail(e.target.value) ) {
             setEmail(true);
-            setEmailValue(e.target.value);
         } else {
             setEmail(false);
         }
     }
     
     const handlerPhoneNumber = (e) => {
+        setPhoneValue(e.target.value);
         if (e.target.value.length === 10) {
             setPhone(true);
-            setPhoneValue(e.target.value);
         } else {
             setPhone(false);
         }
     }
     
     const handlerPinCode = (e) => {
+        setPinCodeValue(e.target.value);
         if (e.target.value.length === 6) {
             setPinCode(true);
-            setPinCodeValue(e.target.value);
             pinCodeFetching(e.target.value);
         } else {
             setPinCode(false);
@@ -107,27 +212,27 @@ const CheckoutCartShipping = () => {
     }
 
     const handlerCity = (e) => {
+        setCityValue(e.target.value);
         if (isTextFormat (e.target.value)) {
             setCity(true);
-            setCityValue(e.target.value);
         } else {
             setCity(false);
         }
     }
     
     const handlerState = (e) => {
+        setStateValue(e.target.value);
         if (isTextFormat (e.target.value)) {
             setState(true);
-            setStateValue(e.target.value);
         } else {
             setState(false);
         }
     }
 
     const handlerAddress = (e) => {
+        setAddressValue(e.target.value);
         if (e.target.value) {
             setAddress(true);
-            setAddressValue(e.target.value);
         } else {
             setAddress(false);
         }
@@ -141,7 +246,9 @@ const CheckoutCartShipping = () => {
             state: stateValue,
             address: e.target.value,
         })
-       
+        if (firstNameValue && lastNameValue && emailValue && phoneValue && pinCodeValue && cityValue && stateValue && e.target.value) {
+            setBooleanCondition(true);
+        }
     }
     
     
@@ -161,24 +268,27 @@ const CheckoutCartShipping = () => {
     const pinCodeFetching = async(value) => {
         const response = await fetch(`https://api.postalpincode.in/pincode/${value}`);
         const result = await response.json();
-        console.log("address ",result);
         if (result[0].Status === "Success") {
+            setStateValue(result[0].PostOffice[0].State);
+            setCityValue(result[0].PostOffice[0].District);
             setPinCodeCity(result[0].PostOffice[0].District);
             setPinCodeState(result[0].PostOffice[0].State);
             setPinCodeNotMatch(true);
+            setCity(true);
+            setState(true);
         } else {
+            setStateValue("");
+            setCityValue("");
             setPinCodeCity("");
             setPinCodeState("");
             setPinCodeNotMatch(false);
+            setCity(false);
+            setState(false);
         }
     }
 
     //#endregion --------------Form Validation -----------
-    
-    let booleanCondition = 
-    firstName && lastName &&
-    email && phone && pinCode && city && state && address ? true : false;
-    
+
     
 
     const checkoutHeader1 = (
@@ -249,11 +359,14 @@ const CheckoutCartShipping = () => {
                                 (Use Registered Address)
                                 <Tooltip title="User Address Not Found">
                                     <div>
-                                        <Switch disabled defaultChecked onChange={() => handlerSwitchControl()} />                                    
+                                        <Switch
+                                            disabled = {!userDataLocalCheck}
+                                            defaultChecked = {!userDataLocalCheck}
+                                            onChange={() => handlerSwitchControl()} 
+                                        />                                  
                                     </div>
                                 </Tooltip>
                             </div>
-
                         </div>
 
                         <div className='m-2 '>
@@ -261,43 +374,52 @@ const CheckoutCartShipping = () => {
                                 <TextField
                                     label="First Name"
                                     type="input"
+                                    disabled={!togglerSwitch}
                                     error={firstName ? false : true}
                                     className=" w-1/2 border-solid"
                                     onChange={(e)=>handlerFirstName(e)}
+                                    value={firstNameValue}
                                     />
                                 <TextField                                    
                                     label="Last Name"
+                                    disabled={!togglerSwitch}
                                     type="input"
                                     error={lastName ? false : true}                                    
                                     className=' w-1/2'
                                     onChange={(e)=>handlerLastName(e)}
+                                    value={lastNameValue}
                                     />
                             </div>
                             <div className='flex p-2 gap-2 w-full justify-between'>
                                 <TextField
                                     label="Email"
-                                    type="input"                                    
-                                    error={email ? false : true}
+                                    type="input"
+                                    disabled={true}                                   
+                                    
                                     className='w-full'
                                     onChange={(e)=>handlerEmail(e)}
+                                    value={emailValue}
                                 />
                             </div>
                             <div className='flex p-2 gap-2 w-full justify-between'>
                                 <TextField                                    
                                     label="Phone Number"
+                                    disabled={!togglerSwitch}
                                     type="number"
-                                    length = '10'
                                     error={phone ? false : true}
                                     className='w-1/2'
-                                    onChange={(e)=>handlerPhoneNumber(e)}
+                                    onChange={(e) => handlerPhoneNumber(e)}
+                                    value={phoneValue}
                                 />
                                 <div className="w-1/2">
                                     <TextField                                    
                                         label="Pin Code"
+                                        disabled={!togglerSwitch}
                                         type="number"
                                         error={pinCode ? false : true}
                                         className='w-full'
                                         onChange={(e)=>handlerPinCode(e)}
+                                        value={pinCodeValue}
                                     />
                                     {!pinCodeNotMatch &&
                                         <div className="text-[0.9rem] text-red-500">
@@ -310,19 +432,21 @@ const CheckoutCartShipping = () => {
                             <div className=' flex p-2 gap-2 w-full justify-between'>
                                 <TextField                          
                                     label="City / District"
+                                    disabled={!togglerSwitch}
                                     type="input"
                                     error={city ? false : true}
                                     className='w-1/2'
-                                    value={pinCodeCity}
+                                    value={cityValue}
                                     onChange={(e)=>handlerCity(e)}
                                 />
                             
                             <TextField                                    
                                 label="State"
                                 type="input"
+                                disabled={!togglerSwitch}
                                 error={state ? false : true}
                                 className='w-1/2'
-                                value={pinCodeState}
+                                value={stateValue}
                                 onChange={(e)=>handlerState(e)}
                             />
                         </div>
@@ -330,9 +454,11 @@ const CheckoutCartShipping = () => {
                                 <TextField
                                     label="Address (House No, Street, Area)"
                                     type="input"
+                                    disabled={!togglerSwitch}
                                     error={address ? false : true}
                                     className='w-full'  
                                     onChange={(e)=>handlerAddress(e)}
+                                    value={addressValue}
                                 />
                             </div>
                         </div>

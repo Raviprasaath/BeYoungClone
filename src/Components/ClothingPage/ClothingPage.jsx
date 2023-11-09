@@ -280,7 +280,6 @@ const ClothingPage = ({ handlerOpenFilter, handlerFilterData }) => {
     </>
   );
 
-  console.log('dataRender', dataRender)
 
   return (
     <>
