@@ -353,15 +353,16 @@ const CheckoutCartShipping = () => {
                     <div className='bg-white w-full'>
                         <div className='flex items-center'>
                             <div className=' bg-white px-2 font-semibold'>
+                                
                                 Delivery Address
                             </div>
                             <div className='flex items-center text-[0.8rem]'>
                                 (Use Registered Address)
-                                <Tooltip title="User Address Not Found">
+                                <Tooltip title={`${!userDataLocalCheck ? 'User Address Not Found':'Add New Address'} `}>
                                     <div>
                                         <Switch
                                             disabled = {!userDataLocalCheck}
-                                            defaultChecked = {!userDataLocalCheck}
+                                            defaultChecked = {userDataLocalCheck}
                                             onChange={() => handlerSwitchControl()} 
                                         />                                  
                                     </div>

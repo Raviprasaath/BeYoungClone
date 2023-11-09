@@ -200,66 +200,71 @@ const MyAccount = () => {
                                     {!selectedOrderedProduct.cartData
                                     ? "Loading"
                                     : selectedOrderedProduct.cartData?.map((item) => (
+                                        
                                         <div
                                             key={item._id}
                                             className="my-2 bg-white shadow-lg w-[90%] flex flex-col"
                                         >
                                             <div className="flex gap-2  p-3">
-                                            <div className="p-2">
-                                                <img
-                                                className="w-[220px] h-[200px]"
-                                                src={item.product.displayImage}
-                                                alt=""
-                                                />
-                                            </div>
-                                            <div className="w-full">
-                                                <p
-                                                className={`${
-                                                    isMobile ? "text-[1rem]" : "text-[1.1rem]"
-                                                } w-[90%] font-bold px-2`}
-                                                >
-                                                {item.product.name}
-                                                </p>
-                                                {/* <p className={`${isMobile?'text-[0.9rem]':'text-[1rem]'} opacity-70 px-2`}>singleProduct?.subCategory</p> */}
-                                                <p className="p-2">
-                                                <span
-                                                    className={`${
-                                                    isMobile ? "text-[0.9rem]" : "text-[1rem]"
-                                                    } font-bold`}
-                                                >
-                                                    ₹ {item.product.price}
-                                                </span>
-                                                <span
-                                                    className={`line-through ${
-                                                    isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
-                                                    } px-1 opacity-70`}
-                                                >
-                                                    ₹{" "}
-                                                    {item.product.price +
-                                                    item.product.price * (50 / 100)}
-                                                </span>
-                                                <span
-                                                    className={`px-1 ${
-                                                    isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
-                                                    } text-green-500 font-bold`}
-                                                >
-                                                    (50% Off)
-                                                </span>
-                                                </p>
-                                                <div className="border "></div>
-                                                <div className="flex justify-around">
-                                                {/* <div>
-                                                        Color: Cream
-                                                    </div>
-                                                    <div>
-                                                        Size: 34
-                                                    </div> */}
+                                            <div className="flex flex-col md2:flex-row">
+                                                <div className="p-2">
+                                                    <img
+                                                    className="w-[220px] h-[200px]"
+                                                    src={item.product.displayImage}
+                                                    alt=""
+                                                    />
                                                 </div>
-                                                <div className="border "></div>
+                                                <div className="w-full">
+                                                    <p
+                                                    className={`${
+                                                        isMobile ? "text-[1rem]" : "text-[1.1rem]"
+                                                    } w-[90%] font-bold px-2`}
+                                                    >
+                                                    {item.product.name}
+                                                    </p>
+                                                    {/* <p className={`${isMobile?'text-[0.9rem]':'text-[1rem]'} opacity-70 px-2`}>singleProduct?.subCategory</p> */}
+                                                    <p className="p-2">
+                                                    <span
+                                                        className={`${
+                                                        isMobile ? "text-[0.9rem]" : "text-[1rem]"
+                                                        } font-bold`}
+                                                    >
+                                                        ₹ {item.product.price}
+                                                    </span>
+                                                    <span
+                                                        className={`line-through ${
+                                                        isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
+                                                        } px-1 opacity-70`}
+                                                    >
+                                                        ₹{" "}
+                                                        {item.product.price +
+                                                        item.product.price * (50 / 100)}
+                                                    </span>
+                                                    <span
+                                                        className={`px-1 ${
+                                                        isMobile ? "text-[0.8rem]" : "text-[0.9rem]"
+                                                        } text-green-500 font-bold`}
+                                                    >
+                                                        (50% Off)
+                                                    </span>
+                                                    </p>
+                                                    <div className="border "></div>
+                                                    <div className="flex justify-around">
+                                                    {/* <div>
+                                                            Color: Cream
+                                                        </div>
+                                                        <div>
+                                                            Size: 34
+                                                        </div> */}
+                                                    </div>
+                                                    <div className="border "></div>
+                                                </div>
+
                                             </div>
                                             </div>
                                             <div className="px-4">Quantity: {item.quantity}</div>
                                             <div className="border"></div>
+
                                         </div>
                                     ))}
 
@@ -689,7 +694,7 @@ const MyAccount = () => {
 
 
     const addressField = (
-        <div className='m-2 w-[50%]'>
+        <div className='m-2 w-[100%] md2:w-[50%]'>
             <div className="flex items-center">
                 <h1 className="mx-2 font-semibold">Save Your Address</h1>
                 <Tooltip title="Edit">
@@ -717,7 +722,7 @@ const MyAccount = () => {
                     />
             </div>
             <div className='flex p-2 gap-2 w-full justify-between'>
-                <div>
+                <div className="w-full">
                     <TextField
                         label="Email"
                         disabled={true}

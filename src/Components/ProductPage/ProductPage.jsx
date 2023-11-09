@@ -83,14 +83,32 @@ const ProductPage = () => {
 
     const location = useLocation();
     const str = location.pathname;
-
+    
+    const [pinCodeCity, setPinCodeCity] = useState("");
+    const [pinCodeState, setPinCodeState] = useState("");
 
     const handlerPinCodeType = (e) => {
         setPinCodeValue(e.target.value);
         SetPinCodeErrorShow(false);
+        if (e.target.value.length === 6) {
+            pinCodeFetching(e.target.value);
+        } else {
+            setPinCodeCity("");
+            setPinCodeState("");
+        }
+    }
+
+
+    const pinCodeFetching = async(value) => {
+        const response = await fetch(`https://api.postalpincode.in/pincode/${value}`);
+        const result = await response.json();
+        if (result[0].Status === "Success") {
+            setPinCodeCity(result[0].PostOffice[0].District);
+            setPinCodeState(result[0].PostOffice[0].State);
+        }
     }
     const handlerPinCodeCheck = () => {
-        if (pinCodeValue > 110000 && pinCodeValue < 880000 ) {
+        if (pinCodeCity) {
             setPinCodeRangeCheck(true);
         } else {
             setPinCodeRangeCheck(false);
@@ -446,7 +464,7 @@ const ProductPage = () => {
                         <div className="flex justify-between w-[80%] my-4 ">
                             <div className="flex gap-2 items-center">
                                 <div>
-                                    Deliver to : {pinCodeValue} 
+                                    Deliver to {pinCodeCity}, {pinCodeState} : {pinCodeValue} 
                                 </div>
                                 <div>
                                     <TiTick className="bg-green-400 p-1 text-[1.5rem] rounded-full text-white" />
