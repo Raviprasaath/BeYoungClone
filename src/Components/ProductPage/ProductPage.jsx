@@ -844,6 +844,7 @@ const ProductPage = () => {
             } else {
               productAddingInFetch(idVal, "PATCH", tokenVal);
             }
+            refreshNavbar();
         } else {
             openDialog();
         }
@@ -955,7 +956,8 @@ const ProductPage = () => {
         const updateLocalArray = productsIdArray.filter((item) => item !== idVal);
         productsIdArray = updateLocalArray;
         
-        productFirstInFetch("", "GET", token)
+        productFirstInFetch("", "GET", token);
+        refreshNavbar();
         }
     } catch (error) {
         console.log("error", error);
