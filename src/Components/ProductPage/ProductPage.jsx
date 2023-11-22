@@ -248,10 +248,10 @@ const ProductPage = () => {
     useEffect(() => {
         singleProductFetch();
         setCartAddTrack(false);
-        // window.scrollTo({
-        //     top: 0,
-        //     behavior: "smooth",
-        // });
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
     }, [reversedStrFinal]);
 
     useEffect(() => {
@@ -269,6 +269,7 @@ const ProductPage = () => {
             reviewFetchingSection("GET", "", token, reversedStrFinal);
           } else {
             setLoginCheck(false);
+            setUserReviewWriteUpOpen(false);
             setProductsFavHeartId([]);
             setCartAddTrack(false);
 
@@ -552,7 +553,13 @@ const ProductPage = () => {
         }
     }
     
-    console.log('review result', fetchedReview);
+    const handlerReviewCheck = () => {
+        if (loginCheck) {
+            setUserReviewWriteUpOpen(true)
+        } else {
+            openDialog();
+        }
+    }
 
     const userNames = [
         'Alice', 'Bob', 'Charlie', 'David', 'Eva', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack',
@@ -733,13 +740,17 @@ const ProductPage = () => {
                                 starPosition === 5 ? "Excellent" : "Add Your Rating"}
                             </div>
                             {/* <textarea className="w-[100%]  h-[100px] md1:h-[80px] border-2 border-solid border-gray-300" type="text" placeholder="Add a review" /> */}
-                            <button onClick={()=>reviewFetchingSection("POST", starPosition, tokenVal, reversedStrFinal)} className="h-fit w-[50px] my-2 text-center bg-teal-400 hover:bg-teal-300 text-white px-2">Add</button>
+                            <button onClick={
+                                ()=>
+                                {reviewFetchingSection("POST", starPosition, tokenVal, reversedStrFinal),
+                                setUserReviewWriteUpOpen(false)}
+                            } className="h-fit w-[50px] my-2 text-center bg-teal-400 hover:bg-teal-300 text-white px-2">Add</button>
                         </div>
                     </div>
                 ):(
                     <div className="m-2 p-2 flex flex-col gap-2">
                         <button 
-                            onClick={()=>setUserReviewWriteUpOpen(true)}
+                            onClick={()=>handlerReviewCheck()}
                             className="h-fit w-[200px] rounded-lg my-2 py-2 text-center bg-teal-400 hover:bg-teal-300 text-white px-2">
                                 Add Your Review Here
                             </button>
